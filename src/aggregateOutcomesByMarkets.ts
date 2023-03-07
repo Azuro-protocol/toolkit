@@ -1,7 +1,7 @@
 import { getMarketKey, getMarketName, assembleSelectionName, type Dictionaries } from '@azuro-org/dictionaries'
 
 
-type Outcome = {
+type Outcome<T> = T & {
   conditionId: string
   outcomeId: string
   selectionName: string
@@ -9,9 +9,9 @@ type Outcome = {
   coreAddress: string
 }
 
-type Markets = {
+type Markets<T> = {
   marketName: string
-  outcomes: Outcome[][]
+  outcomes: Outcome<T>[][]
 }[]
 
 type Props = {
@@ -31,25 +31,26 @@ type Props = {
   dictionaries: Dictionaries
 }
 
-export default function aggregateOutcomesByMarkets(props: Props): Markets {
+export default function aggregateOutcomesByMarkets<T extends {}>(props: Props): Markets<T> {
   const { lpAddress, conditions, dictionaries } = props
 
   // group conditions by marketId
-  const outcomesByMarketKey: Record<string, Outcome[]> = {}
-  const result: Record<string, Markets[number]> = {}
+  const outcomesByMarketKey: Record<string, Outcome<T>[]> = {}
+  const result: Record<string, Markets<T>[number]> = {}
 
   conditions.forEach(({ conditionId, outcomes, core }) => {
-    outcomes.forEach(({ outcomeId }) => {
+    outcomes.forEach(({ outcomeId, ...rest }) => {
       const marketKey = getMarketKey(outcomeId, dictionaries)
       const marketName = getMarketName(outcomeId, dictionaries)
       const selectionName = assembleSelectionName(outcomeId, dictionaries)
 
-      const outcome: Outcome = {
+      const outcome: Outcome<T> = {
         conditionId,
         outcomeId,
         selectionName,
         lpAddress,
         coreAddress: core.address,
+        ...rest as any,
       }
 
       // it's important to use "marketKey" because it's unique
@@ -73,7 +74,7 @@ export default function aggregateOutcomesByMarkets(props: Props): Markets {
     const marketId = +marketKey.split('-')[0]
 
     // get outcomes related to the market
-    const outcomes = outcomesByMarketKey[marketKey] as Outcome[]
+    const outcomes = outcomesByMarketKey[marketKey] as Outcome<T>[]
 
     // sort the conditions by selectionId (outcome)
     outcomes.sort((a, b) => {
@@ -95,7 +96,7 @@ export default function aggregateOutcomesByMarkets(props: Props): Markets {
     // Over (1.5)   Under (1.5)
     // Over (0.5)   Under (0.5)
     else {
-      const outcomesByConditionId: Record<string, Outcome[]> = {}
+      const outcomesByConditionId: Record<string, Outcome<T>[]> = {}
 
       outcomes.forEach((outcome) => {
         const key = outcome.conditionId
@@ -107,7 +108,7 @@ export default function aggregateOutcomesByMarkets(props: Props): Markets {
         outcomesByConditionId[key].push(outcome)
       })
 
-      const outcomesArr: Outcome[][] = Object.values(outcomesByConditionId)
+      const outcomesArr: Outcome<T>[][] = Object.values(outcomesByConditionId)
 
       result[marketKey].outcomes = outcomesArr.sort((a, b) => {
         const aSum = a.reduce((acc, { outcomeId }) => acc + +outcomeId, 0)
