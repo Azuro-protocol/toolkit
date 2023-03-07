@@ -1,0 +1,10 @@
+.idea
+.vscode
+.DS_Store
+.tool-versions
+
+rollup.config.js
+tsconfig.js
+
+src
+out
