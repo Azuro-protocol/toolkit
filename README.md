@@ -49,7 +49,7 @@ type Conditions = {
 aggregateOutcomesByMarkets({
   lpAddress: game.liquidityPool.lpAddress,
   conditions: game.conditions,
-  dictionaries, // ** check the note below
+  dictionaries, // **
 })
 ```
 
@@ -66,7 +66,7 @@ type Outcome = {
 
 type OutcomesByMarkets = {
   marketName: string
-  outcomes: Outcome[][]
+  outcomes: Outcome[][] // *
 }[]
 ```
 
@@ -77,19 +77,18 @@ in a user-friendly way and provide more context about what the outcome represent
 component of Azuro's infrastructure as they allow for standardized and consistent outcomes across all markets and events. 
 [Read more about dictionaries](https://azuro-v2-docs.surge.sh/build-own-app/dive-deeper/dictionaries).
 
+---
+
 You can pass additional data in outcomes if required, the helper will add it to outcomes in the result:
 
 ```graphql {11}
 query Game($id: String!) {
   game(id: $id) {
-    liquidityPool {
-      address
-    }
+    ...
     conditions {
-      conditionId
-      coreAddress
+      ...
       outcomes {
-        outcomeId
+        ...
         odds
       }
     }
@@ -103,11 +102,7 @@ type MyOutcome = {
   odds: string
 }
 
-aggregateOutcomesByMarkets<MyOutcome>({
-  lpAddress: game.liquidityPool.lpAddress,
-  conditions: game.conditions,
-  dictionaries, // ** check the note below
-})
+aggregateOutcomesByMarkets<MyOutcome>(...)
 ```
 
 The result will be of type
