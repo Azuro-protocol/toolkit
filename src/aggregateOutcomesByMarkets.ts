@@ -9,74 +9,76 @@ type Outcome<T> = T & {
   coreAddress: string
 }
 
-type Markets<T> = {
+type Market<T> = {
+  marketName: string
+  outcomes: Outcome<T>[]
+}
+
+type FinalMarket<T> = {
   marketName: string
   outcomes: Outcome<T>[][]
-}[]
+}
 
 type Props = {
   lpAddress: string
   conditions: {
     [key: string]: any
     conditionId: string
+    coreAddress: string
     outcomes: {
       [key: string]: any
       outcomeId: string
     }[]
-    core: {
-      [key: string]: any
-      address: string
-    }
   }[]
   dictionaries: Dictionaries
 }
 
-export default function aggregateOutcomesByMarkets<T extends {}>(props: Props): Markets<T> {
+export default function aggregateOutcomesByMarkets<T extends {}>(props: Props): FinalMarket<T>[] {
   const { lpAddress, conditions, dictionaries } = props
 
-  // group conditions by marketId
-  const outcomesByMarketKey: Record<string, Outcome<T>[]> = {}
-  const result: Record<string, Markets<T>[number]> = {}
+  const marketsMap: Record<string, Market<T>> = {}
 
-  conditions.forEach(({ conditionId, outcomes, core }) => {
+  conditions.forEach(({ conditionId, outcomes, coreAddress }) => {
     outcomes.forEach(({ outcomeId, ...rest }) => {
+      // we are using the same key format that was discussed earlier
       const marketKey = getMarketKey(outcomeId, dictionaries)
+
+      // we are obtaining the human-readable names of each market and the corresponding outcome selections
       const marketName = getMarketName(outcomeId, dictionaries)
       const selectionName = assembleSelectionName(outcomeId, dictionaries)
 
       const outcome: Outcome<T> = {
         conditionId,
         outcomeId,
-        selectionName,
         lpAddress,
-        coreAddress: core.address,
-        ...rest as any,
+        coreAddress,
+        selectionName,
+        ...rest as any
       }
 
-      // it's important to use "marketKey" because it's unique
-      // on other hand "marketId" can be same for different groups of conditions
-      // "marketKey" is a string template "marketId-gamePeriodId-gameTypeId[-teamPlayerId]"
-      if (!outcomesByMarketKey[marketKey]) {
-        outcomesByMarketKey[marketKey] = []
-
-        result[marketKey] = {
+      if (!marketsMap[marketKey]) {
+        marketsMap[marketKey] = {
           marketName,
           outcomes: [],
         }
       }
 
-      outcomesByMarketKey[marketKey].push(outcome)
+      marketsMap[marketKey].outcomes.push(outcome)
     })
   })
 
+  const finalMarketsMap: Record<string, FinalMarket<T>> = {}
+
   // sort by outcomeId and group by conditionId
-  Object.keys(outcomesByMarketKey).forEach((marketKey) => {
-    const marketId = +marketKey.split('-')[0]
+  Object.keys(marketsMap).forEach((marketKey) => {
+    const { marketName, outcomes } = marketsMap[marketKey]
 
-    // get outcomes related to the market
-    const outcomes = outcomesByMarketKey[marketKey] as Outcome<T>[]
+    finalMarketsMap[marketKey] = {
+      marketName,
+      outcomes: null as any,
+    }
 
-    // sort the conditions by selectionId (outcome)
+    // sort the outcomes by `selectionId` (outcome's selection reference)
     outcomes.sort((a, b) => {
       const left = dictionaries.outcomes[a.outcomeId].selectionId
       const right = dictionaries.outcomes[b.outcomeId].selectionId
@@ -84,18 +86,20 @@ export default function aggregateOutcomesByMarkets<T extends {}>(props: Props): 
       return left - right
     })
 
-    // markets with different conditionIds and not require additional grouping or sorting
-    const marketsWithDifferentConditionIds = [ 1, 2 ]
+    // "Full Time Result" and "Double Chance" are the markets whose outcomes don't require sorting
+    const MARKETS_THAT_DONT_NEED_GROUPING = [ 1, 2 ]
+    const marketId = marketKey.split('-')[0]
 
-    if (marketsWithDifferentConditionIds.includes(marketId)) {
-      result[marketKey].outcomes = [outcomes]
+    if (MARKETS_THAT_DONT_NEED_GROUPING.includes(+marketId)) {
+      // it's worth noting that the outcomes are wrapped within an array here due to the "rows" that are presented below
+      finalMarketsMap[marketKey].outcomes = [ outcomes ]
     }
-    // group by conditionId to allow draw outcomes by rows in UI, e.g.
-    //
-    // Team 1 - Total Goals:
-    // Over (1.5)   Under (1.5)
-    // Over (0.5)   Under (0.5)
     else {
+      // group the outcomes by condition ID, which will allow us to display the draw outcomes in separate rows
+      //
+      // Handicap:
+      // H1 (-0.5)  H2 (0.5)
+      // H1 (0.5)   H2 (-0.5)
       const outcomesByConditionId: Record<string, Outcome<T>[]> = {}
 
       outcomes.forEach((outcome) => {
@@ -108,9 +112,9 @@ export default function aggregateOutcomesByMarkets<T extends {}>(props: Props): 
         outcomesByConditionId[key].push(outcome)
       })
 
-      const outcomesArr: Outcome<T>[][] = Object.values(outcomesByConditionId)
+      const rows: Outcome<T>[][] = Object.values(outcomesByConditionId)
 
-      result[marketKey].outcomes = outcomesArr.sort((a, b) => {
+      finalMarketsMap[marketKey].outcomes = rows.sort((a, b) => {
         const aSum = a.reduce((acc, { outcomeId }) => acc + +outcomeId, 0)
         const bSum = b.reduce((acc, { outcomeId }) => acc + +outcomeId, 0)
 
@@ -119,5 +123,5 @@ export default function aggregateOutcomesByMarkets<T extends {}>(props: Props): 
     }
   })
 
-  return Object.values(result)
+  return Object.values(finalMarketsMap)
 }

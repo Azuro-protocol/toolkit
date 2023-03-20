@@ -10,107 +10,120 @@ npm i --save @azuro-org/toolkit
 ```
 
 
-## CLI
-
-All dictionaries stored in [public repository](https://github.com/Azuro-protocol/public-config/tree/main/dictionaries).
-For ease of use, the dictionaries have a version and file format.
-
-It's easy to download dictionary files with CLI. In your package.json add script:
-
-```json
-"scripts": {
-  "get-dicts": "dictionaries -o {OUTPUT_DIR} -v {VERSION} -t {FILES_TYPE}"
-}
-```
-
-- `VERSION` is the version of downloaded dictionaries. [Find the version you need here](https://github.com/Azuro-protocol/public-config/tree/main/dictionaries).
-- `OUTPUT_DIR` is the directory where to put downloaded files.
-- `FILES_TYPE` is the extension of downloaded files. Accepts `ts`, `js`, `maps`, `arrays`. `maps` and `arrays` are 
-json files with different output format.
-
-```bash
-dictionaries -o ./dist -v 2.0.0 -t ts # will download v2.0.0 typescript files to ./dist directory
-```
-
-
 ## Helpers
 
-```js
-import { getMarketKey, getMarketName, getMarketDescription, assembleMarketName, assembleSelectionName } from '@azuro-org/dictionaries'
-```
+### `aggregateOutcomesByMarkets.ts`
 
-### Get market name and description
+This helper function allows you to aggregate outcomes that are obtained from conditions by markets. This function takes 
+an array of conditions and groups outcomes by their market key. It then sorts the outcomes within each market group 
+and returns an array of market objects, each containing an array of outcomes.
 
-```js
-import { getMarketKey } from '@azuro-org/dictionaries'
-import dictionaries from './path-to-downloaded-dictionaries'
+Here is an example of how you can use it:
 
-const outcomeId = 1
-const marketKey = getMarketKey(outcomeId, dictionaries)
-```
-
-`getMarketKey(outcomeId, dictionaries)` returns the string key `marketId-gamePeriodId-gameTypeId[-teamPlayerId]` 
-built from the dictionaries related to passed `outcomeId`.
-
-In the example above the result is `1-1-1`.
-
-There are two dictionary files `marketNames.js` and `marketDescriptions.js`. `marketKey` is used to receive market name 
-and description for specific outcome ID.
-
-```
-import dictionaries from './path-to-downloaded-dictionaries'
-
-dictionaries.marketNames['1-1-1'] // "Full Time Result" 
-dictionaries.marketDescriptions['1-1-1'] // "You predict the result..."
-```
-
-**!!! Note that there are no texts for each `outcomeId` !!!**
-
-`marketNames[marketKey]` and `marketDescriptions[marketKey]` may return `undefined`. For `marketName` generation there 
-is other helper `assembleMarketName`. It generates human readable market name based on outcome `marketId`, `gamePeriodId`, 
-`gameTypeId`, `teamPlayerId`.
-
-```
-import { getMarketKey, assembleMarketName } from '@azuro-org/dictionaries'
-import dictionaries from './path-to-downloaded-dictionaries'
-
-const outcomeId = 42
-const marketKey = getMarketKey(outcomeId, dictionaries)
-
-let marketName = dictionaries[marketKey] // undefined
-
-if (!marketName) {
-  marketName = assembleMarketName(outcomeId, dictionaries) // "Whole game - Winner of match Goal"
+```graphql
+query Game($id: String!) {
+  game(id: $id) {
+    liquidityPool {
+      address
+    }
+    conditions {
+      conditionId
+      coreAddress
+      outcomes {
+        outcomeId
+      }
+    }
+  }
 }
 ```
 
-There are additional 2 sugar helpers:
+```ts
+type Conditions = {
+  conditionId: string
+  coreAddress: string
+  outcomes: {
+    outcomeId: string
+  }
+}
 
-```js
-import { getMarketName } from '@azuro-org/dictionaries'
-import dictionaries from './path-to-downloaded-dictionaries'
-
-getMarketName(1, dictionaries) // "Full Time Result"
-getMarketName(42, dictionaries) // "Whole game - Winner of match Goal"
+aggregateOutcomesByMarkets({
+  lpAddress: game.liquidityPool.lpAddress,
+  conditions: game.conditions,
+  dictionaries, // ** check the note below
+})
 ```
 
-```js
-import { getMarketDescription } from '@azuro-org/dictionaries'
-import dictionaries from './path-to-downloaded-dictionaries'
+The result will be of type
 
-getMarketDescription(1, dictionaries) // "You predict the result..."
-getMarketDescription(42, dictionaries) // undefined. Note that there is no `assemblyMarketDescription` helper.
+```ts
+type Outcome = {
+  selectionName: string
+  conditionId: string
+  outcomeId: string
+  lpAddress: string
+  coreAddress: string
+}
+
+type OutcomesByMarkets = {
+  marketName: string
+  outcomes: Outcome[][]
+}[]
 ```
 
-### Get selection (outcome) name
+`*` returned `outcomes` are wrapped with additional array `Outcome[][]` 
 
-```js
-import { assembleSelectionName } from '@azuro-org/dictionaries'
-import dictionaries from './dist'
+`**`  `dictionaries` contain a set of texts for each outcome ID used in Azuro. These texts can be used to display outcomes 
+in a user-friendly way and provide more context about what the outcome represents. Dictionaries are an important 
+component of Azuro's infrastructure as they allow for standardized and consistent outcomes across all markets and events. 
+[Read more about dictionaries](https://azuro-v2-docs.surge.sh/build-own-app/dive-deeper/dictionaries).
 
-const outcomeId = 1
-const selectionName = assembleSelectionName(outcomeId, dictionaries) // "Yes"
+You can pass additional data in outcomes if required, the helper will add it to outcomes in the result:
 
-const outcomeId = 4
-const selectionName = assembleSelectionName(outcomeId, dictionaries) // "Team 2 (4.5)"
+```graphql {11}
+query Game($id: String!) {
+  game(id: $id) {
+    liquidityPool {
+      address
+    }
+    conditions {
+      conditionId
+      coreAddress
+      outcomes {
+        outcomeId
+        odds
+      }
+    }
+  }
+}
+```
+
+```ts
+type MyOutcome = {
+  outcomeId: string
+  odds: string
+}
+
+aggregateOutcomesByMarkets<MyOutcome>({
+  lpAddress: game.liquidityPool.lpAddress,
+  conditions: game.conditions,
+  dictionaries, // ** check the note below
+})
+```
+
+The result will be of type
+
+```ts {7}
+type Outcome = {
+  selectionName: string
+  conditionId: string
+  outcomeId: string
+  lpAddress: string
+  coreAddress: string
+  odds: string
+}
+
+type OutcomesByMarkets = {
+  marketName: string
+  outcomes: Outcome[][]
+}[]
 ```

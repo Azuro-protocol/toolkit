@@ -1,6 +1,6 @@
 {
   "name": "@azuro-org/toolkit",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "Set of helpers to work with Azuro protocol",
   "module": "dist/index.es.js",
   "main": "lib/index.js",
@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/Azuro-protocol/toolkit/issues"
   },
-  "homepage": "https://github.com/Azuro-protocol/toolkit/packages/toolkit#readme",
+  "homepage": "https://github.com/Azuro-protocol/toolkit#readme",
   "peerDependencies": {
     "@azuro-org/dictionaries": "^1.0.5"
   },
