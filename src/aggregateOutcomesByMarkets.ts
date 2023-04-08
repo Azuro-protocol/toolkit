@@ -1,4 +1,4 @@
-import { getMarketKey, getMarketName, assembleSelectionName, type Dictionaries } from '@azuro-org/dictionaries'
+import { getMarketKey, getMarketName, getSelectionName, type Dictionaries } from '@azuro-org/dictionaries'
 
 
 type Outcome<T> = T & {
@@ -41,11 +41,11 @@ export default function aggregateOutcomesByMarkets<T extends {}>(props: Props): 
   conditions.forEach(({ conditionId, outcomes, coreAddress }) => {
     outcomes.forEach(({ outcomeId, ...rest }) => {
       // we are using the same key format that was discussed earlier
-      const marketKey = getMarketKey(outcomeId, dictionaries)
+      const marketKey = getMarketKey({ outcomeId, dictionaries })
 
       // we are obtaining the human-readable names of each market and the corresponding outcome selections
-      const marketName = getMarketName(outcomeId, dictionaries)
-      const selectionName = assembleSelectionName(outcomeId, dictionaries)
+      const marketName = getMarketName({ outcomeId, dictionaries })
+      const selectionName = getSelectionName({ outcomeId, dictionaries })
 
       const outcome: Outcome<T> = {
         conditionId,
