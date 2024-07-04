@@ -1,0 +1,6 @@
+query LiveConditions($where: Condition_filter!) {
+  conditions(where: $where, first: 1000, subgraphError: allow) {
+    ...LiveCondition
+    wonOutcomeIds
+  }
+}

@@ -10,11 +10,6 @@ export default [
     input: './src/index.ts',
     output: [
       {
-        file: './lib/index.js',
-        format: 'cjs',
-        exports: 'named',
-      },
-      {
         file: './dist/index.es.js',
         format: 'es',
         exports: 'named',

@@ -1,0 +1,5 @@
+query LiveCondition($conditionId: BigInt!) {
+  condition(id: $conditionId, subgraphError: allow) {
+    ...LiveCondition
+  }
+}
