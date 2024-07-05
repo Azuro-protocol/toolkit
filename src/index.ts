@@ -23,3 +23,9 @@ export { getWaveStats, type WaveStatsResponse } from './utils/wave/getWaveStats'
 export { getWavePeriods, type WavePeriodsResponse } from './utils/wave/getWavePeriods'
 export { getWaveLeaderBoard, type WaveLeaderBoardItem } from './utils/wave/getWaveLeaderBoard'
 export { activateWave } from './utils/wave/activateWave'
+
+// deBridge
+export { createDeBridgeBet, type DeBridgeCreateTxResponse } from './utils/deBridge/createDeBridgeBet'
+export { getDeBridgeSupportedChains } from './utils/deBridge/getDeBridgeSupportedChains'
+export { getDeBridgeSupportedTokens } from './utils/deBridge/getDeBridgeSupportedTokens'
+export { getDeBridgeOrder, DeBridgeOrderStatus, DeBridgeExternalCallStatus } from './utils/deBridge/getDeBridgeOrder'

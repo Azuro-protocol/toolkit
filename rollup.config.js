@@ -7,10 +7,12 @@ import json from '@rollup/plugin-json'
 
 export default [
   {
-    input: './src/index.ts',
+    input: {
+      'index': 'src/index.ts',
+    },
     output: [
       {
-        file: './dist/index.es.js',
+        dir: 'dist',
         format: 'es',
         exports: 'named',
       },
@@ -26,6 +28,7 @@ export default [
       }),
       typescript({
         clean: true,
+        tsconfig: './tsconfig.json',
       }),
     ],
   }

@@ -9,3 +9,5 @@ live.schema.graphql
 protocol.schema.graphql
 src/types.ts
 src/docs/**/*.ts
+
+!src/docs/index.ts
