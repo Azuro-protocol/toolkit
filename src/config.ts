@@ -52,7 +52,7 @@ export type ChainData = {
 const gnosisData: ChainData = {
   chain: gnosis,
   graphql: {
-    prematch: getGraphqlPrematchEndpoint('gnosis'),
+    prematch: getGraphqlPrematchEndpoint(gnosis.id),
     live: getGraphqlLiveEndpoint(gnosis.id),
   },
   socket: getSocketEndpoint(gnosis.id),
@@ -76,7 +76,7 @@ const gnosisData: ChainData = {
 const polygonData: ChainData = {
   chain: polygon,
   graphql: {
-    prematch: getGraphqlPrematchEndpoint('polygon'),
+    prematch: getGraphqlPrematchEndpoint(polygon.id),
     live: getGraphqlLiveEndpoint(polygon.id),
   },
   socket: getSocketEndpoint(polygon.id),
@@ -100,7 +100,7 @@ const polygonData: ChainData = {
 const polygonAmoyData: ChainData = {
   chain: polygonAmoy,
   graphql: {
-    prematch: getGraphqlPrematchEndpoint('polygon-amoy-preprod'),
+    prematch: getGraphqlPrematchEndpoint(polygonAmoy.id),
     live: getGraphqlLiveEndpoint(polygonAmoy.id),
   },
   socket: getSocketEndpoint(polygonAmoy.id),
@@ -124,7 +124,7 @@ const polygonAmoyData: ChainData = {
 const chilizData: ChainData = {
   chain: chiliz,
   graphql: {
-    prematch: getGraphqlPrematchEndpoint('chiliz'),
+    prematch: getGraphqlPrematchEndpoint(chiliz.id),
     live: getGraphqlLiveEndpoint(chiliz.id),
   },
   socket: getSocketEndpoint(chiliz.id),
@@ -146,7 +146,7 @@ const chilizData: ChainData = {
 const spicyData: ChainData = {
   chain: spicy,
   graphql: {
-    prematch: getGraphqlPrematchEndpoint('chiliz-spicy-dev'),
+    prematch: getGraphqlPrematchEndpoint(spicy.id),
     live: getGraphqlLiveEndpoint(spicy.id),
   },
   socket: getSocketEndpoint(spicy.id),

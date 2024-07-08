@@ -1,9 +1,17 @@
-import { polygonAmoy, spicy } from 'viem/chains'
+import { chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
 
 import { type ChainId } from '../config'
 
 
-export const getGraphqlPrematchEndpoint = (network: string) => `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${network}-v3`
+const endpointNameByChainId: Record<ChainId, string> = {
+  [gnosis.id]: 'gnosis',
+  [polygon.id]: 'polygon',
+  [polygonAmoy.id]: 'polygon-amoy-preprod',
+  [chiliz.id]: 'chiliz',
+  [spicy.id]: 'chiliz-spicy-dev',
+}
+
+export const getGraphqlPrematchEndpoint = (chainId: ChainId) => `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
 
 export const getGraphqlLiveEndpoint = (chainId: number) => {
   if (chainId === polygonAmoy.id) {
