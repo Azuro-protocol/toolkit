@@ -15,7 +15,7 @@ export { getPrematchBetDataBytes } from './utils/getPrematchBetDataBytes'
 export { groupConditionsByMarket, type GameMarkets, type MarketOutcome, type Market } from './utils/groupConditionsByMarket'
 export { groupByConditionId } from './utils/groupByConditionId'
 export { setupContracts, type Contracts } from './utils/setupContracts'
-export { getApiEndpoint, getGraphqlLiveEndpoint, getGraphqlPrematchEndpoint, getSocketEndpoint } from './utils/getEndpoints'
+export { getApiEndpoint, getLiveGraphqlEndpoint, getPrematchGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
 
 // wave
 export { getWaveLevels, WaveLevelName, type WaveLevelData, type WaveLevelsResponse } from './utils/wave/getWaveLevels'

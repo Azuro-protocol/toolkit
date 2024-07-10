@@ -4,10 +4,10 @@ import { deBridgeUrl } from '../../config'
 type SupportedTokensResponse = {
   tokens: Record<string, {
     address: string
-    symbol: string,
-    decimals: number,
-    name: string,
-    logoURI: string,
+    symbol: string
+    decimals: number
+    name: string
+    logoURI: string
     tags: Array<string>
   }>
 }

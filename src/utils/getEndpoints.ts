@@ -11,9 +11,9 @@ const endpointNameByChainId: Record<ChainId, string> = {
   [spicy.id]: 'chiliz-spicy-dev',
 }
 
-export const getGraphqlPrematchEndpoint = (chainId: ChainId) => `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
+export const getPrematchGraphqlEndpoint = (chainId: ChainId) => `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
 
-export const getGraphqlLiveEndpoint = (chainId: number) => {
+export const getLiveGraphqlEndpoint = (chainId: ChainId) => {
   if (chainId === polygonAmoy.id) {
     return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
   }
@@ -25,7 +25,7 @@ export const getGraphqlLiveEndpoint = (chainId: number) => {
   return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
 }
 
-export const getSocketEndpoint = (chainId: number) => {
+export const getSocketEndpoint = (chainId: ChainId) => {
   if (chainId === polygonAmoy.id) {
     return 'wss://preprod-streams.azuro.org/v1/streams/conditions'
   }
