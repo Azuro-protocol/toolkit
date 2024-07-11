@@ -16,6 +16,7 @@ export { groupConditionsByMarket, type GameMarkets, type MarketOutcome, type Mar
 export { groupByConditionId } from './utils/groupByConditionId'
 export { setupContracts, type Contracts } from './utils/setupContracts'
 export { getApiEndpoint, getLiveGraphqlEndpoint, getPrematchGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
+export { getFreeBets, RestFreeBetStatus, type FreeBet } from './utils/getFreebets'
 
 // wave
 export { getWaveLevels, WaveLevelName, type WaveLevelData, type WaveLevelsResponse } from './utils/wave/getWaveLevels'
