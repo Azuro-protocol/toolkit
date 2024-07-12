@@ -4,7 +4,7 @@ import { type ChainId } from '../config'
 import { getApiEndpoint } from './getEndpoints'
 
 
-export enum RestFreeBetStatus {
+export enum FreeBetStatus {
   New = 'New',
   Claimed = 'Claimed',
   Redeemed = 'Redeemed',
@@ -22,7 +22,7 @@ export type FreeBet = {
   signature: Hex
   expiresAt: number // unix timestamp in seconds
   campaign: string
-  status: RestFreeBetStatus
+  status: FreeBetStatus
   contract: {
     id: number
     affiliate: Address
