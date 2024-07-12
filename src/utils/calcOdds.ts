@@ -1,5 +1,4 @@
-import { readContract, readContracts } from '@wagmi/core'
-import { type Config } from 'wagmi'
+import { readContract, readContracts, type Config } from '@wagmi/core'
 import { type Address, formatUnits, parseUnits } from 'viem'
 
 import { type ChainId, ODDS_DECIMALS, chainsData } from '../config'
