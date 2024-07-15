@@ -1,19 +1,34 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "baseUrl": ".",
+    "allowJs": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "lib": ["es2021", "dom"],
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": [ "es2017", "es7", "es6", "dom" ],
-    "outDir": "lib",
-    "jsx": "react",
-    "strict": true,
     "declaration": true,
-    "declarationDir": ".",
-    "esModuleInterop": true
+    "declarationDir": "dist",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "es2021",
+    "types": ["node"]
   },
   "exclude": [
-    "node_modules",
-    "dist",
-    "lib"
+    "**/node_modules/**",
+    "**/dist/**"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ]
 }
