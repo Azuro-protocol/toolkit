@@ -18,4 +18,4 @@ viem@^2.17.3
 @wagmi/core@^2.11.7
 ```
 
-Package information can be found in our [Doc](https://gem.azuro.org/toolkit/overview)
+Package information can be found in our [Doc](https://gem.azuro.org/hub/apps/toolkit/overview)
