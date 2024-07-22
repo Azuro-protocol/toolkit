@@ -43,10 +43,12 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
     const coreAddress = (condition as PrematchConditionsQuery['conditions'][0]).core?.address || liveHostAddress
     const lpAddress = (condition as PrematchConditionsQuery['conditions'][0]).core?.liquidityPool?.address || ''
     const isExpressForbidden = (condition as PrematchConditionsQuery['conditions'][0]).isExpressForbidden ?? true
+    const customMarketName = (condition as PrematchConditionsQuery['conditions'][0]).title
 
     rawOutcomes.forEach((rawOutcome) => {
       const { outcomeId } = rawOutcome
       const odds = (rawOutcome as PrematchConditionsQuery['conditions'][0]['outcomes'][0]).odds
+      const customSelectionName = (rawOutcome as PrematchConditionsQuery['conditions'][0]['outcomes'][0]).title
       const betTypeOdd = dictionaries.outcomes[outcomeId]
 
       if (!betTypeOdd) {
@@ -55,9 +57,9 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
         return
       }
       const marketKey = getMarketKey(outcomeId)
-      const marketName = getMarketName({ outcomeId })
+      const marketName = customMarketName || getMarketName({ outcomeId })
+      const selectionName = customSelectionName || getSelectionName({ outcomeId, withPoint: true })
       const marketDescription = getMarketDescription({ outcomeId })
-      const selectionName = getSelectionName({ outcomeId, withPoint: true })
 
       const outcome: MarketOutcome = {
         coreAddress: coreAddress,

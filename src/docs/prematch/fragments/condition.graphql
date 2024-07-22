@@ -2,8 +2,10 @@ fragment PrematchCondition on Condition {
   id
   conditionId
   status
+  title
   isExpressForbidden
   outcomes {
+    title
     outcomeId
     odds: currentOdds
   }
