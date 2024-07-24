@@ -24,9 +24,11 @@ fragment PrematchBet on Bet {
     result
     outcome {
       outcomeId
+      title
       condition {
         conditionId
         status
+        title
         game {
           ...MainGameInfo
         }
