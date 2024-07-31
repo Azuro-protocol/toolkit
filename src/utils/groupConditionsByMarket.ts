@@ -57,8 +57,8 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
         return
       }
       const marketKey = getMarketKey(outcomeId)
-      const marketName = customMarketName || getMarketName({ outcomeId })
-      const selectionName = customSelectionName || getSelectionName({ outcomeId, withPoint: true })
+      const marketName = customMarketName && customMarketName !== 'null' ? customMarketName : getMarketName({ outcomeId })
+      const selectionName = customSelectionName && customSelectionName !== 'null' ? customSelectionName : getSelectionName({ outcomeId, withPoint: true })
       const marketDescription = getMarketDescription({ outcomeId })
 
       const outcome: MarketOutcome = {
