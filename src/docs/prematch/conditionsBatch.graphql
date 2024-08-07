@@ -1,6 +1,5 @@
 query PrematchConditionsBatch($conditionFilter: Condition_filter) {
   conditions(where: $conditionFilter, first: 1000, subgraphError: allow) {
-    id
     status
     conditionId
     outcomes {
