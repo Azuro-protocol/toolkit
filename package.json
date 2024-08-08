@@ -1,9 +1,16 @@
 {
   "name": "@azuro-org/toolkit",
-  "version": "4.1.5",
+  "version": "4.1.6",
   "description": "Set of helpers to work with Azuro protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "scripts": {
     "gql:cleanup": "rimraf src/docs/**/*.ts src/docs/**/**/*.ts",
     "gql": "npm run gql:cleanup & graphql-codegen",
