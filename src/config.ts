@@ -207,6 +207,12 @@ export const chainsData = {
   [spicy.id]: spicyData,
 } as const
 
+export const chainsDataDev = {
+  [gnosis.id]: gnosisDevData,
+  [polygonAmoy.id]: polygonAmoyDevData,
+  [spicy.id]: spicyData,
+} as const
+
 export const chainsDataByEnv: Record<Environment, ChainData> = {
   [Environment.GnosisXDAI]: gnosisData,
   [Environment.GnosisDevXDAI]: gnosisDevData,
