@@ -1,4 +1,5 @@
-import { type ChainId, environments } from '../config'
+import { environments } from '../envs'
+import { type ChainId } from '../config'
 import { getApiEndpoint } from './getEndpoints'
 
 
