@@ -3,15 +3,15 @@ import { getApiEndpoint } from './getEndpoints'
 
 
 export type LiveBetFeeResponse = {
-  gasLimit: number,
-  gasPrice: number,
-  betTokenRate: number,
-  gasPriceInBetToken: number,
-  slippage: number,
-  gasAmount: number,
-  relayerFeeAmount: string,
-  beautyRelayerFeeAmount: string,
-  symbol: string,
+  gasLimit: number
+  gasPrice: number
+  betTokenRate: number
+  gasPriceInBetToken: number
+  slippage: number
+  gasAmount: number
+  relayerFeeAmount: string
+  beautyRelayerFeeAmount: string
+  symbol: string
   decimals: number
 }
 

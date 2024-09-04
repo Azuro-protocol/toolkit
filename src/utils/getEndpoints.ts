@@ -1,6 +1,6 @@
 import { chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
 
-import { type ChainId } from '../config'
+import { type ChainId, isDevEnabled } from '../config'
 
 
 const endpointNameByChainId: Record<ChainId, string> = {
@@ -11,39 +11,52 @@ const endpointNameByChainId: Record<ChainId, string> = {
   [spicy.id]: 'chiliz-spicy-dev',
 }
 
+if (isDevEnabled) {
+  endpointNameByChainId[gnosis.id] = 'gnosis-dev'
+  endpointNameByChainId[polygonAmoy.id] = 'polygon-amoy-dev'
+}
+
+const isDev = (chainId: ChainId) => {
+  return isDevEnabled && (
+    chainId === polygonAmoy.id
+    || chainId === gnosis.id
+    || chainId === spicy.id
+  )
+}
+
 export const getPrematchGraphqlEndpoint = (chainId: ChainId) => `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
 
 export const getLiveGraphqlEndpoint = (chainId: ChainId) => {
-  if (chainId === polygonAmoy.id) {
-    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
+  if (isDev(chainId)) {
+    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
   }
 
-  if (chainId === spicy.id) {
-    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
+  if (chainId === polygonAmoy.id) {
+    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
   }
 
   return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
 }
 
 export const getSocketEndpoint = (chainId: ChainId) => {
-  if (chainId === polygonAmoy.id) {
-    return 'wss://preprod-streams.azuro.org/v1/streams/conditions'
+  if (isDev(chainId)) {
+    return 'wss://dev-streams.azuro.org/v1/streams/conditions'
   }
 
-  if (chainId === spicy.id) {
-    return 'wss://dev-streams.azuro.org/v1/streams/conditions'
+  if (chainId === polygonAmoy.id) {
+    return 'wss://preprod-streams.azuro.org/v1/streams/conditions'
   }
 
   return 'wss://streams.azuro.org/v1/streams/conditions'
 }
 
 export const getApiEndpoint = (chainId: ChainId) => {
-  if (chainId === polygonAmoy.id) {
-    return 'https://preprod-api.azuro.org/api/v1/public'
+  if (isDev(chainId)) {
+    return 'https://dev-api.azuro.org/api/v1/public'
   }
 
-  if (chainId === spicy.id) {
-    return 'https://dev-api.azuro.org/api/v1/public'
+  if (chainId === polygonAmoy.id) {
+    return 'https://preprod-api.azuro.org/api/v1/public'
   }
 
   return 'https://api.azuro.org/api/v1/public'

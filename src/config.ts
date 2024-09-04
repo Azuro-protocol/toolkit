@@ -5,6 +5,8 @@ import { setupContracts, type Contracts } from './utils/setupContracts'
 import { getApiEndpoint, getLiveGraphqlEndpoint, getPrematchGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
 
 
+export const isDevEnabled = Boolean(JSON.parse(process.env.AZURO_UNSTABLE_DEV_ENABLED || 'false'))
+
 export const ODDS_DECIMALS = 12
 export const MIN_LIVE_BET_AMOUNT = 1
 
@@ -15,9 +17,11 @@ export const liveHostAddress = '0x67Fca88E2f5F2C33b86bFa4EccfCb8dCD6a56D17'
 export const liveSupportedChains: ChainId[] = [ polygon.id, gnosis.id, polygonAmoy.id ]
 
 export enum Environment {
+  GnosisDevXDAI = 'GnosisDevXDAI',
   GnosisXDAI = 'GnosisXDAI',
   PolygonUSDT = 'PolygonUSDT',
   PolygonAmoyAZUSD = 'PolygonAmoyAZUSD',
+  PolygonAmoyUSDT = 'PolygonAmoyUSDT',
   ChilizWCHZ = 'ChilizWCHZ',
   ChilizSpicyWCHZ = 'ChilizSpicyWCHZ'
 }
@@ -28,7 +32,12 @@ export const environments = {
   [polygonAmoy.id]: Environment.PolygonAmoyAZUSD,
   [chiliz.id]: Environment.ChilizWCHZ,
   [spicy.id]: Environment.ChilizSpicyWCHZ,
-} as const
+}
+
+if (isDevEnabled) {
+  environments[gnosis.id] = Environment.GnosisDevXDAI
+  environments[polygonAmoy.id] = Environment.PolygonAmoyAZUSD
+}
 
 type BetToken = {
   address: Address
@@ -39,8 +48,8 @@ type BetToken = {
 export type ChainData = {
   chain: Omit<Chain, 'id'> & { id: ChainId }
   graphql: {
-    prematch: string,
-    live: string,
+    prematch: string
+    live: string
   }
   socket: string
   api: string
@@ -65,6 +74,30 @@ const gnosisData: ChainData = {
     proxyFront: '0x3A1c6640daeAc3513726F06A9f03911CC1080251',
     liveRelayer: '0x936c02503A32aA23BCF7CFaF5c29100b0F93FCfe',
     liveCore: '0x0223ff7efca5aec919c471fa2eb44cda466f1500',
+  }),
+  betToken: {
+    address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
+    symbol: 'WXDAI',
+    decimals: 18,
+  },
+}
+
+const gnosisDevData: ChainData = {
+  chain: gnosis,
+  graphql: {
+    prematch: getPrematchGraphqlEndpoint(gnosis.id),
+    live: getLiveGraphqlEndpoint(gnosis.id),
+  },
+  socket: getSocketEndpoint(gnosis.id),
+  api: getApiEndpoint(gnosis.id),
+  environment: environments[gnosis.id],
+  contracts: setupContracts({
+    lp: '0xe068Bf88317fA2eb3EAEcBfe1e486d8b2dDe7761',
+    prematchCore: '0x0eaa5283990af9ca915b1d82261663d25d039d03',
+    prematchComboCore: '0xdab6c085e2a24d3417875ea154c1d0abb5d427f9',
+    proxyFront: '0xB02205C9e5DdFFa3EEa2731fE76e505B0d3eCCb0',
+    liveRelayer: '0x3B0213eB35735A8E2b19F13C5Ec0a65a8226D5B2',
+    liveCore: '0xFc4910f0E7523063f3640e249Fc0f25542b76899',
   }),
   betToken: {
     address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
@@ -121,6 +154,30 @@ const polygonAmoyData: ChainData = {
   },
 }
 
+const polygonAmoyDevData: ChainData = {
+  chain: polygonAmoy,
+  graphql: {
+    prematch: getPrematchGraphqlEndpoint(polygonAmoy.id),
+    live: getLiveGraphqlEndpoint(polygonAmoy.id),
+  },
+  socket: getSocketEndpoint(polygonAmoy.id),
+  api: getApiEndpoint(polygonAmoy.id),
+  environment: environments[polygonAmoy.id],
+  contracts: setupContracts({
+    lp: '0xDAa095204aCc244020F8f8e915f36533150ACF4b',
+    prematchCore: '0x87EBFFe283bE8dEd47c3C87451d1B89c8a2C441A',
+    prematchComboCore: '0x471DaC1052248602fdF05377EF99B5b7b3a769a1',
+    proxyFront: '0x7003CaA0847CA296EBF51C43D9021656a663304f',
+    liveRelayer: '0x38633e7Cbd86959453445C170168855ed1151C22',
+    liveCore: '0x00232f2dEEae4541da1C5eC265193C879B2304Eb',
+  }),
+  betToken: {
+    address: '0x683026Eb1b912795E4Eb1e73Da7e38C3F2f830c4',
+    symbol: 'USDT',
+    decimals: 6,
+  },
+}
+
 const chilizData: ChainData = {
   chain: chiliz,
   graphql: {
@@ -171,6 +228,21 @@ export const chainsData = {
   [polygonAmoy.id]: polygonAmoyData,
   [chiliz.id]: chilizData,
   [spicy.id]: spicyData,
+}
+
+if (isDevEnabled) {
+  chainsData[gnosis.id] = gnosisDevData
+  chainsData[polygonAmoy.id] = polygonAmoyDevData
+}
+
+export const chainsDataByEnv: Record<Environment, ChainData> = {
+  [Environment.GnosisXDAI]: gnosisData,
+  [Environment.GnosisDevXDAI]: gnosisDevData,
+  [Environment.PolygonUSDT]: polygonData,
+  [Environment.PolygonAmoyAZUSD]: polygonAmoyData,
+  [Environment.PolygonAmoyUSDT]: polygonAmoyDevData,
+  [Environment.ChilizWCHZ]: chilizData,
+  [Environment.ChilizSpicyWCHZ]: spicyData,
 } as const
 
 export type ChainId = keyof typeof chainsData
