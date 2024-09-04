@@ -1,6 +1,7 @@
+export { environments, Environment } from './envs'
 export {
   ODDS_DECIMALS, MIN_LIVE_BET_AMOUNT, deBridgeUrl, deBridgeTxUrl, liveHostAddress, liveSupportedChains,
-  type ChainData, chainsData, chainsDataByEnv, type ChainId, environments, Environment,
+  type ChainData, chainsData, chainsDataByEnv, type ChainId,
 } from './config'
 export * from './global'
 export * from './abis'

@@ -1,11 +1,10 @@
 import { polygon, gnosis, polygonAmoy, chiliz, spicy, type Chain } from 'viem/chains'
 import { type Address } from 'viem'
 
+import { isDevEnabled, environments, Environment } from './envs'
 import { setupContracts, type Contracts } from './utils/setupContracts'
 import { getApiEndpoint, getLiveGraphqlEndpoint, getPrematchGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
 
-
-export const isDevEnabled = Boolean(JSON.parse(process.env.AZURO_UNSTABLE_DEV_ENABLED || 'false'))
 
 export const ODDS_DECIMALS = 12
 export const MIN_LIVE_BET_AMOUNT = 1
@@ -15,29 +14,6 @@ export const deBridgeTxUrl = 'https://stats-api.dln.trade/api'
 
 export const liveHostAddress = '0x67Fca88E2f5F2C33b86bFa4EccfCb8dCD6a56D17'
 export const liveSupportedChains: ChainId[] = [ polygon.id, gnosis.id, polygonAmoy.id ]
-
-export enum Environment {
-  GnosisDevXDAI = 'GnosisDevXDAI',
-  GnosisXDAI = 'GnosisXDAI',
-  PolygonUSDT = 'PolygonUSDT',
-  PolygonAmoyAZUSD = 'PolygonAmoyAZUSD',
-  PolygonAmoyUSDT = 'PolygonAmoyUSDT',
-  ChilizWCHZ = 'ChilizWCHZ',
-  ChilizSpicyWCHZ = 'ChilizSpicyWCHZ'
-}
-
-export const environments = {
-  [gnosis.id]: Environment.GnosisXDAI,
-  [polygon.id]: Environment.PolygonUSDT,
-  [polygonAmoy.id]: Environment.PolygonAmoyAZUSD,
-  [chiliz.id]: Environment.ChilizWCHZ,
-  [spicy.id]: Environment.ChilizSpicyWCHZ,
-}
-
-if (isDevEnabled) {
-  environments[gnosis.id] = Environment.GnosisDevXDAI
-  environments[polygonAmoy.id] = Environment.PolygonAmoyAZUSD
-}
 
 type BetToken = {
   address: Address

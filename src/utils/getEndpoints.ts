@@ -1,6 +1,7 @@
 import { chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
 
-import { type ChainId, isDevEnabled } from '../config'
+import { isDevEnabled } from '../envs'
+import { type ChainId } from '../config'
 
 
 const endpointNameByChainId: Record<ChainId, string> = {
