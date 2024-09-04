@@ -1,17 +1,18 @@
-import { type ChainId, environments } from '../config'
+import { environments } from '../envs'
+import { type ChainId } from '../config'
 import { getApiEndpoint } from './getEndpoints'
 
 
 export type LiveBetFeeResponse = {
-  gasLimit: number,
-  gasPrice: number,
-  betTokenRate: number,
-  gasPriceInBetToken: number,
-  slippage: number,
-  gasAmount: number,
-  relayerFeeAmount: string,
-  beautyRelayerFeeAmount: string,
-  symbol: string,
+  gasLimit: number
+  gasPrice: number
+  betTokenRate: number
+  gasPriceInBetToken: number
+  slippage: number
+  gasAmount: number
+  relayerFeeAmount: string
+  beautyRelayerFeeAmount: string
+  symbol: string
   decimals: number
 }
 
