@@ -1,7 +1,8 @@
-import { type Hex, type Address } from 'viem'
+import { type Hex, type Address, type OneOf } from 'viem'
 
 import { type ChainId } from '../config'
 import { getApiEndpoint } from './getEndpoints'
+import { Environment } from './envs'
 
 
 export enum FreeBetStatus {
@@ -33,13 +34,17 @@ export type FreeBet = {
 }
 
 type Props = {
-  chainId: ChainId
   account: Address
   affiliate: Address
-}
+} & OneOf<{
+  /** @deprecated pass environment instead */
+  chainId?: ChainId
+} | {
+  environment?: Environment
+}>
 
-export const getFreeBets = async ({ chainId, account, affiliate }: Props) => {
-  const api = getApiEndpoint(chainId!)
+export const getFreeBets = async ({ chainId, environment, account, affiliate }: Props) => {
+  const api = getApiEndpoint(chainId || environment || Environment.PolygonUSDT)
 
   const params = new URLSearchParams({
     owner: account.toLowerCase(),

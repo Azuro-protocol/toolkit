@@ -1,9 +1,10 @@
-import { encodeFunctionData, parseUnits, type Address, type Hex } from 'viem'
+import { encodeFunctionData, parseUnits, type Address, type Hex, type OneOf } from 'viem'
 
 import { type Selection } from '../../global'
-import { type ChainId, chainsData, deBridgeUrl, ODDS_DECIMALS } from '../../config'
+import { type ChainId, chainsData, deBridgeUrl, ODDS_DECIMALS, chainsDataByEnv } from '../../config'
 import { calcMindOdds } from '../calcMindOdds'
 import { getPrematchBetDataBytes } from '../getPrematchBetDataBytes'
+import { type Environment } from '../envs'
 
 
 export type DeBridgeCreateTxResponse = {
@@ -56,7 +57,6 @@ export type DeBridgeCreateTxResponse = {
 type Props = {
   account: Address
   betAmount: string
-  dstChainId: ChainId
   srcChainId: number
   srcChainTokenIn: string
   selections: Selection[]
@@ -65,17 +65,21 @@ type Props = {
   affiliate: Address
   referralCode: number
   deadline?: number
-}
+} & OneOf<{
+  dstChainId: ChainId
+} | {
+  environment: Environment
+}>
 
 export const DE_BRIDGE_DEFAULT_DEADLINE = 300 // 5 min
 
 export const createDeBridgeBet = async (props: Props) => {
   const {
-    account, betAmount, dstChainId, selections, totalOdds, slippage,
+    account, betAmount, dstChainId, environment, selections, totalOdds, slippage,
     srcChainId, srcChainTokenIn, affiliate, referralCode, deadline,
   } = props
 
-  const { betToken, contracts } = chainsData[dstChainId]
+  const { betToken, contracts } = environment ? chainsDataByEnv[environment] : chainsData[dstChainId]
   const fixedAmount = parseFloat(betAmount).toFixed(betToken.decimals)
   const fixedMinOdds = calcMindOdds({ odds: totalOdds, slippage })
   const coreAddress = selections.length > 1 ? contracts.prematchComboCore.address : contracts.prematchCore.address

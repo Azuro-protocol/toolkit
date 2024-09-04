@@ -1,11 +1,11 @@
-import { polygon } from 'viem/chains'
-import { formatUnits, parseUnits, type Address } from 'viem'
+import { formatUnits, parseUnits, type Address, type OneOf } from 'viem'
 
 import { type ChainId } from '../../config'
 import { type WaveId } from '../../global'
 import { type WaveStatsResponse } from './getWaveStats'
 import { type WaveLevelData } from './getWaveLevels'
 import { getApiEndpoint } from '../getEndpoints'
+import { Environment } from '../envs'
 
 
 type LeaderBoardTotalApiItem = WaveStatsResponse & {
@@ -36,12 +36,16 @@ type Props = {
   waveId?: WaveId
   account?: Address
   startsAt?: number
+} & OneOf<{
+  /** @deprecated pass environment instead */
   chainId?: ChainId
-}
+} | {
+  environment?: Environment
+}>
 
-export const getWaveLeaderBoard = async (props: Props = { waveId: 'active', chainId: polygon.id }) => {
-  const { waveId, account, startsAt, chainId } = props
-  const api = getApiEndpoint(chainId!)
+export const getWaveLeaderBoard = async (props: Props = { waveId: 'active' }) => {
+  const { waveId, account, startsAt, chainId, environment } = props
+  const api = getApiEndpoint(chainId || environment || Environment.PolygonUSDT)
   const baseUrl = `${api}/waves/${waveId}`
   let endpoint = startsAt
     ? `${baseUrl}/periods/${startsAt}/leaderboard`

@@ -1,10 +1,11 @@
 import { readContract, readContracts, type Config } from '@wagmi/core'
-import { type Address, formatUnits, parseUnits } from 'viem'
+import { type Address, formatUnits, parseUnits, type OneOf } from 'viem'
 
-import { type ChainId, ODDS_DECIMALS, chainsData } from '../config'
+import { type ChainId, ODDS_DECIMALS, chainsData, chainsDataByEnv } from '../config'
 import { type Selection } from '../global'
 import { formatToFixed } from '../helpers/formatToFixed'
 import { prematchComboCoreAbi, prematchCoreAbi } from '../abis'
+import { type Environment } from './envs'
 
 
 const ratio = (self: number, other: number): number => (self > other ? self / other : other / self)
@@ -134,15 +135,19 @@ export const calcLiveOdds = ({ selection, betAmount, oddsData }: CalcLiveOddsPro
 type CalcPrematchOddsProps = {
   config: Config
   selections: Selection[]
-  chainId: ChainId
   betAmount?: string
   batchBetAmounts?: Record<string, string>
-}
+} & OneOf<{
+  /** @deprecated pass environment instead */
+  chainId: ChainId
+} | {
+  environment: Environment
+}>
 
 export const calcPrematchOdds = async (props: CalcPrematchOddsProps): Promise<Record<string, number>> => {
-  const { config, selections, betAmount, chainId, batchBetAmounts } = props
+  const { config, selections, betAmount, chainId, environment, batchBetAmounts } = props
 
-  const { betToken, contracts } = chainsData[chainId]
+  const { betToken, contracts } = environment ? chainsDataByEnv[environment] : chainsData[chainId]
   const isBatch = Boolean(Object.keys(batchBetAmounts || {}).length)
 
   if (selections.length === 1 || isBatch) {

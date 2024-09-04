@@ -1,10 +1,10 @@
-import { type Address } from 'viem'
-import { polygon } from 'viem/chains'
+import { type Address, type OneOf } from 'viem'
 
 import { type ChainId } from '../../config'
 import { type WaveId } from '../../global'
 import { type WaveLevelData } from './getWaveLevels'
 import { getApiEndpoint } from '../getEndpoints'
+import { Environment } from '../envs'
 
 
 export type WaveStatsResponse = {
@@ -34,11 +34,15 @@ export type WaveStatsResponse = {
 type Props = {
   account: Address
   waveId?: WaveId
+} & OneOf<{
+  /** @deprecated pass environment instead */
   chainId?: ChainId
-}
+} | {
+  environment?: Environment
+}>
 
-export const getWaveStats = async ({ account, waveId = 'active', chainId = polygon.id }: Props) => {
-  const api = getApiEndpoint(chainId)
+export const getWaveStats = async ({ account, waveId = 'active', chainId, environment }: Props) => {
+  const api = getApiEndpoint(chainId || environment || Environment.PolygonUSDT)
 
   const response = await fetch(`${api}/waves/${waveId}/participants/${account?.toLowerCase()}/stats`)
 

@@ -1,8 +1,9 @@
-import { polygon } from 'viem/chains'
+import type { OneOf } from 'viem'
 
 import { type ChainId } from '../../config'
 import { type WaveId } from '../../global'
 import { getApiEndpoint } from '../getEndpoints'
+import { Environment } from '../envs'
 
 
 type Period = {
@@ -19,11 +20,15 @@ export type WavePeriodsResponse = Period[]
 
 type Props = {
   waveId?: WaveId
+} & OneOf<{
+  /** @deprecated pass environment instead */
   chainId?: ChainId
-}
+} | {
+  environment?: Environment
+}>
 
-export const getWavePeriods = async ({ waveId, chainId }: Props = { waveId: 'active', chainId: polygon.id }) => {
-  const api = getApiEndpoint(chainId!)
+export const getWavePeriods = async ({ waveId, chainId, environment }: Props = { waveId: 'active' }) => {
+  const api = getApiEndpoint(chainId || environment || Environment.PolygonUSDT)
 
   const response = await fetch(`${api}/waves/${waveId}/periods`)
 

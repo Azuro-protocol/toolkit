@@ -1,8 +1,9 @@
-import { polygon } from 'viem/chains'
+import type { OneOf } from 'viem'
 
 import { type ChainId } from '../../config'
 import { type WaveId } from '../../global'
 import { getApiEndpoint } from '../getEndpoints'
+import { Environment } from '../envs'
 
 
 export enum WaveLevelName {
@@ -28,11 +29,15 @@ export type WaveLevelsResponse = WaveLevelData[]
 
 type Props = {
   waveId?: WaveId
+} & OneOf<{
+  /** @deprecated pass environment instead */
   chainId?: ChainId
-}
+} | {
+  environment?: Environment
+}>
 
-export const getWaveLevels = async ({ waveId, chainId }: Props = { waveId: 'active', chainId: polygon.id }) => {
-  const api = getApiEndpoint(chainId!)
+export const getWaveLevels = async ({ waveId, chainId, environment }: Props = { waveId: 'active' }) => {
+  const api = getApiEndpoint(chainId || environment || Environment.PolygonUSDT)
   const response = await fetch(`${api}/waves/${waveId}/levels`)
 
   if (response.status === 404) {

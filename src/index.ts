@@ -1,4 +1,7 @@
-export { ODDS_DECIMALS, MIN_LIVE_BET_AMOUNT, deBridgeUrl, deBridgeTxUrl, liveHostAddress, liveSupportedChains, Environment, environments, type ChainData, chainsData, type ChainId } from './config'
+export {
+  ODDS_DECIMALS, MIN_LIVE_BET_AMOUNT, deBridgeUrl, deBridgeTxUrl, liveHostAddress, liveSupportedChains,
+  type ChainData, chainsData, chainsDataByEnv, type ChainId,
+} from './config'
 export * from './global'
 export * from './abis'
 
@@ -6,6 +9,7 @@ export * from './abis'
 export * from './docs'
 
 // utils
+export { Environment, environments, environmentsDev } from './utils/envs'
 export { calcMindOdds } from './utils/calcMindOdds'
 export { calcLiveOdds, calcPrematchOdds } from './utils/calcOdds'
 export { getGameStatus, GameStatus } from './utils/getGameStatus'
