@@ -119,6 +119,8 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
       const isValid = validSelections.every(selection => outcomesSelections.includes(selection))
 
       if (!isValid) {
+        delete result[marketKey]
+
         return
       }
     }
