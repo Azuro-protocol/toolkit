@@ -7,6 +7,7 @@ import { getApiEndpoint, getLiveGraphqlEndpoint, getPrematchGraphqlEndpoint, get
 
 
 export const ODDS_DECIMALS = 12
+export const MARGIN_DECIMALS = 12
 export const MIN_LIVE_BET_AMOUNT = 1
 
 export const deBridgeUrl = 'https://api.dln.trade/v1.0'

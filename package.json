@@ -1,6 +1,6 @@
 {
   "name": "@azuro-org/toolkit",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Set of helpers to work with Azuro protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,8 +41,8 @@
   "peerDependencies": {
     "@apollo/client": "^3.10.8",
     "@azuro-org/dictionaries": "^3.0.16",
-    "viem": "^2.17.3",
-    "@wagmi/core": "^2.11.7"
+    "viem": "^2.21.7",
+    "@wagmi/core": "^2.13.5"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^4.0.1",
