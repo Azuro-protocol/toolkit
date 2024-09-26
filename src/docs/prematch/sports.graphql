@@ -11,8 +11,10 @@ query Sports(
     where: $sportFilter, 
     subgraphError: allow
   ) {
+    id
     slug
     name
+    sportId
     countries(
       where: $countryFilter, 
       orderBy: turnover, 

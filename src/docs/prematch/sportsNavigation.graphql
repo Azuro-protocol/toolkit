@@ -1,13 +1,18 @@
 query SportsNavigation(
   $first: Int,
-  $where: Game_filter
+  $sportFilter: Sport_filter,
+  $gameFilter: Game_filter,
   $withGameCount: Boolean!,
 ) {
-  sports(subgraphError: allow) {
+  sports(
+    where: $sportFilter,
+    subgraphError: allow
+  ) {
     id
     slug
     name
-    games(first: $first, where: $where) @include(if: $withGameCount) {
+    sportId
+    games(first: $first, where: $gameFilter) @include(if: $withGameCount) {
       id
     }
   }
