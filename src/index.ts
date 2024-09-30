@@ -31,6 +31,6 @@ export { activateWave } from './utils/wave/activateWave'
 
 // deBridge
 export { createDeBridgeBet, type DeBridgeCreateTxResponse } from './utils/deBridge/createDeBridgeBet'
-export { getDeBridgeSupportedChains } from './utils/deBridge/getDeBridgeSupportedChains'
-export { getDeBridgeSupportedTokens } from './utils/deBridge/getDeBridgeSupportedTokens'
+export { getDeBridgeSupportedChains, deBridgeChainIdByOriginalChainId, type DeBridgeSupportedChains } from './utils/deBridge/getDeBridgeSupportedChains'
+export { getDeBridgeSupportedTokens, type DeBridgeSupportedTokens } from './utils/deBridge/getDeBridgeSupportedTokens'
 export { getDeBridgeOrder, DeBridgeOrderStatus, DeBridgeExternalCallStatus } from './utils/deBridge/getDeBridgeOrder'

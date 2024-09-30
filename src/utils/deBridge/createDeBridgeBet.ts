@@ -4,6 +4,7 @@ import { type Selection } from '../../global'
 import { type ChainId, chainsData, deBridgeUrl, ODDS_DECIMALS } from '../../config'
 import { calcMindOdds } from '../calcMindOdds'
 import { getPrematchBetDataBytes } from '../getPrematchBetDataBytes'
+import { deBridgeChainIdByOriginalChainId } from './getDeBridgeSupportedChains'
 
 
 export type DeBridgeCreateTxResponse = {
@@ -86,10 +87,10 @@ export const createDeBridgeBet = async (props: Props) => {
   const rawDeadline = BigInt(Math.floor(Date.now() / 1000) + (deadline || DE_BRIDGE_DEFAULT_DEADLINE))
 
   const params = new URLSearchParams({
-    dstChainId: String(dstChainId),
+    dstChainId: String(deBridgeChainIdByOriginalChainId[dstChainId] || dstChainId),
     srcChainOrderAuthorityAddress: account as string,
     prependOperatingExpenses: 'false',
-    srcChainId: String(srcChainId),
+    srcChainId: String(deBridgeChainIdByOriginalChainId[srcChainId] || srcChainId),
     srcChainTokenIn,
     srcChainTokenInAmount: 'auto',
     dstChainTokenOut: betToken.address as string,
@@ -119,6 +120,7 @@ export const createDeBridgeBet = async (props: Props) => {
     }),
     referralCode: String(referralCode),
   })
+
   const response = await fetch(`${deBridgeUrl}/dln/order/create-tx?${params}`)
 
   if (response.status === 404) {

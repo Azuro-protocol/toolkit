@@ -12,7 +12,9 @@ type SupportedTokensResponse = {
   }>
 }
 
-export const getDeBridgeSupportedTokens = async (chainId: number) => {
+export type DeBridgeSupportedTokens = SupportedTokensResponse['tokens'] | null
+
+export const getDeBridgeSupportedTokens = async (chainId: number): Promise<DeBridgeSupportedTokens> => {
   const response = await fetch(`${deBridgeUrl}/token-list?chainId=${chainId}`)
 
   if (response.status === 404) {
