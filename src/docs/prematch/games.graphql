@@ -6,12 +6,12 @@ query Games(
   $orderDirection: OrderDirection,
 ) {
   games(
-    first: $first
-    skip: $skip
-    where: $where
-    orderBy: $orderBy
+    first: $first,
+    skip: $skip,
+    where: $where,
+    orderBy: $orderBy,
     orderDirection: $orderDirection,
-    subgraphError: allow
+    subgraphError: allow,
   ) {
     ...MainGameInfo
   }

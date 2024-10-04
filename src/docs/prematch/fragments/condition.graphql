@@ -4,6 +4,7 @@ fragment PrematchCondition on Condition {
   status
   title
   isExpressForbidden
+  margin
   outcomes {
     title
     outcomeId

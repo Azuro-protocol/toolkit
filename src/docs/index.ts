@@ -29,6 +29,10 @@ export {
   OrderDirection, 
   SelectionResult,
   BetStatus as GraphBetStatus,
-  GameStatus as PrematchGraphGameStatus
+  GameStatus as PrematchGraphGameStatus,
+  Condition_OrderBy as PrematchConditionOrderBy,
 } from './prematch/types'
-export { GameStatus as LiveGraphGameStatus } from './live/types'
+export { 
+  GameStatus as LiveGraphGameStatus, 
+  Condition_OrderBy  as LiveConditionOrderBy
+} from './live/types'

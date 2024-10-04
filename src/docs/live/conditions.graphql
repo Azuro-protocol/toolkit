@@ -1,5 +1,15 @@
-query LiveConditions($where: Condition_filter!) {
-  conditions(where: $where, first: 1000, subgraphError: allow) {
+query LiveConditions(
+  $where: Condition_filter!,
+  $orderBy: Condition_orderBy,
+  $orderDirection: OrderDirection,
+) {
+  conditions(
+    where: $where, 
+    first: 1000,
+    orderBy: $orderBy,
+    orderDirection: $orderDirection,
+    subgraphError: allow
+  ) {
     ...LiveCondition
     wonOutcomeIds
   }

@@ -1,9 +1,13 @@
-import { dictionaries, getMarketKey, getMarketName, getMarketDescription, getSelectionName } from '@azuro-org/dictionaries'
+import {
+  dictionaries, getMarketKey, getMarketName,
+  getMarketDescription, getSelectionName,
+} from '@azuro-org/dictionaries'
+import { formatUnits } from 'viem'
 
 import type { ConditionStatus } from '../docs/prematch/types'
 import { type PrematchConditionsQuery } from '../docs/prematch/conditions'
 import { type LiveConditionsQuery } from '../docs/live/conditions'
-import { liveHostAddress } from '../config'
+import { liveHostAddress, MARGIN_DECIMALS } from '../config'
 import type { Selection } from '../global'
 import { groupByConditionId } from './groupByConditionId'
 
@@ -18,6 +22,7 @@ export type MarketOutcome = {
   status: ConditionStatus
   gameId: string
   isExpressForbidden: boolean
+  margin?: string
   isWon?: boolean
 } & Selection
 
@@ -44,6 +49,7 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
     const lpAddress = (condition as PrematchConditionsQuery['conditions'][0]).core?.liquidityPool?.address || ''
     const isExpressForbidden = (condition as PrematchConditionsQuery['conditions'][0]).isExpressForbidden ?? true
     const customMarketName = (condition as PrematchConditionsQuery['conditions'][0]).title
+    const margin = (condition as PrematchConditionsQuery['conditions'][0]).margin
 
     rawOutcomes.forEach((rawOutcome) => {
       const { outcomeId } = rawOutcome
@@ -56,6 +62,7 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
 
         return
       }
+
       const marketKey = getMarketKey(outcomeId)
       const marketName = customMarketName && customMarketName !== 'null' ? customMarketName : getMarketName({ outcomeId })
       const selectionName = customSelectionName && customSelectionName !== 'null' ? customSelectionName : getSelectionName({ outcomeId, withPoint: true })
@@ -70,6 +77,7 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
         status,
         gameId,
         isExpressForbidden,
+        margin: Boolean(margin) ? formatUnits(BigInt(margin), MARGIN_DECIMALS) : undefined,
       }
 
       if (Array.isArray(wonOutcomeIds)) {
