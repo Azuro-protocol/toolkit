@@ -166,8 +166,10 @@ export const calcPrematchOdds = async (props: CalcPrematchOddsProps): Promise<Re
       })
 
       odds = selections.reduce((acc, { conditionId, outcomeId }, index) => {
+        const key = `${conditionId}-${outcomeId}`
         const result = response[index]?.result
-        acc[`${conditionId}-${outcomeId}`] = formatToFixed(formatUnits(typeof result === 'bigint' ? result : 0n, ODDS_DECIMALS), 3)
+
+        acc[key] = formatToFixed(formatUnits(typeof result === 'bigint' ? result : 0n, ODDS_DECIMALS), 5)
 
         return acc
       }, {} as Record<string, number>)
@@ -198,7 +200,7 @@ export const calcPrematchOdds = async (props: CalcPrematchOddsProps): Promise<Re
       return selections.reduce((acc, { conditionId, outcomeId }, index) => {
         const key = `${conditionId}-${outcomeId}`
 
-        acc[key] = formatToFixed(formatUnits(conditionOdds[index]!, ODDS_DECIMALS), 3)
+        acc[key] = formatToFixed(formatUnits(conditionOdds[index]!, ODDS_DECIMALS), 5)
 
         return acc
       }, {} as Record<string, number>)
