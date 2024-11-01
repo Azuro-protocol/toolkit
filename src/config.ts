@@ -10,6 +10,25 @@ export const ODDS_DECIMALS = 12
 export const MARGIN_DECIMALS = 12
 export const MIN_LIVE_BET_AMOUNT = 1
 
+export const LIVE_BET_DATA_TYPES = {
+  ClientBetData: [
+    { name: 'attention', type: 'string' },
+    { name: 'affiliate', type: 'address' },
+    { name: 'core', type: 'address' },
+    { name: 'amount', type: 'uint128' },
+    { name: 'nonce', type: 'uint256' },
+    { name: 'conditionId', type: 'uint256' },
+    { name: 'outcomeId', type: 'uint64' },
+    { name: 'minOdds', type: 'uint64' },
+    { name: 'expiresAt', type: 'uint256' },
+    { name: 'chainId', type: 'uint256' },
+    { name: 'relayerFeeAmount', type: 'uint256' },
+  ],
+} as const
+
+export const LIVE_TYPED_DATA_DOMAIN_NAME = 'Live Betting'
+export const LIVE_TYPED_DATA_DOMAIN_VERSION = '1.0.0'
+
 export const deBridgeUrl = 'https://api.dln.trade/v1.0'
 export const deBridgeTxUrl = 'https://stats-api.dln.trade/api'
 

@@ -21,6 +21,9 @@ export { groupByConditionId } from './utils/groupByConditionId'
 export { setupContracts, type Contracts } from './utils/setupContracts'
 export { getApiEndpoint, getLiveGraphqlEndpoint, getPrematchGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
 export { getFreeBets, FreeBetStatus, type FreeBet } from './utils/getFreebets'
+export { getLiveBetTypedData } from './utils/getLiveBetTypedData'
+export { createLiveBet, type CreateLiveBetResponse, LiveBetState } from './utils/createLiveBet'
+export { getLiveBet, type GetLiveBetResponse } from './utils/getLiveBet'
 
 // wave
 export { getWaveLevels, WaveLevelName, type WaveLevelData, type WaveLevelsResponse } from './utils/wave/getWaveLevels'
