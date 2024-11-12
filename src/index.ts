@@ -37,3 +37,6 @@ export { createDeBridgeBet, type DeBridgeCreateTxResponse } from './utils/deBrid
 export { getDeBridgeSupportedChains, deBridgeChainIdByOriginalChainId, type DeBridgeSupportedChains } from './utils/deBridge/getDeBridgeSupportedChains'
 export { getDeBridgeSupportedTokens, type DeBridgeSupportedTokens } from './utils/deBridge/getDeBridgeSupportedTokens'
 export { getDeBridgeOrder, DeBridgeOrderStatus, DeBridgeExternalCallStatus } from './utils/deBridge/getDeBridgeOrder'
+
+// cashout
+export { getPrecalculatedCashouts, type GetPrecalculatedCashouts } from './utils/cashout/getPrecalculatedCashouts'
