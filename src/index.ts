@@ -40,3 +40,4 @@ export { getDeBridgeOrder, DeBridgeOrderStatus, DeBridgeExternalCallStatus } fro
 
 // cashout
 export { getPrecalculatedCashouts, type GetPrecalculatedCashouts } from './utils/cashout/getPrecalculatedCashouts'
+export { getCalculatedCashout, type GetCalculatedCashout } from './utils/cashout/getCalculatedCashout'

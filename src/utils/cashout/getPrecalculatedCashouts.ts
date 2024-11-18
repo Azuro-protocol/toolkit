@@ -20,10 +20,19 @@ type Props = {
 }
 
 export const getPrecalculatedCashouts = async (props: Props): Promise<GetPrecalculatedCashouts> => {
-  const { chainId } = props
+  const { chainId, conditionIds } = props
   const { api } = chainsData[chainId]
 
-  const response = await fetch(`${api}`)
+  const response = await fetch(`${api}/cashout/get-multipliers`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      conditionIds,
+    }),
+  })
 
   if (response.status === 404) {
     return null
