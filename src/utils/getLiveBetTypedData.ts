@@ -17,7 +17,7 @@ type Props = {
   bet: LiveBet
 }
 
-export const getLiveBetTypedData = ({ account, chainId, bet }: Props): SignTypedDataParameters => {
+export const getLiveBetTypedData = ({ account, chainId, bet }: Props): SignTypedDataParameters<typeof LIVE_BET_DATA_TYPES> => {
   if (!liveSupportedChains.includes(chainId)) {
     throw new Error('provided chainId is not supported for live bet')
   }

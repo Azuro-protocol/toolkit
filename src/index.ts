@@ -1,8 +1,5 @@
 export { environments, Environment } from './envs'
-export {
-  ODDS_DECIMALS, MARGIN_DECIMALS, MIN_LIVE_BET_AMOUNT, deBridgeUrl, deBridgeTxUrl, liveHostAddress, liveSupportedChains,
-  type ChainData, chainsData, chainsDataByEnv, type ChainId,
-} from './config'
+export * from './config'
 export * from './global'
 export * from './abis'
 
@@ -41,3 +38,6 @@ export { getDeBridgeOrder, DeBridgeOrderStatus, DeBridgeExternalCallStatus } fro
 // cashout
 export { getPrecalculatedCashouts, type GetPrecalculatedCashouts } from './utils/cashout/getPrecalculatedCashouts'
 export { getCalculatedCashout, type GetCalculatedCashout } from './utils/cashout/getCalculatedCashout'
+export { getCashoutTypedData } from './utils/cashout/getCashoutTypedData'
+export { createCashout, CashoutState, type CreateCashoutResponse } from './utils/cashout/createCashout'
+export { getCashout, type GetCashoutResponse } from './utils/cashout/getCashout'

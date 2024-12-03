@@ -21,7 +21,11 @@ type Props = {
 
 export const getPrecalculatedCashouts = async (props: Props): Promise<GetPrecalculatedCashouts> => {
   const { chainId, conditionIds } = props
-  const { api } = chainsData[chainId]
+  const { api, contracts } = chainsData[chainId]
+
+  if (!contracts.cashout?.address) {
+    throw new Error('provided chainId is not supported for cashout')
+  }
 
   const response = await fetch(`${api}/cashout/get-multipliers`, {
     method: 'POST',
