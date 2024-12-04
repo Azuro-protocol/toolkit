@@ -90,7 +90,7 @@ const gnosisDevData: ChainData = {
     prematchCore: '0x0eaa5283990af9ca915b1d82261663d25d039d03',
     prematchComboCore: '0xdab6c085e2a24d3417875ea154c1d0abb5d427f9',
     proxyFront: '0xB02205C9e5DdFFa3EEa2731fE76e505B0d3eCCb0',
-    azuroBet: '0xE818aA9A648189aC509D2730fe6824a9D13a8ec7',
+    azuroBet: '0x9AEb928E13b989d5F013b33c14853d8a944Acbf1',
     cashout: '0x483779Ff0F54Be733F513c14AA3a8382AB1cE019',
     liveRelayer: '0x3B0213eB35735A8E2b19F13C5Ec0a65a8226D5B2',
     liveCore: '0xFc4910f0E7523063f3640e249Fc0f25542b76899',

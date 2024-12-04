@@ -33,7 +33,7 @@ export const getCashoutTypedData = (props: Props): SignTypedDataParameters<typeo
     name: CASHOUT_TYPED_DATA_DOMAIN_NAME,
     version: CASHOUT_TYPED_DATA_DOMAIN_VERSION,
     chainId,
-    verifyingContract: contracts.liveCore!.address,
+    verifyingContract: contracts.cashout!.address,
   }
 
   return {

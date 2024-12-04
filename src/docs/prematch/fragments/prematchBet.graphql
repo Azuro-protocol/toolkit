@@ -6,13 +6,14 @@ fragment PrematchBet on Bet {
   potentialPayout
   payout # don't account canceled sub-bets after resolve of express
   result
-  isRedeemed
-  isRedeemable
   odds
   settledOdds # don't account canceled sub-bets after resolve of express
   createdAt: createdBlockTimestamp
   txHash: createdTxHash
   affiliate
+  isRedeemed
+  isRedeemable
+  isCashedOut
   core {
     address
     liquidityPool {
