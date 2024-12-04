@@ -17,7 +17,7 @@ type GetCalculatedCashoutResponse = {
 }
 
 export type GetCalculatedCashout = {
-  id: string // environment_account_betId
+  calculationId: string // environment_account_betId
   account: string
   environment: Environment
   tokenId: string
@@ -66,11 +66,10 @@ export const getCalculatedCashout = async (props: Props): Promise<GetCalculatedC
   }
 
   const {
-    calculationId, cashoutOdds, owner, betId, ...rest
+    cashoutOdds, owner, betId, ...rest
   }: GetCalculatedCashoutResponse = await response.json()
 
   return {
-    id: calculationId,
     multiplier: cashoutOdds,
     account: owner,
     tokenId: betId,
