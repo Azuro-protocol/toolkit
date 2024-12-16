@@ -31,12 +31,12 @@ export type GetCalculatedCashout = {
 type Props = {
   chainId: ChainId
   account: Address
-  tokenId: string
+  graphBetId: string
   isLive: boolean
 }
 
 export const getCalculatedCashout = async (props: Props): Promise<GetCalculatedCashout> => {
-  const { chainId, account, tokenId, isLive } = props
+  const { chainId, account, graphBetId, isLive } = props
   const { api, environment, contracts } = chainsData[chainId]
 
   if (!contracts.cashout?.address) {
@@ -52,7 +52,7 @@ export const getCalculatedCashout = async (props: Props): Promise<GetCalculatedC
     body: JSON.stringify({
       environment,
       owner: account,
-      betId: tokenId,
+      betId: graphBetId,
       isLive,
     }),
   })
