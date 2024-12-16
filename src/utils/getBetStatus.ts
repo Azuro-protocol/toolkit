@@ -56,9 +56,9 @@ export const getBetStatus = (props: Props): BetStatus => {
     return BetStatus.PendingResolution
   }
 
-  const isLive = isExpress
-    ? getExpressIsLive(games)
-    : getGameStatus({ graphStatus: games[0]!.status, startsAt: +games[0]!.startsAt, isGameInLive: isLiveBet }) === GameStatus.Live
+  const isLive = isExpress ? getExpressIsLive(games) : (
+    getGameStatus({ graphStatus: games[0]!.status, startsAt: +games[0]!.startsAt, isGameInLive: isLiveBet }) === GameStatus.Live
+  )
 
   if (isLive) {
     return BetStatus.Live

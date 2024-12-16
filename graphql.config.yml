@@ -5,7 +5,7 @@ projects:
     extensions:
       endpoints:
         Protocol:
-          url: https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-mumbai-dev-v3
+          url: https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3
           headers:
             user-agent: JS GraphQL
           introspect: false
