@@ -41,14 +41,14 @@ export const getLiveGraphqlEndpoint = (chainId: ChainId) => {
 
 export const getSocketEndpoint = (chainId: ChainId) => {
   if (isDev(chainId)) {
-    return 'wss://dev-streams.azuro.org/v1/streams/conditions'
+    return 'wss://dev-streams.azuro.org/v1/streams'
   }
 
   if (chainId === polygonAmoy.id) {
-    return 'wss://preprod-streams.azuro.org/v1/streams/conditions'
+    return 'wss://preprod-streams.azuro.org/v1/streams'
   }
 
-  return 'wss://streams.azuro.org/v1/streams/conditions'
+  return 'wss://streams.azuro.org/v1/streams'
 }
 
 export const getApiEndpoint = (chainId: ChainId) => {
