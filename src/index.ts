@@ -7,6 +7,7 @@ export * from './abis'
 export * from './docs'
 
 // utils
+export { getProviderFromId } from './utils/getProviderFromId'
 export { calcMindOdds } from './utils/calcMindOdds'
 export { calcLiveOdds, calcPrematchOdds } from './utils/calcOdds'
 export { getGameStatus, GameStatus } from './utils/getGameStatus'
