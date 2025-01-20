@@ -1,4 +1,4 @@
-import { polygon, gnosis, polygonAmoy, chiliz, spicy, type Chain } from 'viem/chains'
+import { polygon, gnosis, polygonAmoy, chiliz, spicy, type Chain, baseSepolia, base } from 'viem/chains'
 import { type Address } from 'viem'
 
 import { isDevEnabled, environments, Environment } from './envs'
@@ -218,12 +218,35 @@ const spicyData: ChainData = {
   },
 }
 
+const baseSepoliaData: ChainData = {
+  chain: baseSepolia,
+  graphql: {
+    prematch: getPrematchGraphqlEndpoint(baseSepolia.id),
+    live: getLiveGraphqlEndpoint(baseSepolia.id),
+  },
+  socket: getSocketEndpoint(baseSepolia.id),
+  api: getApiEndpoint(baseSepolia.id),
+  environment: environments[baseSepolia.id],
+  contracts: setupContracts({
+    lp: '0xCf6a6e4A8b24a109111143567e3d2Ae4e77c4192',
+    prematchCore: '0xfa275EAabeFE2B06Fd868A0A88302feF3bB55D5C',
+    prematchComboCore: '0x2a91Ea47763bB59280823286A94a600D429c0EA0',
+    proxyFront: '0xa39EC5452bE981c8Fb0121Ee11Bc3F0209052C2c',
+  }),
+  betToken: {
+    address: '0x9e09f213Ff75e53D52e9e777A6567A68683E935f',
+    symbol: 'WETH',
+    decimals: 18,
+  },
+}
+
 export const chainsData = {
   [gnosis.id]: gnosisData,
   [polygon.id]: polygonData,
   [polygonAmoy.id]: polygonAmoyData,
   [chiliz.id]: chilizData,
   [spicy.id]: spicyData,
+  [baseSepolia.id]: baseSepoliaData,
 }
 
 if (isDevEnabled) {
@@ -239,6 +262,7 @@ export const chainsDataByEnv: Record<Environment, ChainData> = {
   [Environment.PolygonAmoyUSDT]: polygonAmoyDevData,
   [Environment.ChilizWCHZ]: chilizData,
   [Environment.ChilizSpicyWCHZ]: spicyData,
+  [Environment.BaseSepoliaWETH]: baseSepoliaData,
 } as const
 
 export type ChainId = keyof typeof chainsData
