@@ -40,4 +40,7 @@ fragment PrematchBet on Bet {
     freebetId
     contractAddress: freebetContractAddress
   }
+  cashout {
+    payout
+  }
 }

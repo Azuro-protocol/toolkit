@@ -32,4 +32,7 @@ fragment LiveBet on LiveBet {
       }
     }
   }
+  cashout {
+    payout
+  }
 }
