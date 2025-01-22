@@ -1,4 +1,4 @@
-query PrematchCondition($id: String!) {
+query PrematchCondition($id: ID!) {
   condition(id: $id, subgraphError: allow) {
     ...PrematchCondition
   }

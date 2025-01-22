@@ -1,4 +1,4 @@
-import { type Address } from 'viem'
+import { type Address, erc721Abi } from 'viem'
 
 import { liveCoreAbi, lpAbi, prematchComboCoreAbi, prematchCoreAbi, proxyFrontAbi } from '../abis'
 
@@ -20,6 +20,13 @@ export type Contracts = {
     address: Address
     abi: typeof proxyFrontAbi
   }
+  azuroBet: {
+    address: Address
+    abi: typeof erc721Abi
+  },
+  cashout?: {
+    address: Address
+  }
   liveRelayer?: {
     address: Address
   }
@@ -34,11 +41,15 @@ type Props = {
   prematchCore: Address
   prematchComboCore: Address
   proxyFront: Address
+  azuroBet: Address
+  cashout?: Address
   liveRelayer?: Address
   liveCore?: Address
 }
 
-export const setupContracts = ({ lp, prematchCore, prematchComboCore, proxyFront, liveRelayer, liveCore }: Props): Contracts => {
+export const setupContracts = ({
+  lp, prematchCore, prematchComboCore, proxyFront, azuroBet, cashout, liveRelayer, liveCore,
+}: Props): Contracts => {
   const contracts: Contracts = {
     lp: {
       address: lp,
@@ -56,11 +67,21 @@ export const setupContracts = ({ lp, prematchCore, prematchComboCore, proxyFront
       address: proxyFront,
       abi: proxyFrontAbi,
     },
+    azuroBet: {
+      address: azuroBet,
+      abi: erc721Abi,
+    },
   }
 
   if (liveRelayer) {
     contracts.liveRelayer = {
       address: liveRelayer,
+    }
+  }
+
+  if (cashout) {
+    contracts.cashout = {
+      address: cashout,
     }
   }
 
