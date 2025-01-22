@@ -20,10 +20,12 @@ const config: CodegenConfig = {
       },
       plugins: [
         'typescript-operations',
-        'typescript-react-apollo',
+        'typescript-document-nodes',
       ],
       config: {
         withHooks: false,
+        nameSuffix: 'Document',
+        fragmentSuffix: 'FragmentDoc',
         scalars: {
           'BigInt': 'string',
           'BigDecimal': 'string',
@@ -46,10 +48,12 @@ const config: CodegenConfig = {
       },
       plugins: [
         'typescript-operations',
-        'typescript-react-apollo',
+        'typescript-document-nodes',
       ],
       config: {
         withHooks: false,
+        nameSuffix: 'Document',
+        fragmentSuffix: 'FragmentDoc',
         scalars: {
           'BigInt': 'string',
           'BigDecimal': 'string',

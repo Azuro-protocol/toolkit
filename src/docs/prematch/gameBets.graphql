@@ -1,4 +1,4 @@
-query GameBets($gameId: String!, $actor: String) {
+query GameBets($gameId: BigInt!, $actor: String) {
   bets(where: { _games_: { gameId: $gameId }, actor: $actor }) {
     rawAmount
     rawPotentialPayout
