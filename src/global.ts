@@ -1,7 +1,28 @@
-import { type Address } from 'viem'
+import { type Address, type Chain } from 'viem'
 
+import { type Environment } from './envs'
+import { type Contracts } from './utils/setupContracts'
 import { type ChainId } from './config'
 
+
+type BetToken = {
+  address: Address
+  symbol: string
+  decimals: number
+}
+
+export type ChainData = {
+  chain: Omit<Chain, 'id'> & { id: ChainId }
+  graphql: {
+    prematch: string
+    live: string
+  }
+  socket: string
+  api: string
+  environment: Environment
+  contracts: Contracts
+  betToken: BetToken
+}
 
 export type Selection = {
   outcomeId: string

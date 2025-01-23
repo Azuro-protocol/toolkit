@@ -12,10 +12,10 @@ npm i --save @azuro-org/toolkit
 #### Peer Dependencies
 
 ```
-@apollo/client@^3.11.10
-@azuro-org/dictionaries@^3.0.20
-viem@^2.21.44
-@wagmi/core@^2.14.5
+@azuro-org/dictionaries@^3.0.26
+@wagmi/core@^2.16.3
+viem@^2.22.11
+graphql-tag@^2.12.0
 ```
 
 Package information can be found in our [Doc](https://gem.azuro.org/hub/apps/toolkit/overview)

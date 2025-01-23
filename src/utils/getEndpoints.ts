@@ -1,4 +1,4 @@
-import { baseSepolia, chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
+import { base, baseSepolia, chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
 
 import { isDevEnabled } from '../envs'
 import { type ChainId } from '../config'
@@ -10,6 +10,7 @@ const endpointNameByChainId: Record<ChainId, string> = {
   [polygonAmoy.id]: 'polygon-amoy-preprod',
   [chiliz.id]: 'chiliz',
   [spicy.id]: 'chiliz-spicy-dev',
+  [base.id]: 'base',
   [baseSepolia.id]: 'base-sepolia-dev',
 }
 
@@ -43,14 +44,14 @@ export const getLiveGraphqlEndpoint = (chainId: ChainId) => {
 
 export const getSocketEndpoint = (chainId: ChainId) => {
   if (isDev(chainId)) {
-    return 'wss://dev-streams.azuro.org/v1/streams/conditions'
+    return 'wss://dev-streams.azuro.org/v1/streams'
   }
 
   if (chainId === polygonAmoy.id) {
-    return 'wss://preprod-streams.azuro.org/v1/streams/conditions'
+    return 'wss://preprod-streams.azuro.org/v1/streams'
   }
 
-  return 'wss://streams.azuro.org/v1/streams/conditions'
+  return 'wss://streams.azuro.org/v1/streams'
 }
 
 export const getApiEndpoint = (chainId: ChainId) => {

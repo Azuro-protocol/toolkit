@@ -5,14 +5,14 @@ const config: CodegenConfig = {
   ignoreNoDocuments: true,
   generates: {
     'src/docs/prematch/types.ts': {
-      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-v3',
+      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3',
       plugins: [
         'typescript',
       ],
     },
     'src/docs/prematch': {
       preset: 'near-operation-file',
-      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-v3',
+      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3',
       documents: 'src/docs/prematch/**/*.graphql',
       presetConfig: {
         extension: '.ts',
@@ -20,10 +20,12 @@ const config: CodegenConfig = {
       },
       plugins: [
         'typescript-operations',
-        'typescript-react-apollo',
+        'typescript-document-nodes',
       ],
       config: {
         withHooks: false,
+        nameSuffix: 'Document',
+        fragmentSuffix: 'FragmentDoc',
         scalars: {
           'BigInt': 'string',
           'BigDecimal': 'string',
@@ -46,10 +48,12 @@ const config: CodegenConfig = {
       },
       plugins: [
         'typescript-operations',
-        'typescript-react-apollo',
+        'typescript-document-nodes',
       ],
       config: {
         withHooks: false,
+        nameSuffix: 'Document',
+        fragmentSuffix: 'FragmentDoc',
         scalars: {
           'BigInt': 'string',
           'BigDecimal': 'string',

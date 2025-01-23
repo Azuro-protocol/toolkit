@@ -1,4 +1,4 @@
-import { gnosis, polygon, polygonAmoy, chiliz, spicy, baseSepolia } from 'viem/chains'
+import { gnosis, polygon, polygonAmoy, chiliz, spicy, baseSepolia, base } from 'viem/chains'
 
 
 export const isDevEnabled = Boolean(JSON.parse(process.env.AZURO_UNSTABLE_DEV_ENABLED || 'false'))
@@ -11,6 +11,7 @@ export enum Environment {
   PolygonAmoyUSDT = 'PolygonAmoyUSDT',
   ChilizWCHZ = 'ChilizWCHZ',
   ChilizSpicyWCHZ = 'ChilizSpicyWCHZ',
+  BaseWETH = 'BaseWETH',
   BaseSepoliaWETH = 'BaseSepoliaWETH'
 }
 
@@ -20,5 +21,6 @@ export const environments = {
   [polygonAmoy.id]: isDevEnabled ? Environment.PolygonAmoyUSDT : Environment.PolygonAmoyAZUSD,
   [chiliz.id]: Environment.ChilizWCHZ,
   [spicy.id]: Environment.ChilizSpicyWCHZ,
+  [base.id]: Environment.BaseWETH,
   [baseSepolia.id]: Environment.BaseSepoliaWETH,
 }
