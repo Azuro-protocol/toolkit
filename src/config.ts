@@ -1,4 +1,4 @@
-import { polygon, gnosis, polygonAmoy, chiliz, spicy } from 'viem/chains'
+import { polygon, gnosis, polygonAmoy, chiliz, spicy, baseSepolia, base } from 'viem/chains'
 
 import { isDevEnabled, environments, Environment } from './envs'
 import { setupContracts } from './utils/setupContracts'
@@ -231,12 +231,62 @@ const spicyData: ChainData = {
   },
 }
 
+const baseSepoliaData: ChainData = {
+  chain: baseSepolia,
+  graphql: {
+    prematch: getPrematchGraphqlEndpoint(baseSepolia.id),
+    live: getLiveGraphqlEndpoint(baseSepolia.id),
+  },
+  socket: getSocketEndpoint(baseSepolia.id),
+  api: getApiEndpoint(baseSepolia.id),
+  environment: environments[baseSepolia.id],
+  contracts: setupContracts({
+    lp: '0xCf6a6e4A8b24a109111143567e3d2Ae4e77c4192',
+    prematchCore: '0xfa275EAabeFE2B06Fd868A0A88302feF3bB55D5C',
+    prematchComboCore: '0x2a91Ea47763bB59280823286A94a600D429c0EA0',
+    proxyFront: '0xa39EC5452bE981c8Fb0121Ee11Bc3F0209052C2c',
+    azuroBet: '0x8c1ca2bBe98575c9431a937ad48d1C261754Ab99',
+    cashout: '0xc73c85898adBf3c9BD50D77Ee6BBF4F132554fFC',
+  }),
+  betToken: {
+    address: '0x9e09f213Ff75e53D52e9e777A6567A68683E935f',
+    symbol: 'WETH',
+    decimals: 18,
+  },
+}
+
+const baseData: ChainData = {
+  chain: base,
+  graphql: {
+    prematch: getPrematchGraphqlEndpoint(base.id),
+    live: getLiveGraphqlEndpoint(base.id),
+  },
+  socket: getSocketEndpoint(base.id),
+  api: getApiEndpoint(base.id),
+  environment: environments[base.id],
+  contracts: setupContracts({
+    lp: '0xF22E9e29728d6592eB54b916Ba9f464d9F237dB1',
+    prematchCore: '0xf5A6B7940cbdb80F294f1eAc59575562966aa3FC',
+    prematchComboCore: '0x4731Bb0D12c4f992Cf02BDc7A48e8656d0E382Ed',
+    proxyFront: '0x6e1784b85eCF148BD412ad3c75e7C63B7d3cacB9',
+    azuroBet: '0x9Ce099D680401763f9Cb160c8eAc3E5f8307314e',
+    cashout: '0xFffF9220288787B24276135E58C0BF68D803F0ad',
+  }),
+  betToken: {
+    address: '0x9e09f213Ff75e53D52e9e777A6567A68683E935f',
+    symbol: 'WETH',
+    decimals: 18,
+  },
+}
+
 export const chainsData = {
   [gnosis.id]: gnosisData,
   [polygon.id]: polygonData,
   [polygonAmoy.id]: polygonAmoyData,
   [chiliz.id]: chilizData,
   [spicy.id]: spicyData,
+  [base.id]: baseData,
+  [baseSepolia.id]: baseSepoliaData,
 }
 
 if (isDevEnabled) {
@@ -252,6 +302,8 @@ export const chainsDataByEnv: Record<Environment, ChainData> = {
   [Environment.PolygonAmoyUSDT]: polygonAmoyDevData,
   [Environment.ChilizWCHZ]: chilizData,
   [Environment.ChilizSpicyWCHZ]: spicyData,
+  [Environment.BaseWETH]: baseData,
+  [Environment.BaseSepoliaWETH]: baseSepoliaData,
 } as const
 
 export type ChainId = keyof typeof chainsData

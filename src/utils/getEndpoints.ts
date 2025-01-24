@@ -1,4 +1,4 @@
-import { chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
+import { base, baseSepolia, chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
 
 import { isDevEnabled } from '../envs'
 import { type ChainId } from '../config'
@@ -10,6 +10,8 @@ const endpointNameByChainId: Record<ChainId, string> = {
   [polygonAmoy.id]: 'polygon-amoy-preprod',
   [chiliz.id]: 'chiliz',
   [spicy.id]: 'chiliz-spicy-dev',
+  [base.id]: 'base',
+  [baseSepolia.id]: 'base-sepolia-dev',
 }
 
 if (isDevEnabled) {
@@ -19,9 +21,10 @@ if (isDevEnabled) {
 
 const isDev = (chainId: ChainId) => {
   return isDevEnabled && (
-    chainId === polygonAmoy.id
-    || chainId === gnosis.id
-    || chainId === spicy.id
+    chainId === polygonAmoy.id ||
+    chainId === gnosis.id ||
+    chainId === spicy.id ||
+    chainId === baseSepolia.id
   )
 }
 
