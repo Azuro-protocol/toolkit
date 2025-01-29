@@ -273,7 +273,7 @@ const baseData: ChainData = {
     cashout: '0xFffF9220288787B24276135E58C0BF68D803F0ad',
   }),
   betToken: {
-    address: '0x9e09f213Ff75e53D52e9e777A6567A68683E935f',
+    address: '0x4200000000000000000000000000000000000006',
     symbol: 'WETH',
     decimals: 18,
   },
