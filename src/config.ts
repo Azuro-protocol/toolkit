@@ -49,6 +49,9 @@ export const deBridgeUrl = 'https://api.dln.trade/v1.0'
 export const deBridgeTxUrl = 'https://stats-api.dln.trade/api'
 
 export const liveHostAddress = '0x67Fca88E2f5F2C33b86bFa4EccfCb8dCD6a56D17'
+/**
+ * @deprecated please, check the liveCore address existence for specific chain in chainsData
+ */
 export const liveSupportedChains: ChainId[] = [ polygon.id, gnosis.id, polygonAmoy.id ]
 
 const gnosisData: ChainData = {
@@ -197,6 +200,8 @@ const chilizData: ChainData = {
     proxyFront: '0x45779134E5091756601Cb5bA389f9C76b914E520',
     azuroBet: '0x8609D1c8610D7F24d826FB76ea878d240537A8B8',
     cashout: '0xAE0830d7588aB44e5D4443168a8D666B54F385FE',
+    liveRelayer: '0xA95D8Bd97F567380Bdc068462b9da547af37dAfD',
+    liveCore: '0x2b387115201fe9daef7f3f5f6f3e29a3a94844bc',
   }),
   betToken: {
     address: '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47',

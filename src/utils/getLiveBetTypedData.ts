@@ -3,7 +3,6 @@ import { type SignTypedDataParameters, type Address, type TypedDataDomain } from
 import {
   type ChainId,
   chainsData,
-  liveSupportedChains,
   LIVE_BET_DATA_TYPES,
   LIVE_TYPED_DATA_DOMAIN_NAME,
   LIVE_TYPED_DATA_DOMAIN_VERSION,
@@ -18,11 +17,11 @@ type Props = {
 }
 
 export const getLiveBetTypedData = ({ account, chainId, bet }: Props): SignTypedDataParameters<typeof LIVE_BET_DATA_TYPES> => {
-  if (!liveSupportedChains.includes(chainId)) {
+  const { contracts } = chainsData[chainId]
+
+  if (!contracts.liveCore) {
     throw new Error('provided chainId is not supported for live bet')
   }
-
-  const { contracts } = chainsData[chainId]
 
   const EIP712Domain: TypedDataDomain = {
     name: LIVE_TYPED_DATA_DOMAIN_NAME,

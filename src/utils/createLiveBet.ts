@@ -1,6 +1,6 @@
 import { type Address, type Hex } from 'viem'
 
-import { type ChainId, chainsData, liveSupportedChains } from '../config'
+import { type ChainId, chainsData } from '../config'
 import { type LiveBet } from '../global'
 
 
@@ -28,11 +28,11 @@ type Props = {
 export const createLiveBet = async (props: Props) => {
   const { chainId, account, bet, signature } = props
 
-  if (!liveSupportedChains.includes(chainId)) {
+  const { api, environment, contracts } = chainsData[chainId]
+
+  if (!contracts.liveCore) {
     throw new Error('provided chainId is not supported for live bet')
   }
-
-  const { api, environment } = chainsData[chainId]
 
   const order = { bet }
 

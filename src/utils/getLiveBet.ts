@@ -1,4 +1,4 @@
-import { chainsData, liveSupportedChains, type ChainId } from '../config'
+import { chainsData, type ChainId } from '../config'
 import { type CreateLiveBetResponse } from './createLiveBet'
 
 
@@ -14,11 +14,11 @@ type Props = {
 }
 
 export const getLiveBet = async ({ chainId, orderId }: Props) => {
-  if (!liveSupportedChains.includes(chainId)) {
+  const { api, contracts } = chainsData[chainId]
+
+  if (!contracts.liveCore) {
     throw new Error('provided chainId is not supported for live bet')
   }
-
-  const { api } = chainsData[chainId]
 
   const response = await fetch(`${api}/orders/${orderId}`)
 
