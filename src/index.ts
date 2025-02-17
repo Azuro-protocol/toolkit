@@ -42,3 +42,7 @@ export { getCalculatedCashout, type GetCalculatedCashout } from './utils/cashout
 export { getCashoutTypedData } from './utils/cashout/getCashoutTypedData'
 export { createCashout, CashoutState, type CreateCashoutResponse } from './utils/cashout/createCashout'
 export { getCashout, type GetCashoutResponse } from './utils/cashout/getCashout'
+
+// cashback
+export { getCashbackBalance, type GetCashbackBalance } from './utils/cashback/getCashbackBalance'
+export { createCashbackTransaction, type CashbackTransaction } from './utils/cashback/createCashbackTransaction'

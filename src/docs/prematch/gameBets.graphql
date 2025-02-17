@@ -3,6 +3,7 @@ query GameBets($gameId: BigInt!, $actor: String) {
     rawAmount
     rawPotentialPayout
     result
+    isCashedOut
     selections {
       rawOdds
       outcome {
@@ -23,6 +24,7 @@ query GameBets($gameId: BigInt!, $actor: String) {
     rawAmount
     rawPotentialPayout
     result
+    isCashedOut
     selections {
       outcome {
         outcomeId
