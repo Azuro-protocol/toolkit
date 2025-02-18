@@ -7,6 +7,7 @@ import { cashbackAbi } from '../../abis'
 
 
 type CreateCashoutResponse = {
+  id: number
   userAddress: Address
   amount: string
   network: Environment
@@ -58,9 +59,7 @@ export const createCashbackTransaction = async (props: Props): Promise<CashbackT
     throw new Error(`Status ${response.status}: ${response.statusText}`)
   }
 
-  const { cashbackContractAddress, amount, signature }: CreateCashoutResponse = await response.json()
-
-  const cashbackId = BigInt(cashbackContractAddress) + BigInt(account) + BigInt(Math.floor(Date.now() / 1000))
+  const { id, cashbackContractAddress, amount, signature }: CreateCashoutResponse = await response.json()
 
   const tx: CashbackTransaction = {
     to: cashbackContractAddress,
@@ -69,13 +68,13 @@ export const createCashbackTransaction = async (props: Props): Promise<CashbackT
       functionName: 'withdrawCashBack',
       args: [
         {
+          id: BigInt(id),
           chainId: BigInt(chainId),
           cashBackContract: cashbackContractAddress,
           affiliate,
           token: betToken.address,
           account,
           amount: parseUnits(amount, betToken.decimals),
-          id: cashbackId,
           expiresAt: BigInt(expiresAt),
         },
         signature,
