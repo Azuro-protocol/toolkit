@@ -1,0 +1,11 @@
+query ConditionsBatch($conditionFilter: Condition_filter) {
+  conditions(where: $conditionFilter, first: 1000, subgraphError: allow) {
+    state
+    conditionId
+    outcomes {
+      id
+      outcomeId
+      odds: currentOdds
+    }
+  }
+}

@@ -2,27 +2,20 @@ import {
   dictionaries, getMarketKey, getMarketName,
   getMarketDescription, getSelectionName,
 } from '@azuro-org/dictionaries'
-import { formatUnits } from 'viem'
 
-import type { ConditionStatus } from '../docs/prematch/types'
-import { type PrematchConditionsQuery } from '../docs/prematch/conditions'
-import { type LiveConditionsQuery } from '../docs/live/conditions'
-import { liveHostAddress, MARGIN_DECIMALS } from '../config'
+import { type ConditionsQuery } from '../docs/feed/conditions'
+import { type ConditionState } from '../docs/feed/types'
+import { liveHostAddress } from '../config'
 import type { Selection } from '../global'
 import { groupByConditionId } from './groupByConditionId'
 
 
-export type ConditionsQuery = PrematchConditionsQuery | LiveConditionsQuery
-
 export type MarketOutcome = {
   selectionName: string
   odds?: number
-  lpAddress: string
-  coreAddress: string
-  status: ConditionStatus
+  state: ConditionState
   gameId: string
   isExpressForbidden: boolean
-  margin?: string
   isWon?: boolean
 } & Selection
 
@@ -44,17 +37,18 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
   const sportId = conditions[0]!.game.sport.sportId
 
   conditions.forEach((condition) => {
-    const { conditionId, outcomes: rawOutcomes, status, game: { gameId }, wonOutcomeIds } = condition
-    const coreAddress = (condition as PrematchConditionsQuery['conditions'][0]).core?.address || liveHostAddress
-    const lpAddress = (condition as PrematchConditionsQuery['conditions'][0]).core?.liquidityPool?.address || ''
-    const isExpressForbidden = (condition as PrematchConditionsQuery['conditions'][0]).isExpressForbidden ?? true
-    const customMarketName = (condition as PrematchConditionsQuery['conditions'][0]).title
-    const margin = (condition as PrematchConditionsQuery['conditions'][0]).margin
+    const {
+      conditionId,
+      outcomes: rawOutcomes,
+      state,
+      wonOutcomeIds,
+      isExpressForbidden,
+      title: customMarketName,
+      game: { gameId },
+    } = condition
 
     rawOutcomes.forEach((rawOutcome) => {
-      const { outcomeId } = rawOutcome
-      const odds = (rawOutcome as PrematchConditionsQuery['conditions'][0]['outcomes'][0]).odds
-      const customSelectionName = (rawOutcome as PrematchConditionsQuery['conditions'][0]['outcomes'][0]).title
+      const { outcomeId, odds, title: customSelectionName } = rawOutcome
       const betTypeOdd = dictionaries.outcomes[outcomeId]
 
       if (!betTypeOdd) {
@@ -69,15 +63,12 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
       const marketDescription = getMarketDescription({ outcomeId })
 
       const outcome: MarketOutcome = {
-        coreAddress: coreAddress,
-        lpAddress: lpAddress,
         conditionId,
         outcomeId,
         selectionName,
-        status,
+        state,
         gameId,
         isExpressForbidden,
-        margin: Boolean(margin) ? formatUnits(BigInt(margin), MARGIN_DECIMALS) : undefined,
       }
 
       if (Array.isArray(wonOutcomeIds)) {

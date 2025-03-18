@@ -1,59 +1,57 @@
-import { GameStatus as GraphGameStatus } from '../docs/live/types'
+// import { GameState } from '../docs/feed/types'
 
 
-const getIsPendingResolution = (startDate: number): boolean => {
-  const now = Date.now()
-  const isStarted = startDate < now
-  const pendingResolutionDate = startDate + 6000000
+// const getIsPendingResolution = (startDate: number): boolean => {
+//   const now = Date.now()
+//   const isStarted = startDate < now
+//   const pendingResolutionDate = startDate + 6000000
 
-  return isStarted && pendingResolutionDate < now
-}
+//   return isStarted && pendingResolutionDate < now
+// }
 
-export enum GameStatus {
-  Created,
-  Live,
-  Resolved,
-  Canceled,
-  Paused,
-  PendingResolution,
-}
+// export enum GameStatus {
+//   // Created,
+//   // Live,
+//   // Resolved,
+//   // Canceled,
+//   // Stopped,
+//   PendingResolution,
+// }
 
-type Props = {
-  graphStatus: GraphGameStatus,
-  startsAt: number
-  isGameInLive: boolean
-}
+// type Test = GameStatus | GameState
 
-export const getGameStatus = (props: Props): GameStatus => {
-  const { graphStatus, startsAt, isGameInLive } = props
+// type Props = {
+//   graphStatus: GameState,
+//   startsAt: number
+//   isGameInLive: boolean
+// }
 
-  const startDate = startsAt * 1000
-  const isStarted = startDate < Date.now()
+// export const getGameStatus = (props: Props): GameStatus => {
+//   const { graphStatus, startsAt, isGameInLive } = props
 
-  // we use LiveGameStatus enum for conditions because it contains PrematchGameStatus
-  if (graphStatus === GraphGameStatus.Canceled) {
-    return GameStatus.Canceled
-  }
+//   const startDate = startsAt * 1000
+//   const isStarted = startDate < Date.now()
 
-  if (graphStatus === GraphGameStatus.Paused) {
-    return GameStatus.Paused
-  }
+//   // we use LiveGameStatus enum for conditions because it contains PrematchGameStatus
+//   if (graphStatus === GameState.Canceled) {
+//     return GameStatus.Canceled
+//   }
 
-  if (graphStatus === GraphGameStatus.Resolved) {
-    return GameStatus.Resolved
-  }
+//   if (graphStatus === GameState.Stopped) {
+//     return GameStatus.Stopped
+//   }
 
-  if (graphStatus === GraphGameStatus.Finished) {
-    return GameStatus.PendingResolution
-  }
+//   if (graphStatus === GameState.Resolved) {
+//     return GameStatus.Resolved
+//   }
 
-  if (isStarted) {
-    if (!isGameInLive && getIsPendingResolution(startDate)) {
-      return GameStatus.PendingResolution
-    }
+//   if (isStarted) {
+//     if (!isGameInLive && getIsPendingResolution(startDate)) {
+//       return GameStatus.PendingResolution
+//     }
 
-    return GameStatus.Live
-  }
+//     return GameStatus.Live
+//   }
 
-  return GameStatus.Created
-}
+//   return GameStatus.Created
+// }

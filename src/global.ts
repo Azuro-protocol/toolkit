@@ -14,8 +14,8 @@ type BetToken = {
 export type ChainData = {
   chain: Omit<Chain, 'id'> & { id: ChainId }
   graphql: {
-    prematch: string
-    live: string
+    bets: string
+    feed: string
   }
   socket: string
   api: string
@@ -27,7 +27,6 @@ export type ChainData = {
 export type Selection = {
   outcomeId: string
   conditionId: string
-  coreAddress: string
 }
 
 export type WaveId = number | 'active'

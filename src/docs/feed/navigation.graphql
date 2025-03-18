@@ -1,0 +1,43 @@
+query Navigation(
+  $first: Int,
+  $sportFilter: Sport_filter, 
+  $countryFilter: Country_filter, 
+  $leagueFilter: League_filter,
+  # $gameFilter: Game_filter,
+  # $withGameCount: Boolean!,
+) {
+  sports(
+    where: $sportFilter,
+    subgraphError: allow
+  ) {
+    id
+    slug
+    name
+    sportId
+    activeGamesCount
+    activeLiveGamesCount
+    activePrematchGamesCount
+    countries(where: $countryFilter) {
+      id
+      slug
+      name
+      turnover
+      activeGamesCount
+      activeLiveGamesCount
+      activePrematchGamesCount
+      leagues(where: $leagueFilter) {
+        id
+        slug
+        name
+        turnover
+        activeGamesCount
+        activeLiveGamesCount
+        activePrematchGamesCount
+        # games(first: $first, where: $gameFilter) @include(if: $withGameCount) {
+        #   id
+        #   turnover
+        # }
+      }
+    }
+  }
+}

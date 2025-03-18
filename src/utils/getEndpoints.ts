@@ -28,30 +28,36 @@ const isDev = (chainId: ChainId) => {
   )
 }
 
-export const getPrematchGraphqlEndpoint = (chainId: ChainId) => `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
+export const getFeedGraphqlEndpoint = (chainId: ChainId) => (
+  `https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-${endpointNameByChainId[chainId]}`
+)
 
-export const getLiveGraphqlEndpoint = (chainId: ChainId) => {
-  if (isDev(chainId)) {
-    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
-  }
+export const getPrematchGraphqlEndpoint = (chainId: ChainId) => (
+  `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
+)
 
-  if (chainId === polygonAmoy.id) {
-    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
-  }
+// export const getLiveGraphqlEndpoint = (chainId: ChainId) => {
+//   if (isDev(chainId)) {
+//     return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
+//   }
 
-  return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
-}
+//   if (chainId === polygonAmoy.id) {
+//     return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
+//   }
+
+//   return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
+// }
 
 export const getSocketEndpoint = (chainId: ChainId) => {
   if (isDev(chainId)) {
-    return 'wss://dev-streams.azuro.org/v1/streams'
+    return 'wss://dev-streams.onchainfeed.org/v1/streams'
   }
 
   if (chainId === polygonAmoy.id) {
     return 'wss://preprod-streams.azuro.org/v1/streams'
   }
 
-  return 'wss://streams.azuro.org/v1/streams'
+  return 'wss://streams.onchainfeed.org/v1/streams'
 }
 
 export const getApiEndpoint = (chainId: ChainId) => {

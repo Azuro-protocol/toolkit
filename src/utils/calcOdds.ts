@@ -139,74 +139,74 @@ type CalcPrematchOddsProps = {
   batchBetAmounts?: Record<string, string>
 }
 
-export const calcPrematchOdds = async (props: CalcPrematchOddsProps): Promise<Record<string, number>> => {
-  const { config, selections, betAmount, chainId, batchBetAmounts } = props
+// export const calcPrematchOdds = async (props: CalcPrematchOddsProps): Promise<Record<string, number>> => {
+//   const { config, selections, betAmount, chainId, batchBetAmounts } = props
 
-  const { betToken, contracts } = chainsData[chainId]
-  const isBatch = Boolean(Object.keys(batchBetAmounts || {}).length)
+//   const { betToken, contracts } = chainsData[chainId]
+//   const isBatch = Boolean(Object.keys(batchBetAmounts || {}).length)
 
-  if (selections.length === 1 || isBatch) {
-    let odds: Record<string, number> = {}
-    const contracts = selections.map(({ conditionId, outcomeId, coreAddress }) => {
-      const _betAmount = isBatch ? batchBetAmounts?.[`${conditionId}-${outcomeId}`] : betAmount
-      const rawAmount = parseUnits(_betAmount || '', betToken.decimals)
+//   if (selections.length === 1 || isBatch) {
+//     let odds: Record<string, number> = {}
+//     const contracts = selections.map(({ conditionId, outcomeId, coreAddress }) => {
+//       const _betAmount = isBatch ? batchBetAmounts?.[`${conditionId}-${outcomeId}`] : betAmount
+//       const rawAmount = parseUnits(_betAmount || '', betToken.decimals)
 
-      return {
-        abi: prematchCoreAbi,
-        address: coreAddress as Address,
-        chainId,
-        functionName: 'calcOdds',
-        args: [ BigInt(conditionId), rawAmount, BigInt(outcomeId) ],
-      }
-    })
+//       return {
+//         abi: prematchCoreAbi,
+//         address: coreAddress as Address,
+//         chainId,
+//         functionName: 'calcOdds',
+//         args: [ BigInt(conditionId), rawAmount, BigInt(outcomeId) ],
+//       }
+//     })
 
-    try {
-      const response = await readContracts(config, {
-        contracts,
-      })
+//     try {
+//       const response = await readContracts(config, {
+//         contracts,
+//       })
 
-      odds = selections.reduce((acc, { conditionId, outcomeId }, index) => {
-        const key = `${conditionId}-${outcomeId}`
-        const result = response[index]?.result
+//       odds = selections.reduce((acc, { conditionId, outcomeId }, index) => {
+//         const key = `${conditionId}-${outcomeId}`
+//         const result = response[index]?.result
 
-        acc[key] = formatToFixed(formatUnits(typeof result === 'bigint' ? result : 0n, ODDS_DECIMALS), 5)
+//         acc[key] = formatToFixed(formatUnits(typeof result === 'bigint' ? result : 0n, ODDS_DECIMALS), 5)
 
-        return acc
-      }, {} as Record<string, number>)
-    }
-    catch {}
+//         return acc
+//       }, {} as Record<string, number>)
+//     }
+//     catch {}
 
-    return odds
-  }
+//     return odds
+//   }
 
-  if (selections.length > 1) {
-    const rawAmount = parseUnits(betAmount || '', betToken.decimals)
-    const expressAddress = contracts.prematchComboCore.address
+//   if (selections.length > 1) {
+//     const rawAmount = parseUnits(betAmount || '', betToken.decimals)
+//     const expressAddress = contracts.prematchComboCore.address
 
-    const subBets = selections.map(({ conditionId, outcomeId }) => ({
-      conditionId: BigInt(conditionId),
-      outcomeId: BigInt(outcomeId),
-    }))
+//     const subBets = selections.map(({ conditionId, outcomeId }) => ({
+//       conditionId: BigInt(conditionId),
+//       outcomeId: BigInt(outcomeId),
+//     }))
 
-    try {
-      const [ conditionOdds ] = await readContract(config, {
-        abi: prematchComboCoreAbi,
-        address: expressAddress as Address,
-        chainId,
-        functionName: 'calcOdds',
-        args: [ subBets, rawAmount ],
-      })
+//     try {
+//       const [ conditionOdds ] = await readContract(config, {
+//         abi: prematchComboCoreAbi,
+//         address: expressAddress as Address,
+//         chainId,
+//         functionName: 'calcOdds',
+//         args: [ subBets, rawAmount ],
+//       })
 
-      return selections.reduce((acc, { conditionId, outcomeId }, index) => {
-        const key = `${conditionId}-${outcomeId}`
+//       return selections.reduce((acc, { conditionId, outcomeId }, index) => {
+//         const key = `${conditionId}-${outcomeId}`
 
-        acc[key] = formatToFixed(formatUnits(conditionOdds[index]!, ODDS_DECIMALS), 5)
+//         acc[key] = formatToFixed(formatUnits(conditionOdds[index]!, ODDS_DECIMALS), 5)
 
-        return acc
-      }, {} as Record<string, number>)
-    }
-    catch {}
-  }
+//         return acc
+//       }, {} as Record<string, number>)
+//     }
+//     catch {}
+//   }
 
-  return {}
-}
+//   return {}
+// }

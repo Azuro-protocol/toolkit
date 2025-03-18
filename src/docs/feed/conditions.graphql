@@ -1,0 +1,16 @@
+query Conditions(
+  $where: Condition_filter!,
+  $orderBy: Condition_orderBy,
+  $orderDirection: OrderDirection,
+) {
+  conditions(
+    where: $where,
+    first: 1000, 
+    orderBy: $orderBy,
+    orderDirection: $orderDirection,
+    subgraphError: allow,
+  ) {
+    ...Condition
+    wonOutcomeIds
+  }
+}
