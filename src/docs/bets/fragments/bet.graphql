@@ -1,4 +1,4 @@
-fragment PrematchBet on Bet {
+fragment Bet on V3_Bet {
   id
   tokenId: betId
   amount
@@ -28,11 +28,9 @@ fragment PrematchBet on Bet {
       title
       condition {
         conditionId
-        status
         title
-        game {
-          ...MainGameInfo
-        }
+        status
+        gameId
       }
     }
   }

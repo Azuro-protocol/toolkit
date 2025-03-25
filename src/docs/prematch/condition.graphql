@@ -1,5 +1,0 @@
-query PrematchCondition($id: ID!) {
-  condition(id: $id, subgraphError: allow) {
-    ...PrematchCondition
-  }
-}

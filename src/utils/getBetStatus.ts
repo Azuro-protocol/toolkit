@@ -28,12 +28,11 @@ const getExpressIsPendingResolution = (games: Game[]) => {
 type Props = {
   games: Game[]
   graphStatus: GraphBetStatus
-  isLiveBet: boolean
 }
 
 export const getBetStatus = (props: Props): BetStatus => {
 
-  const { games, graphStatus, isLiveBet } = props
+  const { games, graphStatus } = props
 
   if (graphStatus === GraphBetStatus.Canceled) {
     return BetStatus.Canceled

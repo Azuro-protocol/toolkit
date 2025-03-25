@@ -1,10 +1,12 @@
 export * from './bets/fragments/bettor'
 export * from './bets/fragments/liveBet'
 export * from './bets/fragments/prematchBet'
+export * from './bets/fragments/bet'
 export * from './bets/bettors'
 export * from './bets/liveBets'
 export * from './bets/prematchBets'
 export * from './bets/gameBets'
+export * from './bets/bets'
 
 export * from './feed/fragments/condition'
 export * from './feed/fragments/gameInfo'
@@ -19,9 +21,11 @@ export * from './feed/sportsNavigation'
 
 export {
   BetResult,
-  Bet_OrderBy, 
+  Bet_OrderBy as Legacy_Bet_OrderBy, 
   SelectionResult,
   BetStatus as GraphBetStatus,
+  V3_Bet_OrderBy as Bet_OrderBy,
+  ConditionStatus as BetConditionStatus,
 } from './bets/types'
 export {
   type Condition_Filter,

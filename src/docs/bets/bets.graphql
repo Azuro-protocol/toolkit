@@ -1,18 +1,18 @@
-query Games(
+query Bets(
   $first: Int,
   $skip: Int,
-  $where: Game_filter!,
-  $orderBy: Game_orderBy,
-  $orderDirection: OrderDirection,
+  $where: V3_Bet_filter!,
+  $orderBy: V3_Bet_orderBy,
+  $orderDirection: OrderDirection
 ) {
-  games(
+  v3Bets(
     first: $first,
     skip: $skip,
     where: $where,
     orderBy: $orderBy,
     orderDirection: $orderDirection,
-    subgraphError: allow,
+    subgraphError: allow
   ) {
-    ...MainGameInfo
+    ...Bet
   }
 }

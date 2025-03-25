@@ -1,8 +1,6 @@
 query SportsNavigation(
   $first: Int,
   $sportFilter: Sport_filter,
-  # $gameFilter: Game_filter,
-  # $withGameCount: Boolean!,
 ) {
   sports(
     where: $sportFilter,
@@ -13,9 +11,7 @@ query SportsNavigation(
     name
     sportId
     activeGamesCount
-    # games(first: $first, where: $gameFilter) @include(if: $withGameCount) {
-    #   id
-    #   turnover
-    # }
+    activeLiveGamesCount
+    activePrematchGamesCount
   }
 }

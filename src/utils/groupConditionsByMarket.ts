@@ -12,7 +12,7 @@ import { groupByConditionId } from './groupByConditionId'
 
 export type MarketOutcome = {
   selectionName: string
-  odds?: number
+  odds: number
   state: ConditionState
   gameId: string
   isExpressForbidden: boolean
@@ -69,14 +69,11 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
         state,
         gameId,
         isExpressForbidden,
+        odds: +odds,
       }
 
       if (Array.isArray(wonOutcomeIds)) {
         outcome.isWon = wonOutcomeIds.includes(outcomeId)
-      }
-
-      if (odds) {
-        outcome.odds = +odds
       }
 
       if (!outcomesByMarkets[marketKey]) {
