@@ -3,7 +3,7 @@ import { type ChainId } from '../config'
 import { getApiEndpoint } from './getEndpoints'
 
 
-export type LiveBetFeeResponse = {
+export type BetFeeResponse = {
   gasLimit: number
   gasPrice: number
   betTokenRate: number
@@ -16,12 +16,12 @@ export type LiveBetFeeResponse = {
   decimals: number
 }
 
-export const getLiveBetFee = async (chainId: ChainId): Promise<LiveBetFeeResponse> => {
+export const getBetFee = async (chainId: ChainId): Promise<BetFeeResponse> => {
   const api = getApiEndpoint(chainId)
   const environment = environments[chainId]
 
-  const response = await fetch(`${api}/orders/gas?environment=${environment}`)
-  const data: LiveBetFeeResponse = await response.json()
+  const response = await fetch(`${api}/bet/gas-info?environment=${environment}`)
+  const data: BetFeeResponse = await response.json()
 
   return data
 }

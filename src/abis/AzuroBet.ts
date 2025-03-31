@@ -1,96 +1,163 @@
 export default [
   {
     'inputs': [],
-    'name': 'AlreadyPaid',
+    'name': 'ERC721EnumerableForbiddenBatchMint',
     'type': 'error',
   },
   {
-    'inputs': [],
-    'name': 'BetNotExists',
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'sender',
+        'type': 'address',
+      },
+      {
+        'internalType': 'uint256',
+        'name': 'tokenId',
+        'type': 'uint256',
+      },
+      {
+        'internalType': 'address',
+        'name': 'owner',
+        'type': 'address',
+      },
+    ],
+    'name': 'ERC721IncorrectOwner',
+    'type': 'error',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'operator',
+        'type': 'address',
+      },
+      {
+        'internalType': 'uint256',
+        'name': 'tokenId',
+        'type': 'uint256',
+      },
+    ],
+    'name': 'ERC721InsufficientApproval',
+    'type': 'error',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'approver',
+        'type': 'address',
+      },
+    ],
+    'name': 'ERC721InvalidApprover',
+    'type': 'error',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'operator',
+        'type': 'address',
+      },
+    ],
+    'name': 'ERC721InvalidOperator',
+    'type': 'error',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'owner',
+        'type': 'address',
+      },
+    ],
+    'name': 'ERC721InvalidOwner',
+    'type': 'error',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'receiver',
+        'type': 'address',
+      },
+    ],
+    'name': 'ERC721InvalidReceiver',
+    'type': 'error',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'sender',
+        'type': 'address',
+      },
+    ],
+    'name': 'ERC721InvalidSender',
     'type': 'error',
   },
   {
     'inputs': [
       {
         'internalType': 'uint256',
-        'name': 'conditionId',
+        'name': 'tokenId',
         'type': 'uint256',
       },
     ],
-    'name': 'ConditionNotFinished',
+    'name': 'ERC721NonexistentToken',
     'type': 'error',
   },
   {
     'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'owner',
+        'type': 'address',
+      },
       {
         'internalType': 'uint256',
-        'name': 'conditionId',
+        'name': 'index',
         'type': 'uint256',
       },
     ],
-    'name': 'ConditionNotRunning',
+    'name': 'ERC721OutOfBoundsIndex',
     'type': 'error',
   },
   {
     'inputs': [],
-    'name': 'IncorrectMaxOdds',
+    'name': 'InvalidInitialization',
     'type': 'error',
   },
   {
     'inputs': [],
-    'name': 'IncorrectOdds',
+    'name': 'NotInitializing',
     'type': 'error',
   },
   {
     'inputs': [],
-    'name': 'LargeOdds',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'OnlyLp',
+    'name': 'OnlyCore',
     'type': 'error',
   },
   {
     'inputs': [
       {
-        'internalType': 'enum SafeCast.Type',
-        'name': 'to',
-        'type': 'uint8',
+        'internalType': 'address',
+        'name': 'owner',
+        'type': 'address',
       },
     ],
-    'name': 'SafeCastError',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'SameGameIdsNotAllowed',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'SmallOdds',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'TooFewSubbets',
+    'name': 'OwnableInvalidOwner',
     'type': 'error',
   },
   {
     'inputs': [
       {
-        'internalType': 'uint256',
-        'name': 'conditionId',
-        'type': 'uint256',
+        'internalType': 'address',
+        'name': 'account',
+        'type': 'address',
       },
     ],
-    'name': 'TooLargeReinforcement',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'WrongToken',
+    'name': 'OwnableUnauthorizedAccount',
     'type': 'error',
   },
   {
@@ -148,100 +215,12 @@ export default [
     'inputs': [
       {
         'indexed': false,
-        'internalType': 'uint8',
+        'internalType': 'uint64',
         'name': 'version',
-        'type': 'uint8',
+        'type': 'uint64',
       },
     ],
     'name': 'Initialized',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': false,
-        'internalType': 'uint256',
-        'name': 'newMaxOdds',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'MaxOddsChanged',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'bettor',
-        'type': 'address',
-      },
-      {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'affiliate',
-        'type': 'address',
-      },
-      {
-        'indexed': true,
-        'internalType': 'uint256',
-        'name': 'betId',
-        'type': 'uint256',
-      },
-      {
-        'components': [
-          {
-            'internalType': 'uint64',
-            'name': 'odds',
-            'type': 'uint64',
-          },
-          {
-            'internalType': 'uint128',
-            'name': 'amount',
-            'type': 'uint128',
-          },
-          {
-            'internalType': 'uint48',
-            'name': 'lastDepositId',
-            'type': 'uint48',
-          },
-          {
-            'internalType': 'bool',
-            'name': 'isClaimed',
-            'type': 'bool',
-          },
-          {
-            'components': [
-              {
-                'internalType': 'uint256',
-                'name': 'conditionId',
-                'type': 'uint256',
-              },
-              {
-                'internalType': 'uint64',
-                'name': 'outcomeId',
-                'type': 'uint64',
-              },
-            ],
-            'internalType': 'struct ICoreBase.CoreBetData[]',
-            'name': 'subBets',
-            'type': 'tuple[]',
-          },
-          {
-            'internalType': 'uint64[]',
-            'name': 'conditionOdds',
-            'type': 'uint64[]',
-          },
-        ],
-        'indexed': false,
-        'internalType': 'struct IBetExpress.Bet',
-        'name': 'bet',
-        'type': 'tuple',
-      },
-    ],
-    'name': 'NewBet',
     'type': 'event',
   },
   {
@@ -261,19 +240,6 @@ export default [
       },
     ],
     'name': 'OwnershipTransferred',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': false,
-        'internalType': 'uint128',
-        'name': 'newReinforcement',
-        'type': 'uint128',
-      },
-    ],
-    'name': 'ReinforcementChanged',
     'type': 'event',
   },
   {
@@ -354,100 +320,14 @@ export default [
   {
     'inputs': [
       {
-        'components': [
-          {
-            'internalType': 'uint256',
-            'name': 'conditionId',
-            'type': 'uint256',
-          },
-          {
-            'internalType': 'uint64',
-            'name': 'outcomeId',
-            'type': 'uint64',
-          },
-        ],
-        'internalType': 'struct ICoreBase.CoreBetData[]',
-        'name': 'subBets',
-        'type': 'tuple[]',
-      },
-      {
-        'internalType': 'uint128',
-        'name': 'amount',
-        'type': 'uint128',
-      },
-    ],
-    'name': 'calcOdds',
-    'outputs': [
-      {
-        'internalType': 'uint64[]',
-        'name': 'conditionOdds',
-        'type': 'uint64[]',
-      },
-      {
-        'internalType': 'uint256',
-        'name': 'expressOdds',
-        'type': 'uint256',
-      },
-    ],
-    'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
         'internalType': 'uint256',
         'name': 'tokenId',
         'type': 'uint256',
       },
     ],
-    'name': 'calcPayout',
-    'outputs': [
-      {
-        'internalType': 'uint128',
-        'name': '',
-        'type': 'uint128',
-      },
-    ],
-    'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'newMaxOdds',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'changeMaxOdds',
+    'name': 'burn',
     'outputs': [],
     'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint128',
-        'name': 'newReinforcement',
-        'type': 'uint128',
-      },
-    ],
-    'name': 'changeReinforcement',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': 'account',
-        'type': 'address',
-      },
-    ],
-    'name': 'checkOwner',
-    'outputs': [],
-    'stateMutability': 'view',
     'type': 'function',
   },
   {
@@ -455,7 +335,7 @@ export default [
     'name': 'core',
     'outputs': [
       {
-        'internalType': 'contract ICoreBase',
+        'internalType': 'address',
         'name': '',
         'type': 'address',
       },
@@ -485,61 +365,17 @@ export default [
   {
     'inputs': [
       {
-        'internalType': 'uint256',
-        'name': 'betId',
-        'type': 'uint256',
+        'internalType': 'address',
+        'name': 'owner_',
+        'type': 'address',
       },
     ],
-    'name': 'getBet',
+    'name': 'getTokensByOwner',
     'outputs': [
       {
-        'components': [
-          {
-            'internalType': 'uint64',
-            'name': 'odds',
-            'type': 'uint64',
-          },
-          {
-            'internalType': 'uint128',
-            'name': 'amount',
-            'type': 'uint128',
-          },
-          {
-            'internalType': 'uint48',
-            'name': 'lastDepositId',
-            'type': 'uint48',
-          },
-          {
-            'internalType': 'bool',
-            'name': 'isClaimed',
-            'type': 'bool',
-          },
-          {
-            'components': [
-              {
-                'internalType': 'uint256',
-                'name': 'conditionId',
-                'type': 'uint256',
-              },
-              {
-                'internalType': 'uint64',
-                'name': 'outcomeId',
-                'type': 'uint64',
-              },
-            ],
-            'internalType': 'struct ICoreBase.CoreBetData[]',
-            'name': 'subBets',
-            'type': 'tuple[]',
-          },
-          {
-            'internalType': 'uint64[]',
-            'name': 'conditionOdds',
-            'type': 'uint64[]',
-          },
-        ],
-        'internalType': 'struct IBetExpress.Bet',
-        'name': 'betInfo',
-        'type': 'tuple',
+        'internalType': 'uint256[]',
+        'name': 'tokenIds',
+        'type': 'uint256[]',
       },
     ],
     'stateMutability': 'view',
@@ -549,9 +385,33 @@ export default [
     'inputs': [
       {
         'internalType': 'address',
-        'name': 'lp_',
+        'name': 'owner_',
         'type': 'address',
       },
+      {
+        'internalType': 'uint256',
+        'name': 'start',
+        'type': 'uint256',
+      },
+      {
+        'internalType': 'uint256',
+        'name': 'count',
+        'type': 'uint256',
+      },
+    ],
+    'name': 'getTokensByOwner',
+    'outputs': [
+      {
+        'internalType': 'uint256[]',
+        'name': 'tokenIds',
+        'type': 'uint256[]',
+      },
+    ],
+    'stateMutability': 'view',
+    'type': 'function',
+  },
+  {
+    'inputs': [
       {
         'internalType': 'address',
         'name': 'core_',
@@ -589,7 +449,7 @@ export default [
   },
   {
     'inputs': [],
-    'name': 'lastBetId',
+    'name': 'lastTokenId',
     'outputs': [
       {
         'internalType': 'uint256',
@@ -603,46 +463,20 @@ export default [
   {
     'inputs': [
       {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'lockedReserves',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256',
-      },
-    ],
-    'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [],
-    'name': 'lp',
-    'outputs': [
-      {
-        'internalType': 'contract ILP',
-        'name': '',
+        'internalType': 'address',
+        'name': 'account',
         'type': 'address',
       },
     ],
-    'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [],
-    'name': 'maxOdds',
+    'name': 'mint',
     'outputs': [
       {
         'internalType': 'uint256',
-        'name': '',
+        'name': 'tokenId',
         'type': 'uint256',
       },
     ],
-    'stateMutability': 'view',
+    'stateMutability': 'nonpayable',
     'type': 'function',
   },
   {
@@ -691,85 +525,9 @@ export default [
     'type': 'function',
   },
   {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': 'bettor',
-        'type': 'address',
-      },
-      {
-        'internalType': 'uint128',
-        'name': 'amount',
-        'type': 'uint128',
-      },
-      {
-        'components': [
-          {
-            'internalType': 'address',
-            'name': 'affiliate',
-            'type': 'address',
-          },
-          {
-            'internalType': 'uint64',
-            'name': 'minOdds',
-            'type': 'uint64',
-          },
-          {
-            'internalType': 'bytes',
-            'name': 'data',
-            'type': 'bytes',
-          },
-        ],
-        'internalType': 'struct IBet.BetData',
-        'name': 'betData',
-        'type': 'tuple',
-      },
-    ],
-    'name': 'putBet',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'betId',
-        'type': 'uint256',
-      },
-    ],
-    'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
     'inputs': [],
-    'name': 'reinforcement',
-    'outputs': [
-      {
-        'internalType': 'uint128',
-        'name': '',
-        'type': 'uint128',
-      },
-    ],
-    'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'tokenId',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'resolvePayout',
-    'outputs': [
-      {
-        'internalType': 'address',
-        'name': 'account',
-        'type': 'address',
-      },
-      {
-        'internalType': 'uint128',
-        'name': 'payout',
-        'type': 'uint128',
-      },
-    ],
+    'name': 'renounceOwnership',
+    'outputs': [],
     'stateMutability': 'nonpayable',
     'type': 'function',
   },
@@ -891,6 +649,49 @@ export default [
     'inputs': [
       {
         'internalType': 'uint256',
+        'name': 'index',
+        'type': 'uint256',
+      },
+    ],
+    'name': 'tokenByIndex',
+    'outputs': [
+      {
+        'internalType': 'uint256',
+        'name': '',
+        'type': 'uint256',
+      },
+    ],
+    'stateMutability': 'view',
+    'type': 'function',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'owner',
+        'type': 'address',
+      },
+      {
+        'internalType': 'uint256',
+        'name': 'index',
+        'type': 'uint256',
+      },
+    ],
+    'name': 'tokenOfOwnerByIndex',
+    'outputs': [
+      {
+        'internalType': 'uint256',
+        'name': '',
+        'type': 'uint256',
+      },
+    ],
+    'stateMutability': 'view',
+    'type': 'function',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'uint256',
         'name': 'tokenId',
         'type': 'uint256',
       },
@@ -901,6 +702,19 @@ export default [
         'internalType': 'string',
         'name': '',
         'type': 'string',
+      },
+    ],
+    'stateMutability': 'view',
+    'type': 'function',
+  },
+  {
+    'inputs': [],
+    'name': 'totalSupply',
+    'outputs': [
+      {
+        'internalType': 'uint256',
+        'name': '',
+        'type': 'uint256',
       },
     ],
     'stateMutability': 'view',
@@ -940,25 +754,6 @@ export default [
     'name': 'transferOwnership',
     'outputs': [],
     'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'tokenId',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'viewPayout',
-    'outputs': [
-      {
-        'internalType': 'uint128',
-        'name': '',
-        'type': 'uint128',
-      },
-    ],
-    'stateMutability': 'view',
     'type': 'function',
   },
 ] as const

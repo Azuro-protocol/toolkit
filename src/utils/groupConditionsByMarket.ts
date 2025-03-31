@@ -4,7 +4,7 @@ import {
 } from '@azuro-org/dictionaries'
 
 import { type ConditionsQuery } from '../docs/feed/conditions'
-import { type ConditionState } from '../docs/feed/types'
+import { ConditionState } from '../docs/feed/types'
 import type { Selection } from '../global'
 
 
@@ -38,7 +38,11 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
   const sportId = conditions[0]!.game.sport.sportId
   const markets: Record<string, TMarket<Record<string, Condition>>> = {}
 
-  conditions.forEach((condition) => {
+  const stateByOutcomeIds: Record<string, { conditionId: string, state: ConditionState }> = {}
+
+  for (let conditionIndex = 0; conditionIndex < conditions.length; conditionIndex++) {
+    const condition = conditions[conditionIndex]!
+
     const {
       conditionId,
       outcomes: rawOutcomes,
@@ -53,6 +57,32 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
     const marketKey = getMarketKey(firstOutcomeId)
     const marketName = customMarketName && customMarketName !== 'null' ? customMarketName : getMarketName({ outcomeId: firstOutcomeId })
     const marketDescription = getMarketDescription({ outcomeId: firstOutcomeId })
+
+    // start checking duplicates
+    const key = rawOutcomes.map(({ outcomeId }) => outcomeId).join('-')
+
+    if (stateByOutcomeIds[key]) {
+      if (state === ConditionState.Stopped) {
+        continue
+      }
+      else if (stateByOutcomeIds[key].state === ConditionState.Stopped) {
+        const removeConditionId = stateByOutcomeIds[key].conditionId
+        stateByOutcomeIds[key] = {
+          state,
+          conditionId,
+        }
+
+        delete markets[marketKey]?.conditions[removeConditionId]
+      }
+    }
+    else {
+      stateByOutcomeIds[key] = {
+        state,
+        conditionId,
+      }
+    }
+
+    // end checking duplicates
 
     if (!markets[marketKey]) {
       markets[marketKey] = {
@@ -103,7 +133,7 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
 
       markets[marketKey]!.conditions[conditionId]!.outcomes.push(outcome)
     })
-  })
+  }
 
   const orderedMarketKeys = dictionaries.marketOrders?.[sportId]
 

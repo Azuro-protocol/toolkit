@@ -1,4 +1,4 @@
-fragment LiveBet on LiveBet {
+fragment LegacyPrematchBet on Bet {
   id
   tokenId: betId
   amount
@@ -25,12 +25,20 @@ fragment LiveBet on LiveBet {
     result
     outcome {
       outcomeId
+      title
       condition {
         conditionId
         status
-        gameId
+        title
+        game {
+          ...MainGameInfo
+        }
       }
     }
+  }
+  freebet {
+    freebetId
+    contractAddress: freebetContractAddress
   }
   cashout {
     payout

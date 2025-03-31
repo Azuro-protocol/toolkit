@@ -1,11 +1,11 @@
-query PrematchBets(
+query LegacyLiveBets(
   $first: Int,
   $skip: Int,
   $where: Bet_filter!,
   $orderBy: Bet_orderBy,
   $orderDirection: OrderDirection
 ) {
-  bets(
+  liveBets(
     first: $first,
     skip: $skip,
     where: $where,
@@ -13,6 +13,6 @@ query PrematchBets(
     orderDirection: $orderDirection,
     subgraphError: allow
   ) {
-    ...PrematchBet
+    ...LegacyLiveBet
   }
 }

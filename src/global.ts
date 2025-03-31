@@ -31,16 +31,25 @@ export type Selection = {
 
 export type WaveId = number | 'active'
 
-export type LiveBet = {
+export enum BetState {
+  Created = 'Created',
+  Pending = 'Pending',
+  Sent = 'Sent',
+  Accepted = 'Accepted',
+  Rejected = 'Rejected'
+}
+
+export type CreateBetResponse = {
+  id: string
+  state: BetState
+  errorMessage?: string
+}
+
+export type BetClientData = {
   attention: string
   affiliate: Address
   core: Address
-  amount: string
+  expiresAt: number | bigint
   chainId: ChainId
-  conditionId: string
-  outcomeId: number
-  minOdds: string
-  nonce: string
-  expiresAt: number
-  relayerFeeAmount: string
+  relayerFeeAmount: string | bigint
 }

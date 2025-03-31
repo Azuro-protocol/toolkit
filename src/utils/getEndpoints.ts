@@ -62,7 +62,7 @@ export const getSocketEndpoint = (chainId: ChainId) => {
 
 export const getApiEndpoint = (chainId: ChainId) => {
   if (isDev(chainId)) {
-    return 'https://dev-api.azuro.org/api/v1/public'
+    return 'https://dev-api.onchainfeed.org/api/v1/public'
   }
 
   if (chainId === polygonAmoy.id) {
