@@ -6,17 +6,7 @@ export default [
   },
   {
     'inputs': [],
-    'name': 'IncorrectBetsAmount',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
     'name': 'InvalidInitialization',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'NoFeePaid',
     'type': 'error',
   },
   {
@@ -57,19 +47,6 @@ export default [
       },
     ],
     'name': 'Initialized',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'newLP',
-        'type': 'address',
-      },
-    ],
-    'name': 'LPChanged',
     'type': 'event',
   },
   {
@@ -168,11 +145,6 @@ export default [
         'components': [
           {
             'internalType': 'address',
-            'name': 'bettor',
-            'type': 'address',
-          },
-          {
-            'internalType': 'address',
             'name': 'betOwner',
             'type': 'address',
           },
@@ -219,7 +191,7 @@ export default [
             'type': 'tuple[]',
           },
           {
-            'internalType': 'enum IBetTypes.BetType',
+            'internalType': 'enum IOrder.BetType',
             'name': 'betType',
             'type': 'uint8',
           },
@@ -260,11 +232,6 @@ export default [
         'components': [
           {
             'internalType': 'address',
-            'name': 'bettor',
-            'type': 'address',
-          },
-          {
-            'internalType': 'address',
             'name': 'betOwner',
             'type': 'address',
           },
@@ -311,7 +278,7 @@ export default [
             'type': 'tuple[]',
           },
           {
-            'internalType': 'enum IBetTypes.BetType',
+            'internalType': 'enum IOrder.BetType',
             'name': 'betType',
             'type': 'uint8',
           },
@@ -390,11 +357,6 @@ export default [
         'components': [
           {
             'internalType': 'address',
-            'name': 'bettor',
-            'type': 'address',
-          },
-          {
-            'internalType': 'address',
             'name': 'betOwner',
             'type': 'address',
           },
@@ -441,7 +403,7 @@ export default [
             'type': 'tuple[]',
           },
           {
-            'internalType': 'enum IBetTypes.BetType',
+            'internalType': 'enum IOrder.BetType',
             'name': 'betType',
             'type': 'uint8',
           },
@@ -473,11 +435,6 @@ export default [
     ],
     'name': 'getOrderBetsAmounts',
     'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'betsCount',
-        'type': 'uint256',
-      },
       {
         'internalType': 'uint128',
         'name': 'totalAmount',

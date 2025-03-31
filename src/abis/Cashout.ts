@@ -26,6 +26,11 @@ export default [
   },
   {
     'inputs': [],
+    'name': 'CobmoBetResolving',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
     'name': 'ECDSAInvalidSignature',
     'type': 'error',
   },

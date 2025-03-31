@@ -22,6 +22,7 @@ export * from './feed/sportsNavigation'
 export {
   BetResult,
   Bet_OrderBy as Legacy_Bet_OrderBy, 
+  GameStatus as LegacyGameStatus,
   SelectionResult,
   BetStatus as GraphBetStatus,
   V3_Bet_OrderBy as Bet_OrderBy,

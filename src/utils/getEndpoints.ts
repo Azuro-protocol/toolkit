@@ -32,21 +32,9 @@ export const getFeedGraphqlEndpoint = (chainId: ChainId) => (
   `https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-${endpointNameByChainId[chainId]}`
 )
 
-export const getPrematchGraphqlEndpoint = (chainId: ChainId) => (
+export const getBetsGraphqlEndpoint = (chainId: ChainId) => (
   `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
 )
-
-// export const getLiveGraphqlEndpoint = (chainId: ChainId) => {
-//   if (isDev(chainId)) {
-//     return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
-//   }
-
-//   if (chainId === polygonAmoy.id) {
-//     return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
-//   }
-
-//   return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
-// }
 
 export const getSocketEndpoint = (chainId: ChainId) => {
   if (isDev(chainId)) {

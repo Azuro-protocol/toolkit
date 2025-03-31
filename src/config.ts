@@ -2,7 +2,7 @@ import { polygon, gnosis, polygonAmoy, chiliz, spicy, baseSepolia, base } from '
 
 import { isDevEnabled, environments, Environment } from './envs'
 import { setupContracts } from './utils/setupContracts'
-import { getApiEndpoint, getFeedGraphqlEndpoint, getPrematchGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
+import { getApiEndpoint, getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
 import { type ChainData } from './global'
 
 
@@ -79,7 +79,7 @@ export const liveSupportedChains: ChainId[] = [ polygon.id, gnosis.id, polygonAm
 const gnosisData: ChainData = {
   chain: gnosis,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(gnosis.id),
+    bets: getBetsGraphqlEndpoint(gnosis.id),
     feed: getFeedGraphqlEndpoint(gnosis.id),
   },
   socket: getSocketEndpoint(gnosis.id),
@@ -102,7 +102,7 @@ const gnosisData: ChainData = {
 const gnosisDevData: ChainData = {
   chain: gnosis,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(gnosis.id),
+    bets: getBetsGraphqlEndpoint(gnosis.id),
     feed: getFeedGraphqlEndpoint(gnosis.id),
   },
   socket: getSocketEndpoint(gnosis.id),
@@ -125,7 +125,7 @@ const gnosisDevData: ChainData = {
 const polygonData: ChainData = {
   chain: polygon,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(polygon.id),
+    bets: getBetsGraphqlEndpoint(polygon.id),
     feed: getFeedGraphqlEndpoint(polygon.id),
   },
   socket: getSocketEndpoint(polygon.id),
@@ -148,7 +148,7 @@ const polygonData: ChainData = {
 const polygonAmoyData: ChainData = {
   chain: polygonAmoy,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(polygonAmoy.id),
+    bets: getBetsGraphqlEndpoint(polygonAmoy.id),
     feed: getFeedGraphqlEndpoint(polygon.id),
   },
   socket: getSocketEndpoint(polygonAmoy.id),
@@ -171,7 +171,7 @@ const polygonAmoyData: ChainData = {
 const polygonAmoyDevData: ChainData = {
   chain: polygonAmoy,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(polygonAmoy.id),
+    bets: getBetsGraphqlEndpoint(polygonAmoy.id),
     feed: getFeedGraphqlEndpoint(polygonAmoy.id),
   },
   socket: getSocketEndpoint(polygonAmoy.id),
@@ -194,7 +194,7 @@ const polygonAmoyDevData: ChainData = {
 const chilizData: ChainData = {
   chain: chiliz,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(chiliz.id),
+    bets: getBetsGraphqlEndpoint(chiliz.id),
     feed: getFeedGraphqlEndpoint(chiliz.id),
   },
   socket: getSocketEndpoint(chiliz.id),
@@ -217,7 +217,7 @@ const chilizData: ChainData = {
 const spicyData: ChainData = {
   chain: spicy,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(spicy.id),
+    bets: getBetsGraphqlEndpoint(spicy.id),
     feed: getFeedGraphqlEndpoint(spicy.id),
   },
   socket: getSocketEndpoint(spicy.id),
@@ -240,7 +240,7 @@ const spicyData: ChainData = {
 const baseSepoliaData: ChainData = {
   chain: baseSepolia,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(baseSepolia.id),
+    bets: getBetsGraphqlEndpoint(baseSepolia.id),
     feed: getFeedGraphqlEndpoint(baseSepolia.id),
   },
   socket: getSocketEndpoint(baseSepolia.id),
@@ -263,7 +263,7 @@ const baseSepoliaData: ChainData = {
 const baseData: ChainData = {
   chain: base,
   graphql: {
-    bets: getPrematchGraphqlEndpoint(base.id),
+    bets: getBetsGraphqlEndpoint(base.id),
     feed: getFeedGraphqlEndpoint(base.id),
   },
   socket: getSocketEndpoint(base.id),

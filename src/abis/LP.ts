@@ -1,10 +1,5 @@
 export default [
   {
-    'inputs': [],
-    'name': 'BetExpired',
-    'type': 'error',
-  },
-  {
     'inputs': [
       {
         'internalType': 'uint64',
@@ -18,26 +13,6 @@ export default [
   {
     'inputs': [],
     'name': 'CoreNotActive',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'GameAlreadyCanceled',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'GameAlreadyCreated',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'GameCanceled_',
-    'type': 'error',
-  },
-  {
-    'inputs': [],
-    'name': 'GameNotExists',
     'type': 'error',
   },
   {
@@ -57,7 +32,7 @@ export default [
   },
   {
     'inputs': [],
-    'name': 'IncorrectGameId',
+    'name': 'IncorrectLegacyLP',
     'type': 'error',
   },
   {
@@ -77,7 +52,7 @@ export default [
   },
   {
     'inputs': [],
-    'name': 'IncorrectTimestamp',
+    'name': 'IncorrectRelayer',
     'type': 'error',
   },
   {
@@ -88,6 +63,11 @@ export default [
   {
     'inputs': [],
     'name': 'LiquidityNotOwned',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
+    'name': 'LockedLiquidityComboLimitReached',
     'type': 'error',
   },
   {
@@ -244,6 +224,12 @@ export default [
       },
       {
         'indexed': false,
+        'internalType': 'uint64',
+        'name': 'reinforcementAbilityCombo',
+        'type': 'uint64',
+      },
+      {
+        'indexed': false,
         'internalType': 'uint128',
         'name': 'minBet',
         'type': 'uint128',
@@ -269,6 +255,31 @@ export default [
     'anonymous': false,
     'inputs': [
       {
+        'indexed': true,
+        'internalType': 'address',
+        'name': 'depositor',
+        'type': 'address',
+      },
+      {
+        'indexed': true,
+        'internalType': 'uint48',
+        'name': 'depositId',
+        'type': 'uint48',
+      },
+      {
+        'indexed': false,
+        'internalType': 'uint48[]',
+        'name': 'oldDepositIds',
+        'type': 'uint48[]',
+      },
+    ],
+    'name': 'DepositsMigrated',
+    'type': 'event',
+  },
+  {
+    'anonymous': false,
+    'inputs': [
+      {
         'indexed': false,
         'internalType': 'enum ILP.FeeType',
         'name': 'feeType',
@@ -288,38 +299,6 @@ export default [
     'anonymous': false,
     'inputs': [
       {
-        'indexed': true,
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'GameCanceled',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-      {
-        'indexed': false,
-        'internalType': 'uint64',
-        'name': 'newStart',
-        'type': 'uint64',
-      },
-    ],
-    'name': 'GameShifted',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
         'indexed': false,
         'internalType': 'uint64',
         'name': 'version',
@@ -327,6 +306,19 @@ export default [
       },
     ],
     'name': 'Initialized',
+    'type': 'event',
+  },
+  {
+    'anonymous': false,
+    'inputs': [
+      {
+        'indexed': true,
+        'internalType': 'address',
+        'name': 'legacyLP',
+        'type': 'address',
+      },
+    ],
+    'name': 'LegacyLPSet',
     'type': 'event',
   },
   {
@@ -352,69 +344,6 @@ export default [
       },
     ],
     'name': 'LiquidityAdded',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'account',
-        'type': 'address',
-      },
-      {
-        'indexed': true,
-        'internalType': 'uint48',
-        'name': 'depositId',
-        'type': 'uint48',
-      },
-      {
-        'indexed': false,
-        'internalType': 'uint256',
-        'name': 'amount',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'LiquidityDonated',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': false,
-        'internalType': 'address',
-        'name': 'newLiquidityManager',
-        'type': 'address',
-      },
-    ],
-    'name': 'LiquidityManagerChanged',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'account',
-        'type': 'address',
-      },
-      {
-        'indexed': true,
-        'internalType': 'uint48',
-        'name': 'depositId',
-        'type': 'uint48',
-      },
-      {
-        'indexed': false,
-        'internalType': 'uint128',
-        'name': 'amount',
-        'type': 'uint128',
-      },
-    ],
-    'name': 'LiquidityRefunded',
     'type': 'event',
   },
   {
@@ -466,31 +395,6 @@ export default [
     'inputs': [
       {
         'indexed': true,
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-      {
-        'indexed': false,
-        'internalType': 'uint64',
-        'name': 'startsAt',
-        'type': 'uint64',
-      },
-      {
-        'indexed': false,
-        'internalType': 'bytes',
-        'name': 'data',
-        'type': 'bytes',
-      },
-    ],
-    'name': 'NewGame',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
         'internalType': 'address',
         'name': 'previousOwner',
         'type': 'address',
@@ -503,6 +407,19 @@ export default [
       },
     ],
     'name': 'OwnershipTransferred',
+    'type': 'event',
+  },
+  {
+    'anonymous': false,
+    'inputs': [
+      {
+        'indexed': true,
+        'internalType': 'address',
+        'name': 'relayer',
+        'type': 'address',
+      },
+    ],
+    'name': 'RelayerSet',
     'type': 'event',
   },
   {
@@ -534,25 +451,6 @@ export default [
   {
     'inputs': [
       {
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'addCondition',
-    'outputs': [
-      {
-        'internalType': 'uint64',
-        'name': '',
-        'type': 'uint64',
-      },
-    ],
-    'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
         'internalType': 'address',
         'name': 'core',
         'type': 'address',
@@ -569,11 +467,6 @@ export default [
         'internalType': 'uint128',
         'name': 'amount',
         'type': 'uint128',
-      },
-      {
-        'internalType': 'bytes',
-        'name': 'data',
-        'type': 'bytes',
       },
     ],
     'name': 'addDeposit',
@@ -599,11 +492,6 @@ export default [
         'name': 'amount',
         'type': 'uint128',
       },
-      {
-        'internalType': 'bytes',
-        'name': 'data',
-        'type': 'bytes',
-      },
     ],
     'name': 'addDepositFor',
     'outputs': [
@@ -618,11 +506,6 @@ export default [
   },
   {
     'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
       {
         'internalType': 'uint128',
         'name': 'lockedReserve',
@@ -660,124 +543,12 @@ export default [
   {
     'inputs': [
       {
-        'components': [
-          {
-            'internalType': 'address',
-            'name': 'core',
-            'type': 'address',
-          },
-          {
-            'internalType': 'address',
-            'name': 'affiliate',
-            'type': 'address',
-          },
-          {
-            'internalType': 'uint64',
-            'name': 'minOdds',
-            'type': 'uint64',
-          },
-          {
-            'internalType': 'uint128',
-            'name': 'amount',
-            'type': 'uint128',
-          },
-          {
-            'internalType': 'uint64',
-            'name': 'expiresAt',
-            'type': 'uint64',
-          },
-          {
-            'internalType': 'bytes',
-            'name': 'data',
-            'type': 'bytes',
-          },
-        ],
-        'internalType': 'struct IBet.BetData',
-        'name': 'betData',
-        'type': 'tuple',
-      },
-    ],
-    'name': 'bet',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256',
-      },
-    ],
-    'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': 'bettor',
-        'type': 'address',
-      },
-      {
-        'components': [
-          {
-            'internalType': 'address',
-            'name': 'core',
-            'type': 'address',
-          },
-          {
-            'internalType': 'address',
-            'name': 'affiliate',
-            'type': 'address',
-          },
-          {
-            'internalType': 'uint64',
-            'name': 'minOdds',
-            'type': 'uint64',
-          },
-          {
-            'internalType': 'uint128',
-            'name': 'amount',
-            'type': 'uint128',
-          },
-          {
-            'internalType': 'uint64',
-            'name': 'expiresAt',
-            'type': 'uint64',
-          },
-          {
-            'internalType': 'bytes',
-            'name': 'data',
-            'type': 'bytes',
-          },
-        ],
-        'internalType': 'struct IBet.BetData',
-        'name': 'betData',
-        'type': 'tuple',
-      },
-    ],
-    'name': 'betFor',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256',
-      },
-    ],
-    'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
         'internalType': 'address',
         'name': 'core',
         'type': 'address',
       },
       {
         'components': [
-          {
-            'internalType': 'address',
-            'name': 'bettor',
-            'type': 'address',
-          },
           {
             'internalType': 'address',
             'name': 'betOwner',
@@ -826,7 +597,7 @@ export default [
             'type': 'tuple[]',
           },
           {
-            'internalType': 'enum IBetTypes.BetType',
+            'internalType': 'enum IOrder.BetType',
             'name': 'betType',
             'type': 'uint8',
           },
@@ -867,19 +638,6 @@ export default [
       },
     ],
     'name': 'betOrder',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'cancelGame',
     'outputs': [],
     'stateMutability': 'nonpayable',
     'type': 'function',
@@ -944,27 +702,14 @@ export default [
   {
     'inputs': [
       {
-        'internalType': 'address',
-        'name': 'newLiquidityManager',
-        'type': 'address',
-      },
-    ],
-    'name': 'changeLiquidityManager',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-      {
         'internalType': 'int128',
         'name': 'deltaReserve',
         'type': 'int128',
+      },
+      {
+        'internalType': 'bool',
+        'name': 'isCombo',
+        'type': 'bool',
       },
     ],
     'name': 'changeLockedLiquidity',
@@ -1038,7 +783,7 @@ export default [
     'inputs': [
       {
         'internalType': 'address',
-        'name': 'owner',
+        'name': 'owner_',
         'type': 'address',
       },
     ],
@@ -1094,6 +839,11 @@ export default [
         'type': 'uint64',
       },
       {
+        'internalType': 'uint64',
+        'name': 'reinforcementAbilityCombo',
+        'type': 'uint64',
+      },
+      {
         'internalType': 'uint128',
         'name': 'minBet',
         'type': 'uint128',
@@ -1103,31 +853,13 @@ export default [
         'name': 'lockedLiquidity',
         'type': 'uint128',
       },
+      {
+        'internalType': 'uint128',
+        'name': 'lockedLiquidityCombo',
+        'type': 'uint128',
+      },
     ],
     'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-      {
-        'internalType': 'uint64',
-        'name': 'startsAt',
-        'type': 'uint64',
-      },
-      {
-        'internalType': 'bytes',
-        'name': 'data',
-        'type': 'bytes',
-      },
-    ],
-    'name': 'createGame',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
     'type': 'function',
   },
   {
@@ -1141,24 +873,6 @@ export default [
       },
     ],
     'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint128',
-        'name': 'amount',
-        'type': 'uint128',
-      },
-      {
-        'internalType': 'uint48',
-        'name': 'depositId',
-        'type': 'uint48',
-      },
-    ],
-    'name': 'donateLiquidity',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
     'type': 'function',
   },
   {
@@ -1194,64 +908,6 @@ export default [
     'type': 'function',
   },
   {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'games',
-    'outputs': [
-      {
-        'internalType': 'bytes32',
-        'name': 'unusedVariable',
-        'type': 'bytes32',
-      },
-      {
-        'internalType': 'uint128',
-        'name': 'lockedLiquidity',
-        'type': 'uint128',
-      },
-      {
-        'internalType': 'uint64',
-        'name': 'startsAt',
-        'type': 'uint64',
-      },
-      {
-        'internalType': 'bool',
-        'name': 'canceled',
-        'type': 'bool',
-      },
-    ],
-    'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'getGameInfo',
-    'outputs': [
-      {
-        'internalType': 'uint64',
-        'name': '',
-        'type': 'uint64',
-      },
-      {
-        'internalType': 'bool',
-        'name': '',
-        'type': 'bool',
-      },
-    ],
-    'stateMutability': 'view',
-    'type': 'function',
-  },
-  {
     'inputs': [],
     'name': 'getLastDepositId',
     'outputs': [
@@ -1276,7 +932,12 @@ export default [
     'outputs': [
       {
         'internalType': 'uint128',
-        'name': '',
+        'name': 'maxLiquidity',
+        'type': 'uint128',
+      },
+      {
+        'internalType': 'uint128',
+        'name': 'maxLiquidityCombo',
         'type': 'uint128',
       },
     ],
@@ -1351,35 +1012,35 @@ export default [
     'type': 'function',
   },
   {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'isGameCanceled',
+    'inputs': [],
+    'name': 'legacyLP',
     'outputs': [
       {
-        'internalType': 'bool',
+        'internalType': 'address',
         'name': '',
-        'type': 'bool',
+        'type': 'address',
       },
     ],
     'stateMutability': 'view',
     'type': 'function',
   },
   {
-    'inputs': [],
-    'name': 'liquidityManager',
-    'outputs': [
+    'inputs': [
       {
-        'internalType': 'contract ILiquidityManager',
-        'name': '',
-        'type': 'address',
+        'internalType': 'uint48[]',
+        'name': 'oldDepositIds',
+        'type': 'uint48[]',
       },
     ],
-    'stateMutability': 'view',
+    'name': 'migrateDeposits',
+    'outputs': [
+      {
+        'internalType': 'uint48',
+        'name': 'depositId',
+        'type': 'uint48',
+      },
+    ],
+    'stateMutability': 'nonpayable',
     'type': 'function',
   },
   {
@@ -1409,21 +1070,16 @@ export default [
     'type': 'function',
   },
   {
-    'inputs': [
+    'inputs': [],
+    'name': 'relayer',
+    'outputs': [
       {
-        'internalType': 'uint128',
-        'name': 'amount',
-        'type': 'uint128',
-      },
-      {
-        'internalType': 'uint48',
-        'name': 'depositId',
-        'type': 'uint48',
+        'internalType': 'address',
+        'name': '',
+        'type': 'address',
       },
     ],
-    'name': 'refund',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
+    'stateMutability': 'view',
     'type': 'function',
   },
   {
@@ -1460,17 +1116,25 @@ export default [
   {
     'inputs': [
       {
-        'internalType': 'uint256',
-        'name': 'gameId',
-        'type': 'uint256',
-      },
-      {
-        'internalType': 'uint64',
-        'name': 'startsAt',
-        'type': 'uint64',
+        'internalType': 'address',
+        'name': 'legacyLP_',
+        'type': 'address',
       },
     ],
-    'name': 'shiftGame',
+    'name': 'setLegacyLP',
+    'outputs': [],
+    'stateMutability': 'nonpayable',
+    'type': 'function',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'relayer_',
+        'type': 'address',
+      },
+    ],
+    'name': 'setRelayer',
     'outputs': [],
     'stateMutability': 'nonpayable',
     'type': 'function',
@@ -1516,6 +1180,11 @@ export default [
       {
         'internalType': 'uint64',
         'name': 'reinforcementAbility',
+        'type': 'uint64',
+      },
+      {
+        'internalType': 'uint64',
+        'name': 'reinforcementAbilityCombo',
         'type': 'uint64',
       },
       {
@@ -1617,34 +1286,6 @@ export default [
         'type': 'address',
       },
       {
-        'internalType': 'address',
-        'name': 'to',
-        'type': 'address',
-      },
-      {
-        'internalType': 'uint128',
-        'name': 'amount',
-        'type': 'uint128',
-      },
-      {
-        'internalType': 'uint48',
-        'name': 'depositId',
-        'type': 'uint48',
-      },
-    ],
-    'name': 'withdrawLiquidityFor',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function',
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': 'core',
-        'type': 'address',
-      },
-      {
         'internalType': 'uint256',
         'name': 'tokenId',
         'type': 'uint256',
@@ -1658,6 +1299,24 @@ export default [
         'type': 'uint128',
       },
     ],
+    'stateMutability': 'nonpayable',
+    'type': 'function',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'core',
+        'type': 'address',
+      },
+      {
+        'internalType': 'uint256[]',
+        'name': 'tokenIds',
+        'type': 'uint256[]',
+      },
+    ],
+    'name': 'withdrawPayouts',
+    'outputs': [],
     'stateMutability': 'nonpayable',
     'type': 'function',
   },

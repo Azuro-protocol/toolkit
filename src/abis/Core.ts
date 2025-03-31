@@ -11,7 +11,22 @@ export default [
   },
   {
     'inputs': [],
+    'name': 'AlreadyRejected',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
     'name': 'BetNotExists',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
+    'name': 'CobmoBetNotResolved',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
+    'name': 'ComboBetResolvedPartially',
     'type': 'error',
   },
   {
@@ -32,9 +47,9 @@ export default [
   {
     'inputs': [
       {
-        'internalType': 'uint128',
-        'name': 'outcome',
-        'type': 'uint128',
+        'internalType': 'uint256',
+        'name': 'outcomeId',
+        'type': 'uint256',
       },
     ],
     'name': 'DuplicateOutcomes',
@@ -99,7 +114,22 @@ export default [
   },
   {
     'inputs': [],
+    'name': 'IncorrectOutcomeId',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
+    'name': 'IncorrectOutcomesCount',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
     'name': 'IncorrectSettleDate',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
+    'name': 'IncorrectSubBetsToReset',
     'type': 'error',
   },
   {
@@ -135,6 +165,11 @@ export default [
   {
     'inputs': [],
     'name': 'NotInitializing',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
+    'name': 'OddsTooSmall',
     'type': 'error',
   },
   {
@@ -213,11 +248,6 @@ export default [
     'type': 'error',
   },
   {
-    'inputs': [],
-    'name': 'SmallOdds',
-    'type': 'error',
-  },
-  {
     'inputs': [
       {
         'internalType': 'uint256',
@@ -226,6 +256,11 @@ export default [
       },
     ],
     'name': 'SubBetConditionResolved',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
+    'name': 'SubBetDuplicated',
     'type': 'error',
   },
   {
@@ -362,7 +397,7 @@ export default [
       },
       {
         'indexed': false,
-        'internalType': 'enum IBetTypes.BetType',
+        'internalType': 'enum IOrder.BetType',
         'name': 'betType',
         'type': 'uint8',
       },
@@ -438,19 +473,6 @@ export default [
       },
     ],
     'name': 'OwnershipTransferred',
-    'type': 'event',
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'liveCoreTools',
-        'type': 'address',
-      },
-    ],
-    'name': 'liveCoreToolsUpdated',
     'type': 'event',
   },
   {
@@ -539,11 +561,6 @@ export default [
     'name': 'conditions',
     'outputs': [
       {
-        'internalType': 'int128',
-        'name': 'maxReserved',
-        'type': 'int128',
-      },
-      {
         'internalType': 'uint128',
         'name': 'totalNetBets',
         'type': 'uint128',
@@ -564,7 +581,7 @@ export default [
         'type': 'uint8',
       },
       {
-        'internalType': 'enum IConditionState.ConditionState',
+        'internalType': 'enum ILiveCore.ConditionState',
         'name': 'state',
         'type': 'uint8',
       },
@@ -626,11 +643,6 @@ export default [
         'components': [
           {
             'internalType': 'address',
-            'name': 'bettor',
-            'type': 'address',
-          },
-          {
-            'internalType': 'address',
             'name': 'betOwner',
             'type': 'address',
           },
@@ -677,7 +689,7 @@ export default [
             'type': 'tuple[]',
           },
           {
-            'internalType': 'enum IBetTypes.BetType',
+            'internalType': 'enum IOrder.BetType',
             'name': 'betType',
             'type': 'uint8',
           },
@@ -763,9 +775,21 @@ export default [
       {
         'components': [
           {
-            'internalType': 'int128',
-            'name': 'maxReserved',
-            'type': 'int128',
+            'components': [
+              {
+                'internalType': 'uint256',
+                'name': 'time',
+                'type': 'uint256',
+              },
+              {
+                'internalType': 'uint256',
+                'name': 'tokenId',
+                'type': 'uint256',
+              },
+            ],
+            'internalType': 'struct ILiveCore.TimeBet[]',
+            'name': 'timeBets',
+            'type': 'tuple[]',
           },
           {
             'internalType': 'uint128[]',
@@ -793,7 +817,7 @@ export default [
             'type': 'uint8',
           },
           {
-            'internalType': 'enum IConditionState.ConditionState',
+            'internalType': 'enum ILiveCore.ConditionState',
             'name': 'state',
             'type': 'uint8',
           },
@@ -803,7 +827,7 @@ export default [
             'type': 'address',
           },
         ],
-        'internalType': 'struct IClientCondition.Condition',
+        'internalType': 'struct ILiveCore.Condition',
         'name': '',
         'type': 'tuple',
       },
@@ -815,11 +839,6 @@ export default [
     'inputs': [
       {
         'components': [
-          {
-            'internalType': 'address',
-            'name': 'bettor',
-            'type': 'address',
-          },
           {
             'internalType': 'address',
             'name': 'betOwner',
@@ -868,7 +887,7 @@ export default [
             'type': 'tuple[]',
           },
           {
-            'internalType': 'enum IBetTypes.BetType',
+            'internalType': 'enum IOrder.BetType',
             'name': 'betType',
             'type': 'uint8',
           },
@@ -900,11 +919,6 @@ export default [
     ],
     'name': 'getOrderBetsAmounts',
     'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'betsCount',
-        'type': 'uint256',
-      },
       {
         'internalType': 'uint128',
         'name': 'totalAmount',
@@ -1055,11 +1069,6 @@ export default [
         'components': [
           {
             'internalType': 'address',
-            'name': 'bettor',
-            'type': 'address',
-          },
-          {
-            'internalType': 'address',
             'name': 'betOwner',
             'type': 'address',
           },
@@ -1106,7 +1115,7 @@ export default [
             'type': 'tuple[]',
           },
           {
-            'internalType': 'enum IBetTypes.BetType',
+            'internalType': 'enum IOrder.BetType',
             'name': 'betType',
             'type': 'uint8',
           },
@@ -1171,7 +1180,7 @@ export default [
             'type': 'uint256[]',
           },
         ],
-        'internalType': 'struct IClientCoreBase.RejectedBet[]',
+        'internalType': 'struct ILiveCore.RejectedBet[]',
         'name': 'bets_',
         'type': 'tuple[]',
       },
@@ -1203,12 +1212,12 @@ export default [
                 'type': 'uint128',
               },
             ],
-            'internalType': 'struct IClientCoreBase.ComboSubBet[]',
+            'internalType': 'struct ILiveCore.ComboSubBet[]',
             'name': 'subBets',
             'type': 'tuple[]',
           },
         ],
-        'internalType': 'struct IClientCoreBase.RejectedComboBet[]',
+        'internalType': 'struct ILiveCore.RejectedComboBet[]',
         'name': 'bets_',
         'type': 'tuple[]',
       },
@@ -1244,13 +1253,8 @@ export default [
             'name': 'settledAt',
             'type': 'uint64',
           },
-          {
-            'internalType': 'uint256[]',
-            'name': 'rejectedBets',
-            'type': 'uint256[]',
-          },
         ],
-        'internalType': 'struct IClientCoreBase.ResolveData[]',
+        'internalType': 'struct ILiveCore.ResolveData[]',
         'name': 'resolveData',
         'type': 'tuple[]',
       },
