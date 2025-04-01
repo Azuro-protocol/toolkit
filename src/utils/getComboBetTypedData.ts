@@ -48,7 +48,7 @@ export const getComboBetTypedData = (props: Props): SignTypedDataParameters<type
         chainId: BigInt(clientData.chainId),
         relayerFeeAmount: BigInt(clientData.relayerFeeAmount),
       },
-      comboParts: bets.map(bet => ({
+      bets: bets.map(bet => ({
         conditionId: BigInt(bet.conditionId),
         outcomeId: BigInt(bet.outcomeId),
       })),

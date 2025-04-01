@@ -39,7 +39,7 @@ export const COMBO_BET_DATA_TYPES = {
     { name: 'minOdds', type: 'uint64' },
     { name: 'amount', type: 'uint128' },
     { name: 'nonce', type: 'uint256' },
-    { name: 'comboParts', type: 'ComboPart[]' },
+    { name: 'bets', type: 'ComboPart[]' },
   ],
   ClientData: CLIENT_DATA_TYPES,
   ComboPart: [
