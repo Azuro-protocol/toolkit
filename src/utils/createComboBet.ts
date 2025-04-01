@@ -10,15 +10,15 @@ type Props = {
   minOdds: string | bigint
   nonce: string | number | bigint
   clientData: BetClientData
-  bet: {
+  bets: {
     conditionId: string | bigint
     outcomeId: string | number | bigint
-  }
+  }[]
   signature: Hex
 }
 
 export const createComboBet = async (props: Props) => {
-  const { account, amount, minOdds, nonce, clientData, bet, signature } = props
+  const { account, amount, minOdds, nonce, clientData, bets, signature } = props
 
   const { chainId } = clientData
   const { api, environment } = chainsData[chainId]
@@ -29,13 +29,13 @@ export const createComboBet = async (props: Props) => {
     betOwner: account.toLowerCase(),
     clientBetData: {
       clientData,
-      amount,
+      amount: String(amount),
       minOdds: String(minOdds),
       nonce: String(nonce),
-      bet: {
+      bets: bets.map(bet => ({
         conditionId: String(bet.conditionId),
         outcomeId: Number(bet.outcomeId),
-      },
+      })),
     },
     bettorSignature: signature,
   }

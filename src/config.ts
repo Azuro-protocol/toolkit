@@ -48,7 +48,7 @@ export const COMBO_BET_DATA_TYPES = {
   ],
 } as const
 
-export const TYPED_DATA_DOMAIN_NAME = 'Live Betting' // TODO
+export const TYPED_DATA_DOMAIN_NAME = 'Live Betting'
 export const TYPED_DATA_DOMAIN_VERSION = '1.0.0'
 
 export const CASHOUT_DATA_TYPES = {
@@ -66,15 +66,6 @@ export const CASHOUT_DATA_TYPES = {
 } as const
 export const CASHOUT_TYPED_DATA_DOMAIN_NAME = 'Cash Out'
 export const CASHOUT_TYPED_DATA_DOMAIN_VERSION = '1.0.0'
-
-export const deBridgeUrl = 'https://api.dln.trade/v1.0'
-export const deBridgeTxUrl = 'https://stats-api.dln.trade/api'
-
-export const liveHostAddress = '0x67Fca88E2f5F2C33b86bFa4EccfCb8dCD6a56D17'
-/**
- * @deprecated please, check the liveCore address existence for specific chain in chainsData
- */
-export const liveSupportedChains: ChainId[] = [ polygon.id, gnosis.id, polygonAmoy.id ]
 
 const gnosisData: ChainData = {
   chain: gnosis,

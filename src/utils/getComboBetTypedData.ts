@@ -14,14 +14,14 @@ type Props = {
   amount: string | bigint
   nonce: string | bigint
   clientData: BetClientData
-  bet: {
+  bets: {
     conditionId: string | bigint
     outcomeId: string | bigint
-  }
+  }[]
 }
 
 export const getComboBetTypedData = (props: Props): SignTypedDataParameters<typeof COMBO_BET_DATA_TYPES> => {
-  const { account, amount, minOdds, nonce, clientData, bet } = props
+  const { account, amount, minOdds, nonce, clientData, bets } = props
   const { chainId, core } = clientData
 
   const EIP712Domain: TypedDataDomain = {
@@ -48,12 +48,10 @@ export const getComboBetTypedData = (props: Props): SignTypedDataParameters<type
         chainId: BigInt(clientData.chainId),
         relayerFeeAmount: BigInt(clientData.relayerFeeAmount),
       },
-      comboParts: [
-        {
-          conditionId: BigInt(bet.conditionId),
-          outcomeId: BigInt(bet.outcomeId),
-        },
-      ],
+      comboParts: bets.map(bet => ({
+        conditionId: BigInt(bet.conditionId),
+        outcomeId: BigInt(bet.outcomeId),
+      })),
     },
   }
 }
