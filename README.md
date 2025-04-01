@@ -13,9 +13,9 @@ npm i --save @azuro-org/toolkit
 
 ```
 @azuro-org/dictionaries@^3.0.26
-@wagmi/core@^2.16.4
-viem@^2.23.2
-graphql-tag@^2.12.0
+@wagmi/core@^2.16.7
+viem@^2.24.3
+graphql-tag@^2.12.6
 ```
 
 Package information can be found in our [Doc](https://gem.azuro.org/hub/apps/toolkit/overview)

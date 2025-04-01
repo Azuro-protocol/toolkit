@@ -40,9 +40,9 @@
   "homepage": "https://github.com/Azuro-protocol/toolkit#readme",
   "peerDependencies": {
     "@azuro-org/dictionaries": "^3.0.26",
-    "graphql-tag": "^2.12.0",
-    "@wagmi/core": "^2.16.4",
-    "viem": "^2.23.2"
+    "graphql-tag": "^2.12.6",
+    "@wagmi/core": "^2.16.7",
+    "viem": "^2.24.3"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
