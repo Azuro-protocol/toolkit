@@ -27,7 +27,7 @@ export const BET_DATA_TYPES = {
   SubBet: [
     { name: 'conditionId', type: 'uint256' },
     { name: 'outcomeId', type: 'uint128' },
-    { name: 'odds', type: 'uint64' },
+    { name: 'minOdds', type: 'uint64' },
     { name: 'amount', type: 'uint128' },
     { name: 'nonce', type: 'uint256' },
   ],
@@ -36,15 +36,15 @@ export const BET_DATA_TYPES = {
 export const COMBO_BET_DATA_TYPES = {
   ClientComboBetData: [
     { name: 'clientData', type: 'ClientData' },
+    { name: 'minOdds', type: 'uint64' },
     { name: 'amount', type: 'uint128' },
     { name: 'nonce', type: 'uint256' },
-    { name: 'bets', type: 'ComboPart[]' },
+    { name: 'comboParts', type: 'ComboPart[]' },
   ],
   ClientData: CLIENT_DATA_TYPES,
   ComboPart: [
     { name: 'conditionId', type: 'uint256' },
     { name: 'outcomeId', type: 'uint128' },
-    { name: 'odds', type: 'uint64' },
   ],
 } as const
 

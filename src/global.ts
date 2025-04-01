@@ -49,7 +49,7 @@ export type BetClientData = {
   attention: string
   affiliate: Address
   core: Address
-  expiresAt: number | bigint
+  expiresAt: number
   chainId: ChainId
-  relayerFeeAmount: string | bigint
+  relayerFeeAmount: string
 }

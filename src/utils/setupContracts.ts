@@ -47,7 +47,7 @@ export const setupContracts = ({
       abi: coreAbi,
     },
     relayer: {
-      address: core,
+      address: relayer,
       abi: relayerAbi,
     },
     azuroBet: {

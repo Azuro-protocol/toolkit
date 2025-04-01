@@ -1,8 +1,6 @@
 import { type SignTypedDataParameters, type Address, type TypedDataDomain } from 'viem'
 
 import {
-  type ChainId,
-
   BET_DATA_TYPES,
   TYPED_DATA_DOMAIN_NAME,
   TYPED_DATA_DOMAIN_VERSION,
@@ -16,7 +14,7 @@ type Props = {
   bet: {
     conditionId: string | bigint
     outcomeId: string | bigint
-    odds: string | bigint
+    minOdds: string | bigint
     amount: string | bigint
     nonce: string | bigint
   }
@@ -51,7 +49,7 @@ export const getBetTypedData = (props: Props): SignTypedDataParameters<typeof BE
         {
           conditionId: BigInt(bet.conditionId),
           outcomeId: BigInt(bet.outcomeId),
-          odds: BigInt(bet.odds),
+          minOdds: BigInt(bet.minOdds),
           amount: BigInt(bet.amount),
           nonce: BigInt(bet.nonce),
         },

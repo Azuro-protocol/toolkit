@@ -1,8 +1,6 @@
 import { type SignTypedDataParameters, type Address, type TypedDataDomain } from 'viem'
 
 import {
-  type ChainId,
-
   COMBO_BET_DATA_TYPES,
   TYPED_DATA_DOMAIN_NAME,
   TYPED_DATA_DOMAIN_VERSION,
@@ -12,18 +10,18 @@ import { type BetClientData } from '../global'
 
 type Props = {
   account: Address
+  minOdds: string | bigint
   amount: string | bigint
   nonce: string | bigint
   clientData: BetClientData
   bet: {
     conditionId: string | bigint
     outcomeId: string | bigint
-    odds: string | bigint
   }
 }
 
 export const getComboBetTypedData = (props: Props): SignTypedDataParameters<typeof COMBO_BET_DATA_TYPES> => {
-  const { account, amount, nonce, clientData, bet } = props
+  const { account, amount, minOdds, nonce, clientData, bet } = props
   const { chainId, core } = clientData
 
   const EIP712Domain: TypedDataDomain = {
@@ -40,6 +38,7 @@ export const getComboBetTypedData = (props: Props): SignTypedDataParameters<type
     types: COMBO_BET_DATA_TYPES,
     message: {
       amount: BigInt(amount),
+      minOdds: BigInt(minOdds),
       nonce: BigInt(nonce),
       clientData: {
         attention: clientData.attention,
@@ -49,11 +48,10 @@ export const getComboBetTypedData = (props: Props): SignTypedDataParameters<type
         chainId: BigInt(clientData.chainId),
         relayerFeeAmount: BigInt(clientData.relayerFeeAmount),
       },
-      bets: [
+      comboParts: [
         {
           conditionId: BigInt(bet.conditionId),
           outcomeId: BigInt(bet.outcomeId),
-          odds: BigInt(bet.odds),
         },
       ],
     },

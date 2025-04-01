@@ -3,8 +3,10 @@ import { type Selection } from '../global'
 
 
 export type GetMaxBetResponse = {
-  maxBet: string
-  maxPayout: string
+  response: {
+    maxBet: string
+    maxPayout: string
+  }
 }
 
 type Props = {
@@ -42,5 +44,5 @@ export const getMaxBet = async (props: Props) => {
 
   const data: GetMaxBetResponse = await response.json()
 
-  return data
+  return data.response
 }

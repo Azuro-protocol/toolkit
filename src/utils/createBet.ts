@@ -10,7 +10,7 @@ type Props = {
   bet: {
     conditionId: string | bigint
     outcomeId: string | number | bigint
-    odds: string | bigint
+    minOdds: string | bigint
     amount: string | bigint
     nonce: string | number | bigint
   }
@@ -30,9 +30,9 @@ export const createBet = async (props: Props) => {
     clientBetData: {
       clientData,
       bet: {
-        conditionId: bet.conditionId,
+        conditionId: String(bet.conditionId),
         outcomeId: Number(bet.outcomeId),
-        odds: bet.odds,
+        minOdds: String(bet.minOdds),
         amount: String(bet.amount),
         nonce: String(bet.nonce),
       },
