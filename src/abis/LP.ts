@@ -583,7 +583,7 @@ export default [
               },
               {
                 'internalType': 'uint128',
-                'name': 'payoutLimit',
+                'name': 'potentialLossLimit',
                 'type': 'uint128',
               },
               {

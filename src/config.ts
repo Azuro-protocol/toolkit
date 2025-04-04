@@ -169,11 +169,11 @@ const polygonAmoyDevData: ChainData = {
   api: getApiEndpoint(polygonAmoy.id),
   environment: environments[polygonAmoy.id],
   contracts: setupContracts({
-    lp: '0x42a63B59eE5c30aeE5d533a1D2286b60d3969D6e',
-    core: '0x8AB5BD8E33EC8791e76ed2fC26Cb15aCfD47bEf5',
-    relayer: '0x8DEb193991aAA60D2EC770D5ea0dDED44368BA56',
-    azuroBet: '0x3846f4A3759a9DB5E0A14dCF3e7026b885ed738C',
-    cashout: '0x3B14f6528050eF8Fd710552D8c30434D57D1C4ec',
+    lp: '0x79A8d0e954A1275DFe6A2a8acDD136718B54cA16',
+    core: '0xe6AA5BAE8a4fFe65dD60a1868C1044Cb05d55195',
+    relayer: '0x40cff79D064DA1723F838B2Aaad2cfE1ba5b2812',
+    azuroBet: '0x8583942bEFd6dc0166Dfb0b9fd680457e01A94Ca',
+    cashout: '0x43Ec9E387dC3f11CEAF9a428BD8c1Df47823ce7C',
   }),
   betToken: {
     address: '0xCf1b86ceD971b88C042C64A9c099377e2738073C',

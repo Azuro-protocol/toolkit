@@ -26,7 +26,7 @@ export default [
   },
   {
     'inputs': [],
-    'name': 'CobmoBetResolving',
+    'name': 'ComboBetResolving',
     'type': 'error',
   },
   {

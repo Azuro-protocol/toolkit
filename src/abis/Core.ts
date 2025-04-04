@@ -173,17 +173,6 @@ export default [
     'type': 'error',
   },
   {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'conditionId',
-        'type': 'uint256',
-      },
-    ],
-    'name': 'OneOfConditionsInComboNotFinished',
-    'type': 'error',
-  },
-  {
     'inputs': [],
     'name': 'OnlyLp',
     'type': 'error',
@@ -223,7 +212,7 @@ export default [
   },
   {
     'inputs': [],
-    'name': 'PayoutLimit',
+    'name': 'PotentialLossLimit',
     'type': 'error',
   },
   {
@@ -449,7 +438,7 @@ export default [
       {
         'indexed': false,
         'internalType': 'uint128',
-        'name': 'payoutLimit',
+        'name': 'potentialLossLimit',
         'type': 'uint128',
       },
     ],
@@ -675,7 +664,7 @@ export default [
               },
               {
                 'internalType': 'uint128',
-                'name': 'payoutLimit',
+                'name': 'potentialLossLimit',
                 'type': 'uint128',
               },
               {
@@ -873,7 +862,7 @@ export default [
               },
               {
                 'internalType': 'uint128',
-                'name': 'payoutLimit',
+                'name': 'potentialLossLimit',
                 'type': 'uint128',
               },
               {
@@ -1101,7 +1090,7 @@ export default [
               },
               {
                 'internalType': 'uint128',
-                'name': 'payoutLimit',
+                'name': 'potentialLossLimit',
                 'type': 'uint128',
               },
               {
