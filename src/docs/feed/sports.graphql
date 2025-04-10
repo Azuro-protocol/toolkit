@@ -15,6 +15,7 @@ query Sports(
     slug
     name
     sportId
+    turnover
     countries(
       where: $countryFilter, 
       orderBy: turnover, 

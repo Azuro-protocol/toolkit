@@ -34,4 +34,23 @@ query GameBets($gameId: BigInt!, $actor: String) {
       }
     }
   }
+  v3Bets(where: { _gamesIds: [ $gameId ], actor: $actor }) {
+    rawAmount
+    rawPotentialPayout
+    result
+    isCashedOut
+    selections {
+      rawOdds
+      outcome {
+        outcomeId
+        condition {
+          conditionId
+          gameId
+        }
+      }
+    }
+    freebet {
+      id
+    }
+  }
 }

@@ -19,13 +19,13 @@ projects:
           headers:
             user-agent: JS GraphQL
           introspect: false
-  # live-dev:
-  #   schema: live.schema.graphql
-  #   include: src/docs/live/**/*.graphql
-  #   extensions:
-  #     endpoints:
-  #       Protocol:
-  #         url: https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod
-  #         headers:
-  #           user-agent: JS GraphQL
-  #         introspect: false
+  legacy-live-feed:
+    schema: live.schema.graphql
+    include: src/docs/legacy-live-feed/**/*.graphql
+    extensions:
+      endpoints:
+        Protocol:
+          url: https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod
+          headers:
+            user-agent: JS GraphQL
+          introspect: false

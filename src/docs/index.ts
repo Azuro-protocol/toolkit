@@ -3,8 +3,7 @@ export * from './bets/fragments/legacyLiveBet'
 export * from './bets/fragments/legacyPrematchBet'
 export * from './bets/fragments/bet'
 export * from './bets/bettors'
-export * from './bets/legacyLiveBets'
-export * from './bets/legacyPrematchBets'
+export * from './bets/legacyBets'
 export * from './bets/gameBets'
 export * from './bets/bets'
 
@@ -18,6 +17,8 @@ export * from './feed/games'
 export * from './feed/navigation'
 export * from './feed/sports'
 export * from './feed/sportsNavigation'
+
+export * from './legacy-live-feed/games'
 
 export {
   BetResult,

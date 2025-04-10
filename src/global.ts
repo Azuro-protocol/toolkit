@@ -16,6 +16,10 @@ export type ChainData = {
   graphql: {
     bets: string
     feed: string
+    /**
+      * @deprecated Only for v2 feed
+    */
+    legacyLive: string
   }
   socket: string
   api: string

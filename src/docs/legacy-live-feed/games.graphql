@@ -1,0 +1,39 @@
+query LegacyLiveGames(
+  $first: Int,
+  $skip: Int,
+  $where: Game_filter!,
+  $orderBy: Game_orderBy,
+  $orderDirection: OrderDirection,
+) {
+  games(
+    first: $first,
+    skip: $skip,
+    where: $where,
+    orderBy: $orderBy,
+    orderDirection: $orderDirection,
+    subgraphError: allow,
+  ) {
+    id
+    gameId
+    title
+    startsAt
+    status
+    sport {
+      sportId
+      slug
+      name
+    }
+    league {
+      slug
+      name
+      country {
+        slug
+        name
+      }
+    }
+    participants {
+      image
+      name
+    }
+  }
+}

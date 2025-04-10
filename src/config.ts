@@ -2,7 +2,7 @@ import { polygon, gnosis, polygonAmoy, chiliz, spicy, baseSepolia, base } from '
 
 import { isDevEnabled, environments, Environment } from './envs'
 import { setupContracts } from './utils/setupContracts'
-import { getApiEndpoint, getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
+import { getApiEndpoint, getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getSocketEndpoint, getLegacyLiveGraphqlEndpoint } from './utils/getEndpoints'
 import { type ChainData } from './global'
 
 
@@ -72,6 +72,7 @@ const gnosisData: ChainData = {
   graphql: {
     bets: getBetsGraphqlEndpoint(gnosis.id),
     feed: getFeedGraphqlEndpoint(gnosis.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(gnosis.id),
   },
   socket: getSocketEndpoint(gnosis.id),
   api: getApiEndpoint(gnosis.id),
@@ -95,6 +96,7 @@ const gnosisDevData: ChainData = {
   graphql: {
     bets: getBetsGraphqlEndpoint(gnosis.id),
     feed: getFeedGraphqlEndpoint(gnosis.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(gnosis.id),
   },
   socket: getSocketEndpoint(gnosis.id),
   api: getApiEndpoint(gnosis.id),
@@ -118,6 +120,7 @@ const polygonData: ChainData = {
   graphql: {
     bets: getBetsGraphqlEndpoint(polygon.id),
     feed: getFeedGraphqlEndpoint(polygon.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(polygon.id),
   },
   socket: getSocketEndpoint(polygon.id),
   api: getApiEndpoint(polygon.id),
@@ -140,7 +143,8 @@ const polygonAmoyData: ChainData = {
   chain: polygonAmoy,
   graphql: {
     bets: getBetsGraphqlEndpoint(polygonAmoy.id),
-    feed: getFeedGraphqlEndpoint(polygon.id),
+    feed: getFeedGraphqlEndpoint(polygonAmoy.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(polygonAmoy.id),
   },
   socket: getSocketEndpoint(polygonAmoy.id),
   api: getApiEndpoint(polygonAmoy.id),
@@ -164,6 +168,7 @@ const polygonAmoyDevData: ChainData = {
   graphql: {
     bets: getBetsGraphqlEndpoint(polygonAmoy.id),
     feed: getFeedGraphqlEndpoint(polygonAmoy.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(polygonAmoy.id),
   },
   socket: getSocketEndpoint(polygonAmoy.id),
   api: getApiEndpoint(polygonAmoy.id),
@@ -187,6 +192,7 @@ const chilizData: ChainData = {
   graphql: {
     bets: getBetsGraphqlEndpoint(chiliz.id),
     feed: getFeedGraphqlEndpoint(chiliz.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(chiliz.id),
   },
   socket: getSocketEndpoint(chiliz.id),
   api: getApiEndpoint(chiliz.id),
@@ -210,6 +216,7 @@ const spicyData: ChainData = {
   graphql: {
     bets: getBetsGraphqlEndpoint(spicy.id),
     feed: getFeedGraphqlEndpoint(spicy.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(spicy.id),
   },
   socket: getSocketEndpoint(spicy.id),
   api: getApiEndpoint(spicy.id),
@@ -233,6 +240,7 @@ const baseSepoliaData: ChainData = {
   graphql: {
     bets: getBetsGraphqlEndpoint(baseSepolia.id),
     feed: getFeedGraphqlEndpoint(baseSepolia.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(baseSepolia.id),
   },
   socket: getSocketEndpoint(baseSepolia.id),
   api: getApiEndpoint(baseSepolia.id),
@@ -256,6 +264,7 @@ const baseData: ChainData = {
   graphql: {
     bets: getBetsGraphqlEndpoint(base.id),
     feed: getFeedGraphqlEndpoint(base.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(base.id),
   },
   socket: getSocketEndpoint(base.id),
   api: getApiEndpoint(base.id),

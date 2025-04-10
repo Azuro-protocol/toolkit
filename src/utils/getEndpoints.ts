@@ -36,6 +36,21 @@ export const getBetsGraphqlEndpoint = (chainId: ChainId) => (
   `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
 )
 
+/**
+ * @deprecated Only for v2 feed
+ */
+export const getLegacyLiveGraphqlEndpoint = (chainId: ChainId) => {
+  if (isDev(chainId)) {
+    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
+  }
+
+  if (chainId === polygonAmoy.id) {
+    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
+  }
+
+  return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
+}
+
 export const getSocketEndpoint = (chainId: ChainId) => {
   if (isDev(chainId)) {
     return 'wss://dev-streams.onchainfeed.org/v1/streams'
