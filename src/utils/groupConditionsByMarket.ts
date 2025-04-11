@@ -2,10 +2,12 @@ import {
   dictionaries, getMarketKey, getMarketName,
   getMarketDescription, getSelectionName,
 } from '@azuro-org/dictionaries'
+import { formatUnits } from 'viem'
 
 import { type ConditionsQuery } from '../docs/feed/conditions'
 import { ConditionState } from '../docs/feed/types'
 import type { Selection } from '../global'
+import { MARGIN_DECIMALS } from '../config'
 
 
 export type MarketOutcome = {
@@ -26,6 +28,7 @@ type TMarket<C> = {
 type Condition = {
   conditionId: string
   state: ConditionState
+  margin: string
   isExpressForbidden: boolean
   outcomes: MarketOutcome[]
 }
@@ -50,6 +53,7 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
       wonOutcomeIds,
       isExpressForbidden,
       title: customMarketName,
+      margin,
       game: { gameId },
     } = condition
 
@@ -81,7 +85,6 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
         conditionId,
       }
     }
-
     // end checking duplicates
 
     if (!markets[marketKey]) {
@@ -97,6 +100,7 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
       conditionId,
       state,
       isExpressForbidden,
+      margin: formatUnits(BigInt(margin), MARGIN_DECIMALS),
       outcomes: [],
     }
 

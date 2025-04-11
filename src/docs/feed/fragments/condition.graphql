@@ -6,18 +6,12 @@ fragment Condition on Condition {
   isExpressForbidden
   isPrematchEnabled
   isLiveEnabled
-  # margin
+  margin
   outcomes {
     title
     outcomeId
     odds: currentOdds
   }
-  # core {
-  #   address
-  #   liquidityPool {
-  #     address
-  #   }
-  # }
   game {
     gameId
     sport {

@@ -4,6 +4,7 @@ fragment GameInfo on Game {
   title
   startsAt
   state
+  turnover
   sport {
     sportId
     slug

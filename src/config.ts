@@ -6,6 +6,7 @@ import { getApiEndpoint, getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getSock
 import { type ChainData } from './global'
 
 
+export const MARGIN_DECIMALS = 12
 export const ODDS_DECIMALS = 12
 export const MIN_BET_AMOUNT = 1
 
