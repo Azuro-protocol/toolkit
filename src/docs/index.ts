@@ -28,12 +28,6 @@ export {
   BetStatus as GraphBetStatus,
   V3_Bet_OrderBy as Bet_OrderBy,
   ConditionStatus as BetConditionStatus,
+  V3_SelectionConditionKind as SelectionKind,
 } from './bets/types'
-export {
-  type Condition_Filter,
-  Game_OrderBy, 
-  ConditionState, 
-  OrderDirection, 
-  GameState,
-  Condition_OrderBy,
-} from './feed/types'
+export * from './feed/types'

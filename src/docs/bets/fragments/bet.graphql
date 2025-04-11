@@ -23,6 +23,7 @@ fragment Bet on V3_Bet {
   selections {
     odds
     result
+    conditionKind
     outcome {
       outcomeId
       title

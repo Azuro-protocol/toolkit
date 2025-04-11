@@ -2,12 +2,10 @@ import {
   dictionaries, getMarketKey, getMarketName,
   getMarketDescription, getSelectionName,
 } from '@azuro-org/dictionaries'
-import { formatUnits } from 'viem'
 
 import { type ConditionsQuery } from '../docs/feed/conditions'
 import { ConditionState } from '../docs/feed/types'
 import type { Selection } from '../global'
-import { MARGIN_DECIMALS } from '../config'
 
 
 export type MarketOutcome = {
@@ -100,7 +98,7 @@ export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions'
       conditionId,
       state,
       isExpressForbidden,
-      margin: formatUnits(BigInt(margin), MARGIN_DECIMALS),
+      margin,
       outcomes: [],
     }
 
