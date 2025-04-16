@@ -1,6 +1,7 @@
 fragment GameInfo on Game {
   id
   gameId
+  slug
   title
   startsAt
   state

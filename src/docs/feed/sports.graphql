@@ -9,6 +9,8 @@ query Sports(
 ) {
   sports(
     where: $sportFilter, 
+    orderBy: turnover, 
+    orderDirection: desc,
     subgraphError: allow
   ) {
     id
