@@ -15,6 +15,7 @@ query LegacyLiveGames(
   ) {
     id
     gameId
+    slug
     title
     startsAt
     status
@@ -22,6 +23,10 @@ query LegacyLiveGames(
       sportId
       slug
       name
+      sporthub {
+        id
+        slug
+      }
     }
     league {
       slug

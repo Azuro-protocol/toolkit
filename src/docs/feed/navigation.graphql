@@ -14,6 +14,7 @@ query Navigation(
     sportId
     sporthub {
       id
+      slug
     }
     activeGamesCount
     activeLiveGamesCount
