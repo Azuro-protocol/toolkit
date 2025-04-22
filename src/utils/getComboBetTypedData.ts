@@ -47,6 +47,9 @@ export const getComboBetTypedData = (props: Props): SignTypedDataParameters<type
         expiresAt: BigInt(clientData.expiresAt),
         chainId: BigInt(clientData.chainId),
         relayerFeeAmount: BigInt(clientData.relayerFeeAmount),
+        isBetSponsored: clientData.isBetSponsored,
+        isFeeSponsored: clientData.isFeeSponsored,
+        isSponsoredBetReturnable: clientData.isSponsoredBetReturnable,
       },
       bets: bets.map(bet => ({
         conditionId: BigInt(bet.conditionId),

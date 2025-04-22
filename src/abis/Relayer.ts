@@ -6,12 +6,22 @@ export default [
   },
   {
     'inputs': [],
+    'name': 'IncorrectAddress',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
     'name': 'InvalidInitialization',
     'type': 'error',
   },
   {
     'inputs': [],
     'name': 'NotInitializing',
+    'type': 'error',
+  },
+  {
+    'inputs': [],
+    'name': 'OnlyPaymaster',
     'type': 'error',
   },
   {
@@ -35,6 +45,43 @@ export default [
     ],
     'name': 'OwnableUnauthorizedAccount',
     'type': 'error',
+  },
+  {
+    'anonymous': false,
+    'inputs': [
+      {
+        'indexed': true,
+        'internalType': 'address',
+        'name': 'relayer',
+        'type': 'address',
+      },
+      {
+        'indexed': true,
+        'internalType': 'address',
+        'name': 'affiliate',
+        'type': 'address',
+      },
+      {
+        'indexed': true,
+        'internalType': 'address',
+        'name': 'bettor',
+        'type': 'address',
+      },
+      {
+        'indexed': false,
+        'internalType': 'uint256[]',
+        'name': 'tokenIds',
+        'type': 'uint256[]',
+      },
+      {
+        'indexed': false,
+        'internalType': 'uint256',
+        'name': 'amount',
+        'type': 'uint256',
+      },
+    ],
+    'name': 'FeeSponsored',
+    'type': 'event',
   },
   {
     'anonymous': false,
@@ -66,6 +113,19 @@ export default [
       },
     ],
     'name': 'OwnershipTransferred',
+    'type': 'event',
+  },
+  {
+    'anonymous': false,
+    'inputs': [
+      {
+        'indexed': true,
+        'internalType': 'address',
+        'name': 'payMaster',
+        'type': 'address',
+      },
+    ],
+    'name': 'PayMasterChanged',
     'type': 'event',
   },
   {
@@ -229,6 +289,179 @@ export default [
   {
     'inputs': [
       {
+        'internalType': 'address',
+        'name': 'relayExecutor',
+        'type': 'address',
+      },
+      {
+        'components': [
+          {
+            'internalType': 'string',
+            'name': 'attention',
+            'type': 'string',
+          },
+          {
+            'internalType': 'address',
+            'name': 'affiliate',
+            'type': 'address',
+          },
+          {
+            'internalType': 'address',
+            'name': 'core',
+            'type': 'address',
+          },
+          {
+            'internalType': 'uint256',
+            'name': 'expiresAt',
+            'type': 'uint256',
+          },
+          {
+            'internalType': 'uint256',
+            'name': 'chainId',
+            'type': 'uint256',
+          },
+          {
+            'internalType': 'uint256',
+            'name': 'relayerFeeAmount',
+            'type': 'uint256',
+          },
+          {
+            'internalType': 'bool',
+            'name': 'isFeeSponsored',
+            'type': 'bool',
+          },
+          {
+            'internalType': 'bool',
+            'name': 'isBetSponsored',
+            'type': 'bool',
+          },
+          {
+            'internalType': 'bool',
+            'name': 'isSponsoredBetReturnable',
+            'type': 'bool',
+          },
+        ],
+        'internalType': 'struct IOrder.ClientData',
+        'name': 'data',
+        'type': 'tuple',
+      },
+      {
+        'components': [
+          {
+            'internalType': 'address',
+            'name': 'betOwner',
+            'type': 'address',
+          },
+          {
+            'components': [
+              {
+                'internalType': 'uint256',
+                'name': 'gameId',
+                'type': 'uint256',
+              },
+              {
+                'internalType': 'uint256',
+                'name': 'conditionId',
+                'type': 'uint256',
+              },
+              {
+                'internalType': 'enum IOrder.ConditionKind',
+                'name': 'conditionKind',
+                'type': 'uint8',
+              },
+              {
+                'internalType': 'uint64[]',
+                'name': 'odds',
+                'type': 'uint64[]',
+              },
+              {
+                'internalType': 'uint128[]',
+                'name': 'outcomes',
+                'type': 'uint128[]',
+              },
+              {
+                'internalType': 'uint128',
+                'name': 'potentialLossLimit',
+                'type': 'uint128',
+              },
+              {
+                'internalType': 'uint8',
+                'name': 'winningOutcomesCount',
+                'type': 'uint8',
+              },
+            ],
+            'internalType': 'struct IOrder.ConditionData[]',
+            'name': 'conditionDatas',
+            'type': 'tuple[]',
+          },
+          {
+            'internalType': 'enum IOrder.BetType',
+            'name': 'betType',
+            'type': 'uint8',
+          },
+          {
+            'internalType': 'address',
+            'name': 'oracle',
+            'type': 'address',
+          },
+          {
+            'internalType': 'bytes',
+            'name': 'clientBetData',
+            'type': 'bytes',
+          },
+          {
+            'internalType': 'bytes',
+            'name': 'bettorSignature',
+            'type': 'bytes',
+          },
+          {
+            'internalType': 'bytes',
+            'name': 'oracleSignature',
+            'type': 'bytes',
+          },
+        ],
+        'internalType': 'struct IOrder.OrderData',
+        'name': 'order',
+        'type': 'tuple',
+      },
+      {
+        'internalType': 'address',
+        'name': 'betOwner',
+        'type': 'address',
+      },
+      {
+        'internalType': 'bytes',
+        'name': 'hashes',
+        'type': 'bytes',
+      },
+    ],
+    'name': 'betOrder',
+    'outputs': [
+      {
+        'internalType': 'uint256[]',
+        'name': 'tokenIds',
+        'type': 'uint256[]',
+      },
+    ],
+    'stateMutability': 'nonpayable',
+    'type': 'function',
+  },
+  {
+    'inputs': [
+      {
+        'internalType': 'address',
+        'name': 'payMaster_',
+        'type': 'address',
+      },
+    ],
+    'name': 'changePayMaster',
+    'outputs': [],
+    'stateMutability': 'nonpayable',
+    'type': 'function',
+  },
+  {
+    'inputs': [
+      {
         'components': [
           {
             'internalType': 'address',
@@ -342,6 +575,21 @@ export default [
             'name': 'relayerFeeAmount',
             'type': 'uint256',
           },
+          {
+            'internalType': 'bool',
+            'name': 'isFeeSponsored',
+            'type': 'bool',
+          },
+          {
+            'internalType': 'bool',
+            'name': 'isBetSponsored',
+            'type': 'bool',
+          },
+          {
+            'internalType': 'bool',
+            'name': 'isSponsoredBetReturnable',
+            'type': 'bool',
+          },
         ],
         'internalType': 'struct IOrder.ClientData',
         'name': 'clientData',
@@ -440,6 +688,11 @@ export default [
         'name': 'totalAmount',
         'type': 'uint128',
       },
+      {
+        'internalType': 'uint128[]',
+        'name': 'amounts',
+        'type': 'uint128[]',
+      },
     ],
     'stateMutability': 'pure',
     'type': 'function',
@@ -449,6 +702,11 @@ export default [
       {
         'internalType': 'address',
         'name': 'lp_',
+        'type': 'address',
+      },
+      {
+        'internalType': 'address',
+        'name': 'payMaster_',
         'type': 'address',
       },
     ],
@@ -476,6 +734,19 @@ export default [
     'outputs': [
       {
         'internalType': 'address',
+        'name': '',
+        'type': 'address',
+      },
+    ],
+    'stateMutability': 'view',
+    'type': 'function',
+  },
+  {
+    'inputs': [],
+    'name': 'payMaster',
+    'outputs': [
+      {
+        'internalType': 'contract IPayMaster',
         'name': '',
         'type': 'address',
       },

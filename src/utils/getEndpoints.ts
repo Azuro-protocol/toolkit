@@ -1,28 +1,26 @@
 import { base, baseSepolia, chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
 
-import { isDevEnabled } from '../envs'
 import { type ChainId } from '../config'
 
 
 const endpointNameByChainId: Record<ChainId, string> = {
   [gnosis.id]: 'gnosis',
   [polygon.id]: 'polygon',
-  [polygonAmoy.id]: 'polygon-amoy-preprod',
+  [polygonAmoy.id]: 'polygon-amoy-dev',
   [chiliz.id]: 'chiliz',
   [spicy.id]: 'chiliz-spicy-dev',
   [base.id]: 'base',
   [baseSepolia.id]: 'base-sepolia-dev',
 }
 
-if (isDevEnabled) {
-  endpointNameByChainId[gnosis.id] = 'gnosis-dev'
-  endpointNameByChainId[polygonAmoy.id] = 'polygon-amoy-dev'
-}
+// if (isDevEnabled) {
+//   endpointNameByChainId[gnosis.id] = 'gnosis-dev'
+//   endpointNameByChainId[polygonAmoy.id] = 'polygon-amoy-dev'
+// }
 
 const isDev = (chainId: ChainId) => {
-  return isDevEnabled && (
+  return (
     chainId === polygonAmoy.id ||
-    chainId === gnosis.id ||
     chainId === spicy.id ||
     chainId === baseSepolia.id
   )
@@ -44,9 +42,9 @@ export const getLegacyLiveGraphqlEndpoint = (chainId: ChainId) => {
     return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
   }
 
-  if (chainId === polygonAmoy.id) {
-    return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
-  }
+  // if (chainId === polygonAmoy.id) {
+  //   return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
+  // }
 
   return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
 }
@@ -56,9 +54,9 @@ export const getSocketEndpoint = (chainId: ChainId) => {
     return 'wss://dev-streams.onchainfeed.org/v1/streams'
   }
 
-  if (chainId === polygonAmoy.id) {
-    return 'wss://preprod-streams.azuro.org/v1/streams'
-  }
+  // if (chainId === polygonAmoy.id) {
+  //   return 'wss://preprod-streams.azuro.org/v1/streams'
+  // }
 
   return 'wss://streams.onchainfeed.org/v1/streams'
 }
@@ -68,9 +66,9 @@ export const getApiEndpoint = (chainId: ChainId) => {
     return 'https://dev-api.onchainfeed.org/api/v1/public'
   }
 
-  if (chainId === polygonAmoy.id) {
-    return 'https://preprod-api.azuro.org/api/v1/public'
-  }
+  // if (chainId === polygonAmoy.id) {
+  //   return 'https://preprod-api.azuro.org/api/v1/public'
+  // }
 
   return 'https://api.azuro.org/api/v1/public'
 }

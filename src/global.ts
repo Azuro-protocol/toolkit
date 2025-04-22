@@ -56,4 +56,7 @@ export type BetClientData = {
   expiresAt: number
   chainId: ChainId
   relayerFeeAmount: string
+  isBetSponsored: boolean
+  isFeeSponsored: boolean
+  isSponsoredBetReturnable: boolean
 }

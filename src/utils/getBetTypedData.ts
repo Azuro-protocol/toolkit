@@ -44,6 +44,9 @@ export const getBetTypedData = (props: Props): SignTypedDataParameters<typeof BE
         expiresAt: BigInt(clientData.expiresAt),
         chainId: BigInt(clientData.chainId),
         relayerFeeAmount: BigInt(clientData.relayerFeeAmount),
+        isBetSponsored: clientData.isBetSponsored,
+        isFeeSponsored: clientData.isFeeSponsored,
+        isSponsoredBetReturnable: clientData.isSponsoredBetReturnable,
       },
       bets: [
         {

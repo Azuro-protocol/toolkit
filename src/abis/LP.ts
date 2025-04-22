@@ -66,6 +66,17 @@ export default [
     'type': 'error',
   },
   {
+    'inputs': [
+      {
+        'internalType': 'uint256',
+        'name': 'tokenId',
+        'type': 'uint256',
+      },
+    ],
+    'name': 'LockedBetToken',
+    'type': 'error',
+  },
+  {
     'inputs': [],
     'name': 'LockedLiquidityComboLimitReached',
     'type': 'error',
@@ -638,7 +649,13 @@ export default [
       },
     ],
     'name': 'betOrder',
-    'outputs': [],
+    'outputs': [
+      {
+        'internalType': 'uint256[]',
+        'name': '',
+        'type': 'uint256[]',
+      },
+    ],
     'stateMutability': 'nonpayable',
     'type': 'function',
   },

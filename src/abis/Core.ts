@@ -742,6 +742,21 @@ export default [
             'name': 'relayerFeeAmount',
             'type': 'uint256',
           },
+          {
+            'internalType': 'bool',
+            'name': 'isFeeSponsored',
+            'type': 'bool',
+          },
+          {
+            'internalType': 'bool',
+            'name': 'isBetSponsored',
+            'type': 'bool',
+          },
+          {
+            'internalType': 'bool',
+            'name': 'isSponsoredBetReturnable',
+            'type': 'bool',
+          },
         ],
         'internalType': 'struct IOrder.ClientData',
         'name': 'clientData',
@@ -912,6 +927,11 @@ export default [
         'internalType': 'uint128',
         'name': 'totalAmount',
         'type': 'uint128',
+      },
+      {
+        'internalType': 'uint128[]',
+        'name': 'amounts',
+        'type': 'uint128[]',
       },
     ],
     'stateMutability': 'pure',
@@ -1150,7 +1170,13 @@ export default [
       },
     ],
     'name': 'putOrder',
-    'outputs': [],
+    'outputs': [
+      {
+        'internalType': 'uint256[]',
+        'name': '',
+        'type': 'uint256[]',
+      },
+    ],
     'stateMutability': 'nonpayable',
     'type': 'function',
   },
