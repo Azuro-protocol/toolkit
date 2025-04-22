@@ -2,7 +2,7 @@ import { gnosis, polygon, polygonAmoy, chiliz, spicy, baseSepolia, base } from '
 
 
 export enum Environment {
-  // GnosisDevXDAI = 'GnosisDevXDAI',
+  GnosisDevXDAI = 'GnosisDevXDAI',
   GnosisXDAI = 'GnosisXDAI',
   PolygonUSDT = 'PolygonUSDT',
   // PolygonAmoyAZUSD = 'PolygonAmoyAZUSD',

@@ -70,7 +70,7 @@ export const CASHOUT_DATA_TYPES = {
 export const CASHOUT_TYPED_DATA_DOMAIN_NAME = 'Cash Out'
 export const CASHOUT_TYPED_DATA_DOMAIN_VERSION = '1.0.0'
 
-const gnosisData: ChainData = {
+export const gnosisData: ChainData = {
   chain: gnosis,
   graphql: {
     bets: getBetsGraphqlEndpoint(gnosis.id),
@@ -94,7 +94,7 @@ const gnosisData: ChainData = {
   },
 }
 
-const gnosisDevData: ChainData = {
+export const gnosisDevData: ChainData = {
   chain: gnosis,
   graphql: {
     bets: getBetsGraphqlEndpoint(gnosis.id),
@@ -118,7 +118,7 @@ const gnosisDevData: ChainData = {
   },
 }
 
-const polygonData: ChainData = {
+export const polygonData: ChainData = {
   chain: polygon,
   graphql: {
     bets: getBetsGraphqlEndpoint(polygon.id),
@@ -166,7 +166,7 @@ const polygonData: ChainData = {
 //   },
 // }
 
-const polygonAmoyData: ChainData = {
+export const polygonAmoyData: ChainData = {
   chain: polygonAmoy,
   graphql: {
     bets: getBetsGraphqlEndpoint(polygonAmoy.id),
@@ -190,7 +190,7 @@ const polygonAmoyData: ChainData = {
   },
 }
 
-const chilizData: ChainData = {
+export const chilizData: ChainData = {
   chain: chiliz,
   graphql: {
     bets: getBetsGraphqlEndpoint(chiliz.id),
@@ -214,7 +214,7 @@ const chilizData: ChainData = {
   },
 }
 
-const spicyData: ChainData = {
+export const spicyData: ChainData = {
   chain: spicy,
   graphql: {
     bets: getBetsGraphqlEndpoint(spicy.id),
@@ -238,7 +238,7 @@ const spicyData: ChainData = {
   },
 }
 
-const baseSepoliaData: ChainData = {
+export const baseSepoliaData: ChainData = {
   chain: baseSepolia,
   graphql: {
     bets: getBetsGraphqlEndpoint(baseSepolia.id),
@@ -262,7 +262,7 @@ const baseSepoliaData: ChainData = {
   },
 }
 
-const baseData: ChainData = {
+export const baseData: ChainData = {
   chain: base,
   graphql: {
     bets: getBetsGraphqlEndpoint(base.id),
@@ -303,7 +303,7 @@ export const chainsData = {
 
 export const chainsDataByEnv: Record<Environment, ChainData> = {
   [Environment.GnosisXDAI]: gnosisData,
-  // [Environment.GnosisDevXDAI]: gnosisDevData,
+  [Environment.GnosisDevXDAI]: gnosisDevData,
   [Environment.PolygonUSDT]: polygonData,
   // [Environment.PolygonAmoyAZUSD]: polygonAmoyData,
   [Environment.PolygonAmoyUSDT]: polygonAmoyData,
