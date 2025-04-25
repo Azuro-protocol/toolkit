@@ -1,6 +1,7 @@
 fragment Bet on V3_Bet {
   id
   tokenId: betId
+  actor
   amount
   status
   potentialPayout
@@ -9,7 +10,9 @@ fragment Bet on V3_Bet {
   odds
   settledOdds # don't account canceled sub-bets after resolve of express
   createdAt: createdBlockTimestamp
+  resolvedAt: resolvedBlockTimestamp
   txHash: createdTxHash
+  redeemedTxHash
   affiliate
   isRedeemed
   isRedeemable
@@ -32,6 +35,7 @@ fragment Bet on V3_Bet {
         title
         status
         gameId
+        wonOutcomeIds
       }
     }
   }

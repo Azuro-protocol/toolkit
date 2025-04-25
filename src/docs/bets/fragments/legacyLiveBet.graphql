@@ -1,6 +1,7 @@
 fragment LegacyLiveBet on LiveBet {
   id
   tokenId: betId
+  actor
   amount
   status
   potentialPayout
@@ -9,7 +10,9 @@ fragment LegacyLiveBet on LiveBet {
   odds
   settledOdds # don't account canceled sub-bets after resolve of express
   createdAt: createdBlockTimestamp
+  resolvedAt: resolvedBlockTimestamp
   txHash: createdTxHash
+  redeemedTxHash
   affiliate
   isRedeemed
   isRedeemable
@@ -29,6 +32,7 @@ fragment LegacyLiveBet on LiveBet {
         conditionId
         status
         gameId
+        wonOutcomeIds
       }
     }
   }
