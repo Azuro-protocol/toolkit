@@ -19,13 +19,12 @@ export type CreateCashoutResponse = {
 type Props = {
   chainId: ChainId
   calculationId: string
-  betCoreAddress: Address | string
   attention: string
   signature: Hex
 }
 
 export const createCashout = async (props: Props) => {
-  const { chainId, calculationId, betCoreAddress, attention, signature } = props
+  const { chainId, calculationId, attention, signature } = props
 
   const { api, contracts } = chainsData[chainId]
 
@@ -36,8 +35,8 @@ export const createCashout = async (props: Props) => {
   const signedCashout = {
     calculationId,
     signature: {
-      verifyingContract: contracts.cashout!.address,
-      bettingContract: betCoreAddress,
+      verifyingContract: contracts.cashout.address,
+      bettingContract: contracts.core.address,
       attention,
       chainId,
       ownerSignature: signature,
