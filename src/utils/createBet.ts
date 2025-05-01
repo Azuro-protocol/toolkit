@@ -53,11 +53,17 @@ export const createBet = async (props: Props) => {
     return null
   }
 
-  if (!response.ok) {
-    throw new Error(`Status ${response.status}: ${response.statusText}`)
-  }
-
   const data: CreateBetResponse = await response.json()
+
+  if (!response.ok) {
+    const error = new Error(data?.errorMessage || `Status: ${response.status}`)
+
+    if (data?.error) {
+      error.cause = new Error(data.error)
+    }
+
+    throw error
+  }
 
   return data
 }

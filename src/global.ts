@@ -47,6 +47,7 @@ export type CreateBetResponse = {
   id: string
   state: BetState
   errorMessage?: string
+  error?: string
 }
 
 export type BetClientData = {

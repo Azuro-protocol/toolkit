@@ -1,5 +1,4 @@
 query SportsNavigation(
-  $first: Int,
   $sportFilter: Sport_filter,
 ) {
   sports(
