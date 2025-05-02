@@ -26,29 +26,13 @@ const isDev = (chainId: ChainId) => {
   )
 }
 
-export const getFeedGraphqlEndpoint = (chainId: ChainId) => {
-  if (isDev(chainId)) {
-    return (
-      `https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-${endpointNameByChainId[chainId]}`
-    )
-  }
+export const getFeedGraphqlEndpoint = (chainId: ChainId) => (
+  `https://thegraph-1.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-${endpointNameByChainId[chainId]}`
+)
 
-  return (
-    `https://thegraph-1.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-${endpointNameByChainId[chainId]}`
-  )
-}
-
-export const getBetsGraphqlEndpoint = (chainId: ChainId) => {
-  if (isDev(chainId)) {
-    return (
-      `https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
-    )
-  }
-
-  return (
-    `https://thegraph-0.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
-  )
-}
+export const getBetsGraphqlEndpoint = (chainId: ChainId) => (
+  `https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
+)
 
 /**
  * @deprecated Only for v2 feed
