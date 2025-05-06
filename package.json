@@ -1,6 +1,6 @@
 {
   "name": "@azuro-org/toolkit",
-  "version": "5.0.0-beta.12",
+  "version": "5.0.0",
   "description": "Set of helpers to work with Azuro protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,8 +41,8 @@
   "peerDependencies": {
     "@azuro-org/dictionaries": "^3.0.26",
     "graphql-tag": "^2.12.6",
-    "@wagmi/core": "^2.16.7",
-    "viem": "^2.24.3"
+    "@wagmi/core": "^2.17.1",
+    "viem": "^2.29.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
