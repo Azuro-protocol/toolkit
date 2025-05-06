@@ -1,5 +1,0 @@
-query LiveCondition($conditionId: ID!) {
-  condition(id: $conditionId, subgraphError: allow) {
-    ...LiveCondition
-  }
-}

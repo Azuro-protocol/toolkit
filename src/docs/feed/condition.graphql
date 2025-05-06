@@ -1,0 +1,5 @@
+query Condition($id: ID!) {
+  condition(id: $id, subgraphError: allow) {
+    ...Condition
+  }
+}

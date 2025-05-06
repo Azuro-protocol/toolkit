@@ -1,0 +1,56 @@
+query GameBets($gameId: BigInt!, $actor: String) {
+  bets(where: { _games_: { gameId: $gameId }, actor: $actor }) {
+    rawAmount
+    rawPotentialPayout
+    result
+    isCashedOut
+    selections {
+      rawOdds
+      outcome {
+        outcomeId
+        condition {
+          conditionId
+          game {
+            gameId
+          }
+        }
+      }
+    }
+    freebet {
+      id
+    }
+  }
+  liveBets(where: { _gamesIds: [ $gameId ], actor: $actor }) {
+    rawAmount
+    rawPotentialPayout
+    result
+    isCashedOut
+    selections {
+      outcome {
+        outcomeId
+        condition {
+          conditionId
+        }
+      }
+    }
+  }
+  v3Bets(where: { _gamesIds: [ $gameId ], actor: $actor }) {
+    rawAmount
+    rawPotentialPayout
+    result
+    isCashedOut
+    selections {
+      rawOdds
+      outcome {
+        outcomeId
+        condition {
+          conditionId
+          gameId
+        }
+      }
+    }
+    freebet {
+      id
+    }
+  }
+}

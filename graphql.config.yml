@@ -1,17 +1,27 @@
 projects:
-  protocol-dev:
-    schema: protocol.schema.graphql
-    include: src/docs/prematch/**/*.graphql
+  feed:
+    schema: feed.schema.graphql
+    include: src/docs/feed/**/*.graphql
     extensions:
       endpoints:
-        Protocol:
+        Default GraphQL Endpoint:
+          url: https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-polygon-amoy-dev
+          headers:
+            user-agent: JS GraphQL
+          introspect: false
+  bets:
+    schema: bets.schema.graphql
+    include: src/docs/bets/**/*.graphql
+    extensions:
+      endpoints:
+        Default GraphQL Endpoint:
           url: https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3
           headers:
             user-agent: JS GraphQL
           introspect: false
-  live-dev:
+  legacy-live-feed:
     schema: live.schema.graphql
-    include: src/docs/live/**/*.graphql
+    include: src/docs/legacy-live-feed/**/*.graphql
     extensions:
       endpoints:
         Protocol:

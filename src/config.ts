@@ -1,33 +1,58 @@
 import { polygon, gnosis, polygonAmoy, chiliz, spicy, baseSepolia, base } from 'viem/chains'
 
-import { isDevEnabled, environments, Environment } from './envs'
+import { environments, Environment } from './envs'
 import { setupContracts } from './utils/setupContracts'
-import { getApiEndpoint, getLiveGraphqlEndpoint, getPrematchGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
+import { getApiEndpoint, getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getSocketEndpoint, getLegacyLiveGraphqlEndpoint } from './utils/getEndpoints'
 import { type ChainData } from './global'
 
 
 export const ODDS_DECIMALS = 12
-export const MARGIN_DECIMALS = 12
-export const MIN_LIVE_BET_AMOUNT = 1
+export const MIN_BET_AMOUNT = 1
 
-export const LIVE_BET_DATA_TYPES = {
+export const CLIENT_DATA_TYPES = [
+  { name: 'attention', type: 'string' },
+  { name: 'affiliate', type: 'address' },
+  { name: 'core', type: 'address' },
+  { name: 'expiresAt', type: 'uint256' },
+  { name: 'chainId', type: 'uint256' },
+  { name: 'relayerFeeAmount', type: 'uint256' },
+  { name: 'isFeeSponsored', type: 'bool' },
+  { name: 'isBetSponsored', type: 'bool' },
+  { name: 'isSponsoredBetReturnable', type: 'bool' },
+] as const
+
+export const BET_DATA_TYPES = {
   ClientBetData: [
-    { name: 'attention', type: 'string' },
-    { name: 'affiliate', type: 'address' },
-    { name: 'core', type: 'address' },
+    { name: 'clientData', type: 'ClientData' },
+    { name: 'bets', type: 'SubBet[]' },
+  ],
+  ClientData: CLIENT_DATA_TYPES,
+  SubBet: [
+    { name: 'conditionId', type: 'uint256' },
+    { name: 'outcomeId', type: 'uint128' },
+    { name: 'minOdds', type: 'uint64' },
     { name: 'amount', type: 'uint128' },
     { name: 'nonce', type: 'uint256' },
-    { name: 'conditionId', type: 'uint256' },
-    { name: 'outcomeId', type: 'uint64' },
-    { name: 'minOdds', type: 'uint64' },
-    { name: 'expiresAt', type: 'uint256' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'relayerFeeAmount', type: 'uint256' },
   ],
 } as const
 
-export const LIVE_TYPED_DATA_DOMAIN_NAME = 'Live Betting'
-export const LIVE_TYPED_DATA_DOMAIN_VERSION = '1.0.0'
+export const COMBO_BET_DATA_TYPES = {
+  ClientComboBetData: [
+    { name: 'clientData', type: 'ClientData' },
+    { name: 'minOdds', type: 'uint64' },
+    { name: 'amount', type: 'uint128' },
+    { name: 'nonce', type: 'uint256' },
+    { name: 'bets', type: 'ComboPart[]' },
+  ],
+  ClientData: CLIENT_DATA_TYPES,
+  ComboPart: [
+    { name: 'conditionId', type: 'uint256' },
+    { name: 'outcomeId', type: 'uint128' },
+  ],
+} as const
+
+export const TYPED_DATA_DOMAIN_NAME = 'Live Betting'
+export const TYPED_DATA_DOMAIN_VERSION = '1.0.0'
 
 export const CASHOUT_DATA_TYPES = {
   CashOutItem: [
@@ -45,33 +70,22 @@ export const CASHOUT_DATA_TYPES = {
 export const CASHOUT_TYPED_DATA_DOMAIN_NAME = 'Cash Out'
 export const CASHOUT_TYPED_DATA_DOMAIN_VERSION = '1.0.0'
 
-export const deBridgeUrl = 'https://api.dln.trade/v1.0'
-export const deBridgeTxUrl = 'https://stats-api.dln.trade/api'
-
-export const liveHostAddress = '0x67Fca88E2f5F2C33b86bFa4EccfCb8dCD6a56D17'
-/**
- * @deprecated please, check the liveCore address existence for specific chain in chainsData
- */
-export const liveSupportedChains: ChainId[] = [ polygon.id, gnosis.id, polygonAmoy.id ]
-
-const gnosisData: ChainData = {
+export const gnosisData: ChainData = {
   chain: gnosis,
   graphql: {
-    prematch: getPrematchGraphqlEndpoint(gnosis.id),
-    live: getLiveGraphqlEndpoint(gnosis.id),
+    bets: getBetsGraphqlEndpoint(gnosis.id),
+    feed: getFeedGraphqlEndpoint(gnosis.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(gnosis.id),
   },
   socket: getSocketEndpoint(gnosis.id),
   api: getApiEndpoint(gnosis.id),
   environment: environments[gnosis.id],
   contracts: setupContracts({
-    lp: '0x204e7371Ade792c5C006fb52711c50a7efC843ed',
-    prematchCore: '0x7f3F3f19c4e4015fd9Db2f22e653c766154091EF',
-    prematchComboCore: '0xDbC3BE2DDB53e1a288F7b7a4d020F8056D3b0F7C',
-    proxyFront: '0x3A1c6640daeAc3513726F06A9f03911CC1080251',
-    azuroBet: '0xA3A1B460c68dc91c5B3f71f5487A76fac42858bf',
-    cashout: '0x7145e4690A8846d5457D7352625e26b6A605a5AF',
-    liveRelayer: '0x936c02503A32aA23BCF7CFaF5c29100b0F93FCfe',
-    liveCore: '0x0223ff7efca5aec919c471fa2eb44cda466f1500',
+    lp: '0xeb7cDA87D00d677A6Dc73EB569723b0fA51D97E7',
+    core: '0x0e00E6ffcb5E207B800eec9e02999D1Fd9e448f2',
+    relayer: '0x40eb85018fA18dDd10a433C8c40ca8D6744d8B32',
+    azuroBet: '0xd7cd9342A14962C2dCB14569CB6fcA2759999089',
+    cashout: '0x25de227af58188e656524d1C32cCf7C078cdC891',
   }),
   betToken: {
     address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
@@ -80,24 +94,22 @@ const gnosisData: ChainData = {
   },
 }
 
-const gnosisDevData: ChainData = {
+export const gnosisDevData: ChainData = {
   chain: gnosis,
   graphql: {
-    prematch: getPrematchGraphqlEndpoint(gnosis.id),
-    live: getLiveGraphqlEndpoint(gnosis.id),
+    bets: getBetsGraphqlEndpoint(gnosis.id),
+    feed: getFeedGraphqlEndpoint(gnosis.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(gnosis.id),
   },
   socket: getSocketEndpoint(gnosis.id),
   api: getApiEndpoint(gnosis.id),
   environment: environments[gnosis.id],
   contracts: setupContracts({
-    lp: '0xe068Bf88317fA2eb3EAEcBfe1e486d8b2dDe7761',
-    prematchCore: '0x0eaa5283990af9ca915b1d82261663d25d039d03',
-    prematchComboCore: '0xdab6c085e2a24d3417875ea154c1d0abb5d427f9',
-    proxyFront: '0xB02205C9e5DdFFa3EEa2731fE76e505B0d3eCCb0',
-    azuroBet: '0x9AEb928E13b989d5F013b33c14853d8a944Acbf1',
-    cashout: '0x483779Ff0F54Be733F513c14AA3a8382AB1cE019',
-    liveRelayer: '0x3B0213eB35735A8E2b19F13C5Ec0a65a8226D5B2',
-    liveCore: '0xFc4910f0E7523063f3640e249Fc0f25542b76899',
+    lp: '0x0C2F50DCE97a4e327f5580bA4aad4E48d27f6DbD',
+    core: '0x12d5E6d2e9c47015C26a7c959a5Db42E3eF5a1Ef',
+    relayer: '0x7C9C7B37C93EbC2103061834eb2781809f604eAf',
+    azuroBet: '0x9407B57bF56292b0d9940Ed69D9a74ACffb11413',
+    cashout: '0xF8E7F2e4693DBEd186b302474EeE5AE4Ab2E0150',
   }),
   betToken: {
     address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
@@ -106,24 +118,22 @@ const gnosisDevData: ChainData = {
   },
 }
 
-const polygonData: ChainData = {
+export const polygonData: ChainData = {
   chain: polygon,
   graphql: {
-    prematch: getPrematchGraphqlEndpoint(polygon.id),
-    live: getLiveGraphqlEndpoint(polygon.id),
+    bets: getBetsGraphqlEndpoint(polygon.id),
+    feed: getFeedGraphqlEndpoint(polygon.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(polygon.id),
   },
   socket: getSocketEndpoint(polygon.id),
   api: getApiEndpoint(polygon.id),
   environment: environments[polygon.id],
   contracts: setupContracts({
-    lp: '0x7043E4e1c4045424858ECBCED80989FeAfC11B36',
-    prematchCore: '0xA40F8D69D412b79b49EAbdD5cf1b5706395bfCf7',
-    prematchComboCore: '0x92a4e8Bc6B92a2e1ced411f41013B5FE6BE07613',
-    proxyFront: '0x0DEE52b98ba8326DaD4C346a4F806Fd871360a00',
-    azuroBet: '0x8ed7296b5CAe379d07C70280Af622BC410F01Ed7',
-    cashout: '0x365f97EE637f7a9260838F7d2a3601EA800627bE',
-    liveRelayer: '0xC6BB817a7f02874F360d135D880200A2E440207D',
-    liveCore: '0xc389558Faca41bC747F763cf8616704187CDcD04',
+    lp: '0x0FA7FB5407eA971694652E6E16C12A52625DE1b8',
+    core: '0xF9548Be470A4e130c90ceA8b179FCD66D2972AC7',
+    relayer: '0x8dA05c0021e6b35865FDC959c54dCeF3A4AbBa9d',
+    azuroBet: '0x7A1c3FEf712753374C4DCe34254B96faF2B7265B',
+    cashout: '0x4a2BB4211cCF9b9eA6eF01D0a61448154ED19095',
   }),
   betToken: {
     address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
@@ -132,76 +142,70 @@ const polygonData: ChainData = {
   },
 }
 
-const polygonAmoyData: ChainData = {
-  chain: polygonAmoy,
-  graphql: {
-    prematch: getPrematchGraphqlEndpoint(polygonAmoy.id),
-    live: getLiveGraphqlEndpoint(polygonAmoy.id),
-  },
-  socket: getSocketEndpoint(polygonAmoy.id),
-  api: getApiEndpoint(polygonAmoy.id),
-  environment: environments[polygonAmoy.id],
-  contracts: setupContracts({
-    lp: '0x3528186476FD0eA0AdC9fCcc41de4CD138f99653',
-    prematchCore: '0x2477B960080B3439b4684df3D9CE53B2ACe64315',
-    prematchComboCore: '0xdF71998f7931caD24439A12A2F56D7326C3D0295',
-    proxyFront: '0x7003CaA0847CA296EBF51C43D9021656a663304f',
-    azuroBet: '0x5E59ee1b09Cb2Cf031e4Beaa8dB48D4B8b7e38AD',
-    cashout: '0x080d71059891Fb4d722855df28bFB208335F1587',
-    liveRelayer: '0x355B8493380fA5D57E4d3aFBF7C5f38b64AD5eA9',
-    liveCore: '0x51eD5C2596d9AE32cE53ac1915Cb9333AFeF3156',
-  }),
-  betToken: {
-    address: '0xf028b2dd00e20a8d9db3964a5feb0633d2ee46cd',
-    symbol: 'AZUSD',
-    decimals: 6,
-  },
-}
+// const polygonAmoyData: ChainData = {
+//   chain: polygonAmoy,
+//   graphql: {
+//     bets: getBetsGraphqlEndpoint(polygonAmoy.id),
+//     feed: getFeedGraphqlEndpoint(polygonAmoy.id),
+//     legacyLive: getLegacyLiveGraphqlEndpoint(polygonAmoy.id),
+//   },
+//   socket: getSocketEndpoint(polygonAmoy.id),
+//   api: getApiEndpoint(polygonAmoy.id),
+//   environment: environments[polygonAmoy.id],
+//   contracts: setupContracts({
+//     lp: '0x3528186476FD0eA0AdC9fCcc41de4CD138f99653',
+//     core: '0x2477B960080B3439b4684df3D9CE53B2ACe64315',
+//     relayer: '0x355B8493380fA5D57E4d3aFBF7C5f38b64AD5eA9',
+//     azuroBet: '0x5E59ee1b09Cb2Cf031e4Beaa8dB48D4B8b7e38AD',
+//     cashout: '0x080d71059891Fb4d722855df28bFB208335F1587',
+//   }),
+//   betToken: {
+//     address: '0xf028b2dd00e20a8d9db3964a5feb0633d2ee46cd',
+//     symbol: 'AZUSD',
+//     decimals: 6,
+//   },
+// }
 
-const polygonAmoyDevData: ChainData = {
+export const polygonAmoyData: ChainData = {
   chain: polygonAmoy,
   graphql: {
-    prematch: getPrematchGraphqlEndpoint(polygonAmoy.id),
-    live: getLiveGraphqlEndpoint(polygonAmoy.id),
+    bets: getBetsGraphqlEndpoint(polygonAmoy.id),
+    feed: getFeedGraphqlEndpoint(polygonAmoy.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(polygonAmoy.id),
   },
   socket: getSocketEndpoint(polygonAmoy.id),
   api: getApiEndpoint(polygonAmoy.id),
   environment: environments[polygonAmoy.id],
   contracts: setupContracts({
-    lp: '0xDAa095204aCc244020F8f8e915f36533150ACF4b',
-    prematchCore: '0x87EBFFe283bE8dEd47c3C87451d1B89c8a2C441A',
-    prematchComboCore: '0x471DaC1052248602fdF05377EF99B5b7b3a769a1',
-    proxyFront: '0x7003CaA0847CA296EBF51C43D9021656a663304f',
-    azuroBet: '0x68af5E36EF6474036604702B33014D3b4dcc93f2',
-    cashout: '0x914669F2BE69b1FE2a4927E9C84d1F0b4E933Ab6',
-    liveRelayer: '0x38633e7Cbd86959453445C170168855ed1151C22',
-    liveCore: '0x00232f2dEEae4541da1C5eC265193C879B2304Eb',
+    lp: '0x0a75395Ff15d9557424b632cEBCac448D66F9779',
+    core: '0xCD0Db5ef28C3Bd3a69283372dE923Eb4DA0585F6',
+    relayer: '0x48c9bE88706F22838070eE7C4bC74Ad7A8eeF114',
+    azuroBet: '0x4B75c071dFA5d537979E8b0615Bb97B6337dbFef',
+    cashout: '0x7dF132Ad2334a667A004049a75a4a8a530dc24F2',
   }),
   betToken: {
-    address: '0x683026Eb1b912795E4Eb1e73Da7e38C3F2f830c4',
+    address: '0xCf1b86ceD971b88C042C64A9c099377e2738073C',
     symbol: 'USDT',
     decimals: 6,
   },
 }
 
-const chilizData: ChainData = {
+export const chilizData: ChainData = {
   chain: chiliz,
   graphql: {
-    prematch: getPrematchGraphqlEndpoint(chiliz.id),
-    live: getLiveGraphqlEndpoint(chiliz.id),
+    bets: getBetsGraphqlEndpoint(chiliz.id),
+    feed: getFeedGraphqlEndpoint(chiliz.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(chiliz.id),
   },
   socket: getSocketEndpoint(chiliz.id),
   api: getApiEndpoint(chiliz.id),
   environment: environments[chiliz.id],
   contracts: setupContracts({
-    lp: '0x6909eAD2a1DA7b632D5993d329DEf4d2dbBc8261',
-    prematchCore: '0x1a21C681Cc83889f4b213485aB6cF4971C43114B',
-    prematchComboCore: '0x724fa8931428D5B636F7191d3e848f28Ab23C425',
-    proxyFront: '0x45779134E5091756601Cb5bA389f9C76b914E520',
-    azuroBet: '0x8609D1c8610D7F24d826FB76ea878d240537A8B8',
-    cashout: '0xAE0830d7588aB44e5D4443168a8D666B54F385FE',
-    liveRelayer: '0xA95D8Bd97F567380Bdc068462b9da547af37dAfD',
-    liveCore: '0x2b387115201fe9daef7f3f5f6f3e29a3a94844bc',
+    lp: '0xEf6b12580301b04CD2551182C88623524B6e47b8',
+    core: '0xa5061617Ee6565CF48d7f0FEF06910b9fb9dE2b0',
+    relayer: '0x81F72B93ABaf061535aaF5D831F05e0CC4084b32',
+    azuroBet: '0x3777B4F27F4B36f14454dbB1f79278bcba694B52',
+    cashout: '0x3995eebB51793Ee353162E7400DB455B17dE3692',
   }),
   betToken: {
     address: '0x677F7e16C7Dd57be1D4C8aD1244883214953DC47',
@@ -210,48 +214,46 @@ const chilizData: ChainData = {
   },
 }
 
-const spicyData: ChainData = {
+export const spicyData: ChainData = {
   chain: spicy,
   graphql: {
-    prematch: getPrematchGraphqlEndpoint(spicy.id),
-    live: getLiveGraphqlEndpoint(spicy.id),
+    bets: getBetsGraphqlEndpoint(spicy.id),
+    feed: getFeedGraphqlEndpoint(spicy.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(spicy.id),
   },
   socket: getSocketEndpoint(spicy.id),
   api: getApiEndpoint(spicy.id),
   environment: environments[spicy.id],
   contracts: setupContracts({
-    lp: '0x82f25d2670994b218b8a4C1e5Acc120D6c27d786',
-    prematchCore: '0x035AB843C9F6dCB9D9bDeAC18c191dEc6c975fB7',
-    prematchComboCore: '0xF94a49F0D78eAfeda81c785131eb6419EB18b33A',
-    proxyFront: '0x67f3228fD58f5A26D93a5dd0c6989b69c95618eB',
-    azuroBet: '0x6FA69dD52B5BF761030d3201B1DbE04039bF0BDe',
-    cashout: '0xB1E54209e224218A03BFd89f830cCE0414a1921E',
-    liveRelayer: '0x699A817E9414698Afc761dCBA83d158894EA7dd4',
-    liveCore: '0xC6B38c80427E4038e91798847b5C5b056C358817',
+    lp: '0x431A0993d29eEb0fF7e3FE351A303eF72195431a',
+    core: '0x524994dcA5EA2bc979ac5506E7195F28B4c16932',
+    relayer: '0x725ec0A9eC9dC993A86d0eFD7fD78929d226AbE7',
+    azuroBet: '0xF7815889e5d0635A31eca34390b25d8D2cEeD902',
+    cashout: '0x7c771a200EcD61A01af992360303f7b1465Cd8e3',
   }),
   betToken: {
-    address: '0x721ef6871f1c4efe730dce047d40d1743b886946',
+    address: '0x721EF6871f1c4Efe730Dce047D40D1743B886946',
     symbol: 'WCHZ',
     decimals: 18,
   },
 }
 
-const baseSepoliaData: ChainData = {
+export const baseSepoliaData: ChainData = {
   chain: baseSepolia,
   graphql: {
-    prematch: getPrematchGraphqlEndpoint(baseSepolia.id),
-    live: getLiveGraphqlEndpoint(baseSepolia.id),
+    bets: getBetsGraphqlEndpoint(baseSepolia.id),
+    feed: getFeedGraphqlEndpoint(baseSepolia.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(baseSepolia.id),
   },
   socket: getSocketEndpoint(baseSepolia.id),
   api: getApiEndpoint(baseSepolia.id),
   environment: environments[baseSepolia.id],
   contracts: setupContracts({
-    lp: '0xCf6a6e4A8b24a109111143567e3d2Ae4e77c4192',
-    prematchCore: '0xfa275EAabeFE2B06Fd868A0A88302feF3bB55D5C',
-    prematchComboCore: '0x2a91Ea47763bB59280823286A94a600D429c0EA0',
-    proxyFront: '0xa39EC5452bE981c8Fb0121Ee11Bc3F0209052C2c',
-    azuroBet: '0x8c1ca2bBe98575c9431a937ad48d1C261754Ab99',
-    cashout: '0xc73c85898adBf3c9BD50D77Ee6BBF4F132554fFC',
+    lp: '0x4fE86EddCC22dc992b7994878169201Ec7ea50AB',
+    core: '0x679CC42F69F98631668348d088086359D4217Ffa',
+    relayer: '0x2De54cABa6A8198D9Dc51931485Bfdc8017aB0c5',
+    azuroBet: '0xD031C4BDd4b7c30e3725132109786B8E158A4c07',
+    cashout: '0xf52Eb6ec19d81Ea623A7d7Ad397287C0C40f2F37',
   }),
   betToken: {
     address: '0x9e09f213Ff75e53D52e9e777A6567A68683E935f',
@@ -260,22 +262,22 @@ const baseSepoliaData: ChainData = {
   },
 }
 
-const baseData: ChainData = {
+export const baseData: ChainData = {
   chain: base,
   graphql: {
-    prematch: getPrematchGraphqlEndpoint(base.id),
-    live: getLiveGraphqlEndpoint(base.id),
+    bets: getBetsGraphqlEndpoint(base.id),
+    feed: getFeedGraphqlEndpoint(base.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(base.id),
   },
   socket: getSocketEndpoint(base.id),
   api: getApiEndpoint(base.id),
   environment: environments[base.id],
   contracts: setupContracts({
-    lp: '0xF22E9e29728d6592eB54b916Ba9f464d9F237dB1',
-    prematchCore: '0xf5A6B7940cbdb80F294f1eAc59575562966aa3FC',
-    prematchComboCore: '0x4731Bb0D12c4f992Cf02BDc7A48e8656d0E382Ed',
-    proxyFront: '0x6e1784b85eCF148BD412ad3c75e7C63B7d3cacB9',
-    azuroBet: '0x9Ce099D680401763f9Cb160c8eAc3E5f8307314e',
-    cashout: '0xFffF9220288787B24276135E58C0BF68D803F0ad',
+    lp: '0x1eD7368bc515E928A4007cEa61FB8a6F8863Af87',
+    core: '0xF40cF1dD7d16C098cff5F8B5650A8FaEf1F4640d',
+    relayer: '0xD2D508d66dB4fCE4B384e4C3EA2fa53BA43e73b5',
+    azuroBet: '0xF328404Dbc8c997d12dC55a1A179AF7F8cb7df90',
+    cashout: '0x6EDff24761F4473611B45BDAe4a779ff31af14Be',
   }),
   betToken: {
     address: '0x4200000000000000000000000000000000000006',
@@ -294,17 +296,17 @@ export const chainsData = {
   [baseSepolia.id]: baseSepoliaData,
 }
 
-if (isDevEnabled) {
-  chainsData[gnosis.id] = gnosisDevData
-  chainsData[polygonAmoy.id] = polygonAmoyDevData
-}
+// if (isDevEnabled) {
+//   chainsData[gnosis.id] = gnosisDevData
+//   chainsData[polygonAmoy.id] = polygonAmoyDevData
+// }
 
 export const chainsDataByEnv: Record<Environment, ChainData> = {
   [Environment.GnosisXDAI]: gnosisData,
   [Environment.GnosisDevXDAI]: gnosisDevData,
   [Environment.PolygonUSDT]: polygonData,
-  [Environment.PolygonAmoyAZUSD]: polygonAmoyData,
-  [Environment.PolygonAmoyUSDT]: polygonAmoyDevData,
+  // [Environment.PolygonAmoyAZUSD]: polygonAmoyData,
+  [Environment.PolygonAmoyUSDT]: polygonAmoyData,
   [Environment.ChilizWCHZ]: chilizData,
   [Environment.ChilizSpicyWCHZ]: spicyData,
   [Environment.BaseWETH]: baseData,

@@ -1,0 +1,20 @@
+query SportsNavigation(
+  $sportFilter: Sport_filter,
+) {
+  sports(
+    where: $sportFilter,
+    subgraphError: allow
+  ) {
+    id
+    slug
+    name
+    sportId
+    sporthub {
+      id
+      slug
+    }
+    activeGamesCount
+    activeLiveGamesCount
+    activePrematchGamesCount
+  }
+}

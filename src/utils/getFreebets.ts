@@ -39,23 +39,24 @@ type Props = {
 }
 
 export const getFreeBets = async ({ chainId, account, affiliate }: Props) => {
-  const api = getApiEndpoint(chainId!)
+  // const api = getApiEndpoint(chainId!)
 
-  const params = new URLSearchParams({
-    owner: account.toLowerCase(),
-    affiliate: affiliate,
-  })
-  const response = await fetch(`${api}/freebets/list?${params}`)
+  // const params = new URLSearchParams({
+  //   owner: account.toLowerCase(),
+  //   affiliate: affiliate,
+  // })
+  // const response = await fetch(`${api}/freebets/list?${params}`)
 
-  if (response.status === 404) {
-    return null
-  }
+  // if (response.status === 404) {
+  //   return null
+  // }
 
-  if (!response.ok) {
-    throw new Error(`Status ${response.status}: ${response.statusText}`)
-  }
+  // if (!response.ok) {
+  //   throw new Error(`Status ${response.status}: ${response.statusText}`)
+  // }
 
-  const data: FreeBet[] = await response.json()
+  // const data: FreeBet[] = await response.json()
 
-  return data
+  // return data
+  return []
 }

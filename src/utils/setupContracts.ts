@@ -1,6 +1,6 @@
-import { type Address, erc721Abi } from 'viem'
+import { type Address } from 'viem'
 
-import { liveCoreAbi, lpAbi, prematchComboCoreAbi, prematchCoreAbi, proxyFrontAbi } from '../abis'
+import { lpAbi, coreAbi, azuroBetAbi, relayerAbi, cashoutAbi } from '../abis'
 
 
 export type Contracts = {
@@ -8,87 +8,58 @@ export type Contracts = {
     address: Address
     abi: typeof lpAbi
   }
-  prematchCore: {
+  core: {
     address: Address
-    abi: typeof prematchCoreAbi
+    abi: typeof coreAbi
   }
-  prematchComboCore: {
+  relayer: {
     address: Address
-    abi: typeof prematchComboCoreAbi
-  }
-  proxyFront: {
-    address: Address
-    abi: typeof proxyFrontAbi
+    abi: typeof relayerAbi
   }
   azuroBet: {
     address: Address
-    abi: typeof erc721Abi
+    abi: typeof azuroBetAbi
   },
   cashout?: {
     address: Address
-  }
-  liveRelayer?: {
-    address: Address
-  }
-  liveCore?: {
-    address: Address
-    abi: typeof liveCoreAbi
+    abi: typeof cashoutAbi
   }
 }
 
 type Props = {
   lp: Address
-  prematchCore: Address
-  prematchComboCore: Address
-  proxyFront: Address
+  core: Address
+  relayer: Address
   azuroBet: Address
   cashout?: Address
-  liveRelayer?: Address
-  liveCore?: Address
 }
 
 export const setupContracts = ({
-  lp, prematchCore, prematchComboCore, proxyFront, azuroBet, cashout, liveRelayer, liveCore,
+  lp, core, relayer, azuroBet, cashout,
 }: Props): Contracts => {
   const contracts: Contracts = {
     lp: {
       address: lp,
       abi: lpAbi,
     },
-    prematchCore: {
-      address: prematchCore,
-      abi: prematchCoreAbi,
+    core: {
+      address: core,
+      abi: coreAbi,
     },
-    prematchComboCore: {
-      address: prematchComboCore,
-      abi: prematchComboCoreAbi,
-    },
-    proxyFront: {
-      address: proxyFront,
-      abi: proxyFrontAbi,
+    relayer: {
+      address: relayer,
+      abi: relayerAbi,
     },
     azuroBet: {
       address: azuroBet,
-      abi: erc721Abi,
+      abi: azuroBetAbi,
     },
-  }
-
-  if (liveRelayer) {
-    contracts.liveRelayer = {
-      address: liveRelayer,
-    }
   }
 
   if (cashout) {
     contracts.cashout = {
       address: cashout,
-    }
-  }
-
-  if (liveCore) {
-    contracts.liveCore = {
-      address: liveCore,
-      abi: liveCoreAbi,
+      abi: cashoutAbi,
     }
   }
 

@@ -14,8 +14,12 @@ type BetToken = {
 export type ChainData = {
   chain: Omit<Chain, 'id'> & { id: ChainId }
   graphql: {
-    prematch: string
-    live: string
+    bets: string
+    feed: string
+    /**
+      * @deprecated Only for v2 feed
+    */
+    legacyLive: string
   }
   socket: string
   api: string
@@ -27,21 +31,33 @@ export type ChainData = {
 export type Selection = {
   outcomeId: string
   conditionId: string
-  coreAddress: string
 }
 
 export type WaveId = number | 'active'
 
-export type LiveBet = {
+export enum BetState {
+  Created = 'Created',
+  Pending = 'Pending',
+  Sent = 'Sent',
+  Accepted = 'Accepted',
+  Rejected = 'Rejected'
+}
+
+export type CreateBetResponse = {
+  id: string
+  state: BetState
+  errorMessage?: string
+  error?: string
+}
+
+export type BetClientData = {
   attention: string
   affiliate: Address
   core: Address
-  amount: string
-  chainId: ChainId
-  conditionId: string
-  outcomeId: number
-  minOdds: string
-  nonce: string
   expiresAt: number
+  chainId: ChainId
   relayerFeeAmount: string
+  isBetSponsored: boolean
+  isFeeSponsored: boolean
+  isSponsoredBetReturnable: boolean
 }

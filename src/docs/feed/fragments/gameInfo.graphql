@@ -1,0 +1,30 @@
+fragment GameInfo on Game {
+  id
+  gameId
+  slug
+  title
+  startsAt
+  state
+  turnover
+  sport {
+    sportId
+    slug
+    name
+    sporthub {
+      id
+      slug
+    }
+  }
+  league {
+    slug
+    name
+  }
+  country {
+    slug
+    name
+  }
+  participants {
+    image
+    name
+  }
+}

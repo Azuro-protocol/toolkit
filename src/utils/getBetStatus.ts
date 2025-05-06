@@ -1,6 +1,6 @@
-import { GameStatus, getGameStatus } from './getGameStatus'
-import { BetStatus as GraphBetStatus } from '../docs/prematch/types'
-import { type GameQuery } from '../docs/prematch/game'
+import { GameState } from '../docs/feed/types'
+import { BetStatus as GraphBetStatus } from '../docs/bets/types'
+import { getIsPendingResolution } from './getIsPendingResolution'
 
 
 export enum BetStatus {
@@ -11,32 +11,28 @@ export enum BetStatus {
   Canceled,
 }
 
-type Game = Pick<GameQuery['games'][0], 'status' | 'startsAt'>
-
-const getExpressIsLive = (games: Game[]) => {
-  const firstStartDate = Math.min(...games.map(({ startsAt }) => +startsAt))
-
-  return +firstStartDate * 1000 < Date.now()
+type Game = {
+  state: GameState
+  startsAt: string
 }
 
 const getExpressIsPendingResolution = (games: Game[]) => {
   const lastStartDate = Math.max(...games.map(({ startsAt }) => +startsAt))
   const lastGames = games.filter(({ startsAt }) => +startsAt === lastStartDate)
 
-  return lastGames.some(({ status, startsAt }) => {
-    return getGameStatus({ graphStatus: status, startsAt: +startsAt, isGameInLive: false }) === GameStatus.PendingResolution
+  return lastGames.some((game) => {
+    return getIsPendingResolution(game)
   })
 }
 
 type Props = {
   games: Game[]
   graphStatus: GraphBetStatus
-  isLiveBet: boolean
 }
 
 export const getBetStatus = (props: Props): BetStatus => {
 
-  const { games, graphStatus, isLiveBet } = props
+  const { games, graphStatus } = props
 
   if (graphStatus === GraphBetStatus.Canceled) {
     return BetStatus.Canceled
@@ -50,15 +46,13 @@ export const getBetStatus = (props: Props): BetStatus => {
 
   const isPendingResolution = isExpress
     ? getExpressIsPendingResolution(games)
-    : getGameStatus({ graphStatus: games[0]!.status, startsAt: +games[0]!.startsAt, isGameInLive: isLiveBet }) === GameStatus.PendingResolution
+    : getIsPendingResolution(games[0]!)
 
   if (isPendingResolution) {
     return BetStatus.PendingResolution
   }
 
-  const isLive = isExpress ? getExpressIsLive(games) : (
-    getGameStatus({ graphStatus: games[0]!.status, startsAt: +games[0]!.startsAt, isGameInLive: isLiveBet }) === GameStatus.Live
-  )
+  const isLive = games.some(game => game.state === GameState.Live)
 
   if (isLive) {
     return BetStatus.Live

@@ -2,17 +2,19 @@ import { type ChainId, chainsData } from '../../config'
 
 
 type GetPrecalculatedCashoutsResponse = {
-  multipliers: {
+  margin: string
+  marginMin: string
+  availables: {
     conditionId: string
     available: boolean
     outcomes: {
       outcomeId: number
-      multiplier: string
+      price: string
     }[]
   }[]
 }
 
-export type GetPrecalculatedCashouts = GetPrecalculatedCashoutsResponse['multipliers'] | null
+export type GetPrecalculatedCashouts = GetPrecalculatedCashoutsResponse | null
 
 type Props = {
   chainId: ChainId
@@ -27,7 +29,7 @@ export const getPrecalculatedCashouts = async (props: Props): Promise<GetPrecalc
     throw new Error('provided chainId is not supported for cashout')
   }
 
-  const response = await fetch(`${api}/cashout/get-multipliers`, {
+  const response = await fetch(`${api}/cashout/get-available`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -46,7 +48,7 @@ export const getPrecalculatedCashouts = async (props: Props): Promise<GetPrecalc
     throw new Error(`Status ${response.status}: ${response.statusText}`)
   }
 
-  const { multipliers }: GetPrecalculatedCashoutsResponse = await response.json()
+  const data: GetPrecalculatedCashoutsResponse = await response.json()
 
-  return multipliers
+  return data
 }

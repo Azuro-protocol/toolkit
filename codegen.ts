@@ -4,16 +4,16 @@ import { CodegenConfig } from '@graphql-codegen/cli'
 const config: CodegenConfig = {
   ignoreNoDocuments: true,
   generates: {
-    'src/docs/prematch/types.ts': {
-      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3',
+    'src/docs/legacy-live-feed/types.ts': {
+      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod',
       plugins: [
         'typescript',
       ],
     },
-    'src/docs/prematch': {
+    'src/docs/legacy-live-feed': {
       preset: 'near-operation-file',
-      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3',
-      documents: 'src/docs/prematch/**/*.graphql',
+      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod',
+      documents: 'src/docs/legacy-live-feed/**/*.graphql',
       presetConfig: {
         extension: '.ts',
         baseTypesPath: 'types.ts',
@@ -32,16 +32,16 @@ const config: CodegenConfig = {
         }
       },
     },
-    'src/docs/live/types.ts': {
-      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev',
+    'src/docs/feed/types.ts': {
+      schema: 'https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-polygon-amoy-dev',
       plugins: [
         'typescript',
       ],
     },
-    'src/docs/live': {
+    'src/docs/feed': {
       preset: 'near-operation-file',
-      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev',
-      documents: 'src/docs/live/**/*.graphql',
+      schema: 'https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-polygon-amoy-dev',
+      documents: 'src/docs/feed/**/*.graphql',
       presetConfig: {
         extension: '.ts',
         baseTypesPath: 'types.ts',
@@ -60,7 +60,35 @@ const config: CodegenConfig = {
         }
       },
     },
-  },
+    'src/docs/bets/types.ts': {
+      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3',
+      plugins: [
+        'typescript',
+      ],
+    },
+    'src/docs/bets': {
+      preset: 'near-operation-file',
+      schema: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3',
+      documents: 'src/docs/bets/**/*.graphql',
+      presetConfig: {
+        extension: '.ts',
+        baseTypesPath: 'types.ts',
+      },
+      plugins: [
+        'typescript-operations',
+        'typescript-document-nodes',
+      ],
+      config: {
+        withHooks: false,
+        nameSuffix: 'Document',
+        fragmentSuffix: 'FragmentDoc',
+        scalars: {
+          'BigInt': 'string',
+          'BigDecimal': 'string',
+        }
+      },
+    }
+  }
 }
 
 export default config

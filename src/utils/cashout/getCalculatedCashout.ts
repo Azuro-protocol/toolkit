@@ -22,7 +22,7 @@ export type GetCalculatedCashout = {
   environment: Environment
   tokenId: string
   cashoutAmount: string
-  multiplier: string
+  cashoutOdds: string
   expiredAt: number
   approveExpiredAt: number
   isLive: boolean
@@ -32,11 +32,10 @@ type Props = {
   chainId: ChainId
   account: Address
   graphBetId: string
-  isLive: boolean
 }
 
 export const getCalculatedCashout = async (props: Props): Promise<GetCalculatedCashout> => {
-  const { chainId, account, graphBetId, isLive } = props
+  const { chainId, account, graphBetId } = props
   const { api, environment, contracts } = chainsData[chainId]
 
   if (!contracts.cashout?.address) {
@@ -53,7 +52,6 @@ export const getCalculatedCashout = async (props: Props): Promise<GetCalculatedC
       environment,
       owner: account,
       betId: graphBetId,
-      isLive,
     }),
   })
 
@@ -66,11 +64,10 @@ export const getCalculatedCashout = async (props: Props): Promise<GetCalculatedC
   }
 
   const {
-    cashoutOdds, owner, betId, ...rest
+    owner, betId, ...rest
   }: GetCalculatedCashoutResponse = await response.json()
 
   return {
-    multiplier: cashoutOdds,
     account: owner,
     tokenId: betId,
     ...rest,

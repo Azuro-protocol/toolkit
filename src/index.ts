@@ -2,26 +2,24 @@ export { environments, Environment } from './envs'
 export * from './config'
 export * from './global'
 export * from './abis'
-
-// docs
 export * from './docs'
 
 // utils
 export { getProviderFromId } from './utils/getProviderFromId'
 export { calcMindOdds } from './utils/calcMindOdds'
-export { calcLiveOdds, calcPrematchOdds } from './utils/calcOdds'
-export { getGameStatus, GameStatus } from './utils/getGameStatus'
+export { getIsPendingResolution } from './utils/getIsPendingResolution'
 export { getBetStatus, BetStatus } from './utils/getBetStatus'
-export { getLiveBetFee, type LiveBetFeeResponse } from './utils/getLiveBetFee'
-export { getPrematchBetDataBytes } from './utils/getPrematchBetDataBytes'
+export { getBetFee, type BetFeeResponse } from './utils/getBetFee'
 export { groupConditionsByMarket, type GameMarkets, type MarketOutcome, type Market } from './utils/groupConditionsByMarket'
-export { groupByConditionId } from './utils/groupByConditionId'
 export { setupContracts, type Contracts } from './utils/setupContracts'
-export { getApiEndpoint, getLiveGraphqlEndpoint, getPrematchGraphqlEndpoint, getSocketEndpoint } from './utils/getEndpoints'
+export { getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getApiEndpoint, getSocketEndpoint } from './utils/getEndpoints'
 export { getFreeBets, FreeBetStatus, type FreeBet } from './utils/getFreebets'
-export { getLiveBetTypedData } from './utils/getLiveBetTypedData'
-export { createLiveBet, type CreateLiveBetResponse, LiveBetState } from './utils/createLiveBet'
-export { getLiveBet, type GetLiveBetResponse } from './utils/getLiveBet'
+export { getBetTypedData } from './utils/getBetTypedData'
+export { getComboBetTypedData } from './utils/getComboBetTypedData'
+export { createBet } from './utils/createBet'
+export { createComboBet } from './utils/createComboBet'
+export { getBet, type GetBetResponse } from './utils/getBet'
+export { getMaxBet, type GetMaxBetResponse } from './utils/getMaxBet'
 
 // wave
 export { getWaveLevels, WaveLevelName, type WaveLevelData, type WaveLevelsResponse } from './utils/wave/getWaveLevels'
@@ -29,12 +27,6 @@ export { getWaveStats, type WaveStatsResponse } from './utils/wave/getWaveStats'
 export { getWavePeriods, type WavePeriodsResponse } from './utils/wave/getWavePeriods'
 export { getWaveLeaderBoard, type WaveLeaderBoardItem } from './utils/wave/getWaveLeaderBoard'
 export { activateWave } from './utils/wave/activateWave'
-
-// deBridge
-export { createDeBridgeBet, type DeBridgeCreateTxResponse } from './utils/deBridge/createDeBridgeBet'
-export { getDeBridgeSupportedChains, deBridgeChainIdByOriginalChainId, type DeBridgeSupportedChains } from './utils/deBridge/getDeBridgeSupportedChains'
-export { getDeBridgeSupportedTokens, type DeBridgeSupportedTokens } from './utils/deBridge/getDeBridgeSupportedTokens'
-export { getDeBridgeOrder, DeBridgeOrderStatus, DeBridgeExternalCallStatus } from './utils/deBridge/getDeBridgeOrder'
 
 // cashout
 export { getPrecalculatedCashouts, type GetPrecalculatedCashouts } from './utils/cashout/getPrecalculatedCashouts'

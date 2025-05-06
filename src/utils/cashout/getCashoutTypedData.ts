@@ -15,13 +15,12 @@ type Props = {
   account: Address
   attention: string
   tokenId: string | bigint
-  betCoreAddress: Address
-  multiplier: string | bigint
+  cashoutOdds: string | bigint
   expiredAt: number
 }
 
 export const getCashoutTypedData = (props: Props): SignTypedDataParameters<typeof CASHOUT_DATA_TYPES> => {
-  const { account, chainId, attention, tokenId, betCoreAddress, multiplier, expiredAt } = props
+  const { account, chainId, attention, tokenId, cashoutOdds, expiredAt } = props
 
   const { contracts } = chainsData[chainId]
 
@@ -33,7 +32,7 @@ export const getCashoutTypedData = (props: Props): SignTypedDataParameters<typeo
     name: CASHOUT_TYPED_DATA_DOMAIN_NAME,
     version: CASHOUT_TYPED_DATA_DOMAIN_VERSION,
     chainId,
-    verifyingContract: contracts.cashout!.address,
+    verifyingContract: contracts.cashout.address,
   }
 
   return {
@@ -47,10 +46,10 @@ export const getCashoutTypedData = (props: Props): SignTypedDataParameters<typeo
       items: [
         {
           betId: BigInt(tokenId),
-          bettingContract: betCoreAddress,
-          minOdds: typeof multiplier === 'string' ? (
-            parseUnits(multiplier, ODDS_DECIMALS)
-          ) : multiplier,
+          bettingContract: contracts.core.address,
+          minOdds: typeof cashoutOdds === 'string' ? (
+            parseUnits(cashoutOdds, ODDS_DECIMALS)
+          ) : cashoutOdds,
         },
       ],
       expiresAt: BigInt(expiredAt),

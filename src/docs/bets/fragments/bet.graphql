@@ -1,0 +1,49 @@
+fragment Bet on V3_Bet {
+  id
+  tokenId: betId
+  actor
+  amount
+  status
+  potentialPayout
+  payout # don't account canceled sub-bets after resolve of express
+  result
+  odds
+  settledOdds # don't account canceled sub-bets after resolve of express
+  createdAt: createdBlockTimestamp
+  resolvedAt: resolvedBlockTimestamp
+  txHash: createdTxHash
+  redeemedTxHash
+  affiliate
+  isRedeemed
+  isRedeemable
+  isCashedOut
+  core {
+    address
+    liquidityPool {
+      address
+    }
+  }
+  selections {
+    odds
+    result
+    conditionKind
+    outcome {
+      outcomeId
+      title
+      condition {
+        conditionId
+        title
+        status
+        gameId
+        wonOutcomeIds
+      }
+    }
+  }
+  freebet {
+    freebetId
+    contractAddress: freebetContractAddress
+  }
+  cashout {
+    payout
+  }
+}

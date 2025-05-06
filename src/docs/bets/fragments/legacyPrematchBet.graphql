@@ -1,0 +1,76 @@
+fragment LegacyPrematchBet on Bet {
+  id
+  tokenId: betId
+  actor
+  amount
+  status
+  potentialPayout
+  payout # don't account canceled sub-bets after resolve of express
+  result
+  odds
+  settledOdds # don't account canceled sub-bets after resolve of express
+  createdAt: createdBlockTimestamp
+  resolvedAt: resolvedBlockTimestamp
+  txHash: createdTxHash
+  redeemedTxHash
+  affiliate
+  isRedeemed
+  isRedeemable
+  isCashedOut
+  core {
+    address
+    liquidityPool {
+      address
+    }
+  }
+  selections {
+    odds
+    result
+    outcome {
+      outcomeId
+      title
+      condition {
+        conditionId
+        status
+        title
+        wonOutcomeIds
+        game {
+          id
+          gameId
+          title
+          startsAt
+          status
+          slug
+          sport {
+            sportId
+            slug
+            name
+            sporthub {
+              id
+              slug
+            }
+          }
+          league {
+            slug
+            name
+            country {
+              slug
+              name
+            }
+          }
+          participants {
+            image
+            name
+          }
+        }
+      }
+    }
+  }
+  freebet {
+    freebetId
+    contractAddress: freebetContractAddress
+  }
+  cashout {
+    payout
+  }
+}
