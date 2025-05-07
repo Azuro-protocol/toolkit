@@ -3,6 +3,7 @@ query GameBets($gameId: BigInt!, $actor: String) {
     rawAmount
     rawPotentialPayout
     result
+    status
     isCashedOut
     selections {
       rawOdds
@@ -24,6 +25,7 @@ query GameBets($gameId: BigInt!, $actor: String) {
     rawAmount
     rawPotentialPayout
     result
+    status
     isCashedOut
     selections {
       outcome {
@@ -34,10 +36,11 @@ query GameBets($gameId: BigInt!, $actor: String) {
       }
     }
   }
-  v3Bets(where: { _gamesIds: [ $gameId ], actor: $actor }) {
+  v3Bets(where: { _gamesIds_contains: [ $gameId ], actor: $actor }) {
     rawAmount
     rawPotentialPayout
     result
+    status
     isCashedOut
     selections {
       rawOdds
