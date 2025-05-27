@@ -13,7 +13,6 @@ export { getBetFee, type BetFeeResponse } from './utils/getBetFee'
 export { groupConditionsByMarket, type GameMarkets, type MarketOutcome, type Market } from './utils/groupConditionsByMarket'
 export { setupContracts, type Contracts } from './utils/setupContracts'
 export { getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getApiEndpoint, getSocketEndpoint } from './utils/getEndpoints'
-export { getFreeBets, FreeBetStatus, type FreeBet } from './utils/getFreebets'
 export { getBetTypedData } from './utils/getBetTypedData'
 export { getComboBetTypedData } from './utils/getComboBetTypedData'
 export { createBet } from './utils/createBet'
@@ -34,3 +33,7 @@ export { getCalculatedCashout, type GetCalculatedCashout } from './utils/cashout
 export { getCashoutTypedData } from './utils/cashout/getCashoutTypedData'
 export { createCashout, CashoutState, type CreateCashoutResponse } from './utils/cashout/createCashout'
 export { getCashout, type GetCashoutResponse } from './utils/cashout/getCashout'
+
+// bonus
+export { getBonuses, type GetBonuses } from './utils/bonus/getBonuses'
+export { getAvailableFreebets, type GetAvailableFreebets } from './utils/bonus/getAvailableFreebets'

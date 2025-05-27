@@ -69,6 +69,12 @@ export default [
       },
       {
         'indexed': false,
+        'internalType': 'address',
+        'name': 'core',
+        'type': 'address',
+      },
+      {
+        'indexed': false,
         'internalType': 'uint256[]',
         'name': 'tokenIds',
         'type': 'uint256[]',

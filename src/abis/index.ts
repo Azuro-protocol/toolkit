@@ -1,6 +1,7 @@
 export { default as lpAbi } from './LP'
 export { default as coreAbi } from './Core'
 export { default as azuroBetAbi } from './AzuroBet'
-export { default as freeBetAbi } from './FreeBet'
 export { default as cashoutAbi } from './Cashout'
 export { default as relayerAbi } from './Relayer'
+export { default as vaultAbi } from './Vault'
+export { default as paymasterAbi } from './PayMaster'
