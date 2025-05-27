@@ -38,7 +38,7 @@ type Props = {
 export const getBonuses = async ({ chainId, account, affiliate }: Props): Promise<GetBonuses> => {
   const { api } = chainsData[chainId]
 
-  const response = await fetch(`${api}/public/bonus/get-by-addresses`, {
+  const response = await fetch(`${api}/bonus/get-by-addresses`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -70,9 +70,9 @@ export const getBonuses = async ({ chainId, account, affiliate }: Props): Promis
       params: bonus.freebetParam,
       status: bonus.status,
       chainId: chainsDataByEnv[environment].chain.id,
-      expiresAt: +bonus.expiresAt,
-      usedAt: +bonus.usedAt,
-      createdAt: +bonus.createdAt,
+      expiresAt: +new Date(bonus.expiresAt),
+      usedAt: +new Date(bonus.usedAt),
+      createdAt: +new Date(bonus.createdAt),
     }
   })
 }

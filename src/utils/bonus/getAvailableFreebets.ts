@@ -22,7 +22,7 @@ export type GetAvailableFreebets = Freebet[] | null
 export const getAvailableFreebets = async ({ chainId, account, affiliate, selections }: Props): Promise<GetAvailableFreebets> => {
   const { api, environment } = chainsData[chainId]
 
-  const response = await fetch(`${api}/public/bonus/freebet/get-available`, {
+  const response = await fetch(`${api}/bonus/freebet/get-available`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -59,9 +59,9 @@ export const getAvailableFreebets = async ({ chainId, account, affiliate, select
       params: bonus.freebetParam,
       status: bonus.status,
       chainId: chainsDataByEnv[environment].chain.id,
-      expiresAt: +bonus.expiresAt,
-      usedAt: +bonus.usedAt,
-      createdAt: +bonus.createdAt,
+      expiresAt: +new Date(bonus.expiresAt),
+      usedAt: +new Date(bonus.usedAt),
+      createdAt: +new Date(bonus.createdAt),
     }
   })
 }

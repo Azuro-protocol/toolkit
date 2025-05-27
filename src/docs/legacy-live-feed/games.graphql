@@ -29,9 +29,11 @@ query LegacyLiveGames(
       }
     }
     league {
+      id
       slug
       name
       country {
+        id
         slug
         name
       }

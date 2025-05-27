@@ -15,16 +15,18 @@ type Props = {
     nonce: string | number | bigint
   }
   signature: Hex
+  bonusId?: string
 }
 
 export const createBet = async (props: Props) => {
-  const { account, clientData, bet, signature } = props
+  const { account, clientData, bet, signature, bonusId } = props
 
   const { chainId } = clientData
   const { api, environment } = chainsData[chainId]
 
   const signedBet = {
     environment,
+    bonusId,
     bettor: account.toLowerCase(),
     betOwner: account.toLowerCase(),
     clientBetData: {
