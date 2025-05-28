@@ -1,7 +1,7 @@
 {
   "name": "@azuro-org/toolkit",
-  "version": "5.1.0",
-  "description": "Set of helpers to work with Azuro protocol",
+  "version": "5.1.0-beta.1",
+  "description": "This framework-agnostic package provides essential utilities for building applications on the Azuro Protocol.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -26,7 +26,8 @@
     "azuro",
     "azuro-protocol",
     "toolkit",
-    "helpers"
+    "helpers",
+    "framework agnostic"
   ],
   "repository": {
     "type": "git",
@@ -41,8 +42,8 @@
   "peerDependencies": {
     "@azuro-org/dictionaries": "^3.0.27",
     "graphql-tag": "^2.12.6",
-    "@wagmi/core": "^2.17.1",
-    "viem": "^2.29.0"
+    "@wagmi/core": "^2.17.2",
+    "viem": "^2.30.4"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
