@@ -1,4 +1,4 @@
-import { type Address } from 'viem'
+import { formatUnits, type Address } from 'viem'
 
 import { chainsData, chainsDataByEnv, type ChainId } from '../../config'
 import { type BonusType, type Bonus, type BonusStatus } from '../../global'
@@ -36,7 +36,7 @@ type Props = {
 }
 
 export const getBonuses = async ({ chainId, account, affiliate }: Props): Promise<GetBonuses> => {
-  const { api } = chainsData[chainId]
+  const { api, betToken } = chainsData[chainId]
 
   const response = await fetch(`${api}/bonus/get-by-addresses`, {
     method: 'POST',
@@ -65,7 +65,7 @@ export const getBonuses = async ({ chainId, account, affiliate }: Props): Promis
 
     return {
       id: bonus.id,
-      amount: bonus.amount,
+      amount: formatUnits(BigInt(bonus.amount), betToken.decimals),
       type: bonus.bonusType,
       params: bonus.freebetParam,
       status: bonus.status,

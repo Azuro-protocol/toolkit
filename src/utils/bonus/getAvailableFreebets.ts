@@ -1,4 +1,4 @@
-import { type Address } from 'viem'
+import { formatUnits, type Address } from 'viem'
 
 import { chainsData, chainsDataByEnv, type ChainId } from '../../config'
 import { BonusType, type Freebet, type Selection } from '../../global'
@@ -20,7 +20,7 @@ type Props = {
 export type GetAvailableFreebets = Freebet[] | null
 
 export const getAvailableFreebets = async ({ chainId, account, affiliate, selections }: Props): Promise<GetAvailableFreebets> => {
-  const { api, environment } = chainsData[chainId]
+  const { api, environment, betToken } = chainsData[chainId]
 
   const response = await fetch(`${api}/bonus/freebet/get-available`, {
     method: 'POST',
@@ -54,7 +54,7 @@ export const getAvailableFreebets = async ({ chainId, account, affiliate, select
 
     return {
       id: bonus.id,
-      amount: bonus.amount,
+      amount: formatUnits(BigInt(bonus.amount), betToken.decimals),
       type: BonusType.FreeBet,
       params: bonus.freebetParam,
       status: bonus.status,
