@@ -5,21 +5,21 @@
     "importHelpers": true,
     "esModuleInterop": true,
     "isolatedModules": true,
+    "target": "es2022",
     "lib": ["esnext", "dom"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "declaration": true,
     "declarationDir": "dist",
-    "noEmit": true,
+    "noEmit": false,
     "noImplicitAny": true,
     "noUncheckedIndexedAccess": true,
-    "noUnusedParameters": false,
-    "noImplicitReturns": false,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "es2022",
     "types": ["node"]
   },
   "exclude": [
@@ -28,6 +28,5 @@
   ],
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx"
   ]
 }

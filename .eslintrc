@@ -15,6 +15,7 @@
     "src/docs/*",
     "examples/**",
     "*.json",
+    "dist/*",
     "codegen.ts"
     // "./dist"
   ],

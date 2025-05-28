@@ -15,7 +15,7 @@
     "gql:cleanup": "rimraf src/docs/**/*.ts src/docs/**/**/*.ts",
     "gql": "npm run gql:cleanup & graphql-codegen",
     "dev": "rollup -cw",
-    "build": "rimraf ./dist && npm run gql && rollup -c --compact",
+    "build": "rimraf ./dist && npm run gql && tsc --emitDeclarationOnly && rollup -c --compact",
     "prepublishOnly": "npm run build",
     "------------------  Lint --------------------------------------------------------------------------------": "",
     "lint": "next lint && tsc --noEmit",
@@ -41,8 +41,8 @@
   "homepage": "https://github.com/Azuro-protocol/toolkit#readme",
   "peerDependencies": {
     "@azuro-org/dictionaries": "^3.0.27",
-    "graphql-tag": "^2.12.6",
     "@wagmi/core": "^2.17.2",
+    "graphql-tag": "^2.12.6",
     "viem": "^2.30.4"
   },
   "devDependencies": {
@@ -52,8 +52,7 @@
     "@graphql-codegen/typescript": "^4.1.2",
     "@graphql-codegen/typescript-document-nodes": "^4.0.12",
     "@graphql-codegen/typescript-operations": "^4.4.0",
-    "@rollup/plugin-babel": "^6.0.3",
-    "@rollup/plugin-commonjs": "^23.0.3",
+    "@rollup/plugin-commonjs": "^23.0.7",
     "@rollup/plugin-json": "^4.1.0",
     "@types/node": "^17.0.21",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
@@ -63,10 +62,9 @@
     "eslint-plugin-import": "^2.29.1",
     "minimist": "^1.2.7",
     "rimraf": "^3.0.2",
-    "rollup": "^2.67.0",
-    "rollup-plugin-babel": "^4.4.0",
+    "rollup": "^2.79.2",
     "rollup-plugin-typescript2": "^0.34.1",
     "tslib": "^2.4.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.8.3"
   }
 }
