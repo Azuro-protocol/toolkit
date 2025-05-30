@@ -61,3 +61,34 @@ export type BetClientData = {
   isFeeSponsored: boolean
   isSponsoredBetReturnable: boolean
 }
+
+export enum BonusType {
+  FreeBet = 'FreeBet',
+}
+
+export enum BonusStatus {
+  Used = 'Used',
+  Available = 'Available',
+}
+
+type BonusBase = {
+  id: string
+  type: BonusType,
+  amount: string
+  status: BonusStatus
+  chainId: ChainId
+  expiresAt: number
+  usedAt: number
+  createdAt: number
+}
+
+export type Freebet = {
+  type: BonusType.FreeBet,
+  params: {
+    isBetSponsored: boolean,
+    isFeeSponsored: boolean,
+    isSponsoredBetReturnable: boolean
+  }
+} & BonusBase
+
+export type Bonus = Freebet

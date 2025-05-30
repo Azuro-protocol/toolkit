@@ -18,7 +18,7 @@ const endpointNameByChainId: Record<ChainId, string> = {
 //   endpointNameByChainId[polygonAmoy.id] = 'polygon-amoy-dev'
 // }
 
-const isDev = (chainId: ChainId) => {
+const isDevChain = (chainId: ChainId) => {
   return (
     chainId === polygonAmoy.id ||
     chainId === spicy.id ||
@@ -38,7 +38,7 @@ export const getBetsGraphqlEndpoint = (chainId: ChainId) => (
  * @deprecated Only for v2 feed
  */
 export const getLegacyLiveGraphqlEndpoint = (chainId: ChainId) => {
-  if (isDev(chainId)) {
+  if (isDevChain(chainId)) {
     return 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
   }
 
@@ -50,7 +50,7 @@ export const getLegacyLiveGraphqlEndpoint = (chainId: ChainId) => {
 }
 
 export const getSocketEndpoint = (chainId: ChainId) => {
-  if (isDev(chainId)) {
+  if (isDevChain(chainId)) {
     return 'wss://dev-streams.onchainfeed.org/v1/streams'
   }
 
@@ -62,7 +62,7 @@ export const getSocketEndpoint = (chainId: ChainId) => {
 }
 
 export const getApiEndpoint = (chainId: ChainId) => {
-  if (isDev(chainId)) {
+  if (isDevChain(chainId)) {
     return 'https://dev-api.onchainfeed.org/api/v1/public'
   }
 

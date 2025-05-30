@@ -39,10 +39,9 @@ fragment Bet on V3_Bet {
       }
     }
   }
-  freebet {
-    freebetId
-    contractAddress: freebetContractAddress
-  }
+  freebetId
+  isFreebetAmountReturnable
+  paymasterContractAddress
   cashout {
     payout
   }

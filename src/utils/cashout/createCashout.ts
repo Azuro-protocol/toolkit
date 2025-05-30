@@ -1,4 +1,4 @@
-import { type Hex, type Address } from 'viem'
+import { type Hex } from 'viem'
 
 import { type ChainId, chainsData } from '../../config'
 
