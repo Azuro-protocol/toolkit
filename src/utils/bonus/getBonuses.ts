@@ -36,7 +36,7 @@ type Props = {
 }
 
 export const getBonuses = async ({ chainId, account, affiliate }: Props): Promise<GetBonuses> => {
-  const { api, betToken } = chainsData[chainId]
+  const { api } = chainsData[chainId]
 
   const response = await fetch(`${api}/bonus/get-by-addresses`, {
     method: 'POST',
@@ -60,19 +60,25 @@ export const getBonuses = async ({ chainId, account, affiliate }: Props): Promis
 
   const { bonuses }: GetBonusesResponse = await response.json()
 
-  return bonuses.map(bonus => {
+  return bonuses.reduce<Bonus[]>((acc, bonus) => {
     const environment = `${bonus.network}${bonus.currency}` as Environment
+    const { chain, betToken } = chainsDataByEnv[environment]
 
-    return {
-      id: bonus.id,
-      amount: formatUnits(BigInt(bonus.amount), betToken.decimals),
-      type: bonus.bonusType,
-      params: bonus.freebetParam,
-      status: bonus.status,
-      chainId: chainsDataByEnv[environment].chain.id,
-      expiresAt: +new Date(bonus.expiresAt),
-      usedAt: +new Date(bonus.usedAt),
-      createdAt: +new Date(bonus.createdAt),
+    // TODO: need to add environement to request params
+    if (chain.id === chainId) {
+      acc.push({
+        id: bonus.id,
+        amount: formatUnits(BigInt(bonus.amount), betToken.decimals),
+        type: bonus.bonusType,
+        params: bonus.freebetParam,
+        status: bonus.status,
+        chainId: chain.id,
+        expiresAt: +new Date(bonus.expiresAt),
+        usedAt: +new Date(bonus.usedAt),
+        createdAt: +new Date(bonus.createdAt),
+      })
     }
-  })
+
+    return acc
+  }, [])
 }
