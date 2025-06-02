@@ -5,7 +5,7 @@ projects:
     extensions:
       endpoints:
         Default GraphQL Endpoint:
-          url: https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-polygon-amoy-dev
+          url: https://thegraph-1.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-polygon-amoy-dev
           headers:
             user-agent: JS GraphQL
           introspect: false
@@ -15,7 +15,7 @@ projects:
     extensions:
       endpoints:
         Default GraphQL Endpoint:
-          url: https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3
+          url: https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-api-polygon-amoy-dev-v3
           headers:
             user-agent: JS GraphQL
           introspect: false

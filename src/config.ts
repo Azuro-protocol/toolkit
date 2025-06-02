@@ -7,7 +7,6 @@ import { type ChainData } from './global'
 
 
 export const ODDS_DECIMALS = 12
-export const MIN_BET_AMOUNT = 1
 
 export const CLIENT_DATA_TYPES = [
   { name: 'attention', type: 'string' },
@@ -85,6 +84,8 @@ export const gnosisData: ChainData = {
     core: '0x0e00E6ffcb5E207B800eec9e02999D1Fd9e448f2',
     relayer: '0x40eb85018fA18dDd10a433C8c40ca8D6744d8B32',
     azuroBet: '0xd7cd9342A14962C2dCB14569CB6fcA2759999089',
+    vault: '0x14564e6BbbB8DE2f959af8c0e158D334F05393Bb',
+    paymaster: '0x3Ebf1a2005f1a87862d61022a5BAC661994dD94e',
     cashout: '0x25de227af58188e656524d1C32cCf7C078cdC891',
   }),
   betToken: {
@@ -109,6 +110,8 @@ export const gnosisDevData: ChainData = {
     core: '0x12d5E6d2e9c47015C26a7c959a5Db42E3eF5a1Ef',
     relayer: '0x7C9C7B37C93EbC2103061834eb2781809f604eAf',
     azuroBet: '0x9407B57bF56292b0d9940Ed69D9a74ACffb11413',
+    vault: '0xf4cFe9e703fe24E4Bc4c6dc6678e33Bf08d1F629',
+    paymaster: '0x943dD83042572226eFc485AD7Ecc605DFF7D2172',
     cashout: '0xF8E7F2e4693DBEd186b302474EeE5AE4Ab2E0150',
   }),
   betToken: {
@@ -133,6 +136,8 @@ export const polygonData: ChainData = {
     core: '0xF9548Be470A4e130c90ceA8b179FCD66D2972AC7',
     relayer: '0x8dA05c0021e6b35865FDC959c54dCeF3A4AbBa9d',
     azuroBet: '0x7A1c3FEf712753374C4DCe34254B96faF2B7265B',
+    vault: '0x1a0612FE7D0Def35559a1f71Ff155e344Ae69d2C',
+    paymaster: '0xeD5760fC2d2f6d363d73e576173e5e8Ca6A877e1',
     cashout: '0x4a2BB4211cCF9b9eA6eF01D0a61448154ED19095',
   }),
   betToken: {
@@ -181,6 +186,8 @@ export const polygonAmoyData: ChainData = {
     core: '0xCD0Db5ef28C3Bd3a69283372dE923Eb4DA0585F6',
     relayer: '0x48c9bE88706F22838070eE7C4bC74Ad7A8eeF114',
     azuroBet: '0x4B75c071dFA5d537979E8b0615Bb97B6337dbFef',
+    vault: '0x1Ed6CEEDf7033461a189FD7c3381C34846D7b25a',
+    paymaster: '0x2d155962b708c931Fc695F674B415065E78D9F04',
     cashout: '0x7dF132Ad2334a667A004049a75a4a8a530dc24F2',
   }),
   betToken: {
@@ -205,6 +212,8 @@ export const chilizData: ChainData = {
     core: '0xa5061617Ee6565CF48d7f0FEF06910b9fb9dE2b0',
     relayer: '0x81F72B93ABaf061535aaF5D831F05e0CC4084b32',
     azuroBet: '0x3777B4F27F4B36f14454dbB1f79278bcba694B52',
+    vault: '0x32696E01c979E3F542EC49D95729f011eF8F3c28',
+    paymaster: '0xB3AE923721e8f3345654eFffC09f6F52afC21F4c',
     cashout: '0x3995eebB51793Ee353162E7400DB455B17dE3692',
   }),
   betToken: {
@@ -229,6 +238,8 @@ export const spicyData: ChainData = {
     core: '0x524994dcA5EA2bc979ac5506E7195F28B4c16932',
     relayer: '0x725ec0A9eC9dC993A86d0eFD7fD78929d226AbE7',
     azuroBet: '0xF7815889e5d0635A31eca34390b25d8D2cEeD902',
+    vault: '0x2d76265b15081581F7ccD116828F35dA654f0a79',
+    paymaster: '0x3df16FB8Dc28F63565AF2815E04a3368360FFd23',
     cashout: '0x7c771a200EcD61A01af992360303f7b1465Cd8e3',
   }),
   betToken: {
@@ -253,6 +264,8 @@ export const baseSepoliaData: ChainData = {
     core: '0x679CC42F69F98631668348d088086359D4217Ffa',
     relayer: '0x2De54cABa6A8198D9Dc51931485Bfdc8017aB0c5',
     azuroBet: '0xD031C4BDd4b7c30e3725132109786B8E158A4c07',
+    vault: '0x6910dE58f350CE0A8b42D27004313346A31b3540',
+    paymaster: '0xC2577cdcF684C9756f2C81efdA001CbEFEf3Dd92',
     cashout: '0xf52Eb6ec19d81Ea623A7d7Ad397287C0C40f2F37',
   }),
   betToken: {
@@ -277,6 +290,8 @@ export const baseData: ChainData = {
     core: '0xF40cF1dD7d16C098cff5F8B5650A8FaEf1F4640d',
     relayer: '0xD2D508d66dB4fCE4B384e4C3EA2fa53BA43e73b5',
     azuroBet: '0xF328404Dbc8c997d12dC55a1A179AF7F8cb7df90',
+    vault: '0xbA390F464395fC0940c0B9591847ad4E836C7A0c',
+    paymaster: '0x4a2BB4211cCF9b9eA6eF01D0a61448154ED19095',
     cashout: '0x6EDff24761F4473611B45BDAe4a779ff31af14Be',
   }),
   betToken: {

@@ -51,9 +51,11 @@ fragment LegacyPrematchBet on Bet {
             }
           }
           league {
+            id
             slug
             name
             country {
+              id
               slug
               name
             }
