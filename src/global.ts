@@ -71,9 +71,26 @@ export enum BonusStatus {
   Available = 'Available',
 }
 
+export enum FreebetType {
+  OnlyWin = 'OnlyWin',
+  AllWin = 'AllWin',
+}
+
+export enum BetRestrictionType {
+  All = 'All',
+  Ordinar = 'Ordinar',
+  Combo = 'Combo',
+}
+
+export enum EventRestrictionState {
+  All = 'All',
+  Live = 'Live',
+  Prematch = 'Prematch',
+}
+
 type BonusBase = {
   id: string
-  type: BonusType,
+  type: BonusType
   amount: string
   status: BonusStatus
   chainId: ChainId
@@ -83,11 +100,24 @@ type BonusBase = {
 }
 
 export type Freebet = {
-  type: BonusType.FreeBet,
+  type: BonusType.FreeBet
   params: {
-    isBetSponsored: boolean,
-    isFeeSponsored: boolean,
+    isBetSponsored: boolean
+    isFeeSponsored: boolean
     isSponsoredBetReturnable: boolean
+  }
+  settings: {
+    type: FreebetType
+    feeSponsored: boolean
+    betRestriction: {
+      type: BetRestrictionType | undefined
+      minOdds: string
+      maxOdds: string | undefined
+    }
+    eventRestriction: {
+      state: EventRestrictionState | undefined
+    }
+    periodOfValidityMs: number
   }
 } & BonusBase
 

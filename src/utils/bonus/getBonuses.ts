@@ -1,7 +1,7 @@
 import { formatUnits, type Address } from 'viem'
 
 import { chainsData, chainsDataByEnv, type ChainId } from '../../config'
-import { type BonusType, type Bonus, type BonusStatus } from '../../global'
+import { BonusStatus, type BonusType, type Bonus, type FreebetType, type BetRestrictionType, type EventRestrictionState } from '../../global'
 import { type Environment } from '../../envs'
 
 
@@ -9,10 +9,23 @@ export type RawBonus = {
   id: string
   bonusType: BonusType
   freebetParam: {
-    isBetSponsored: true,
-    isFeeSponsored: true,
+    isBetSponsored: true
+    isFeeSponsored: true
     isSponsoredBetReturnable: true
-  },
+    settings: {
+      bonusType: FreebetType
+      feeSponsored: boolean
+      betRestriction: {
+        betType: BetRestrictionType | 'All'
+        minOdds: string
+        maxOdds?: string
+      }
+      eventRestriction: {
+        eventStatus: EventRestrictionState | 'All'
+      }
+      periodOfValidityMs: 86400000
+    }
+  }
   address: string
   amount: string
   status: BonusStatus
@@ -33,9 +46,11 @@ type Props = {
   chainId: ChainId
   account: Address
   affiliate: Address
+  bonusStatus?: BonusStatus
 }
 
-export const getBonuses = async ({ chainId, account, affiliate }: Props): Promise<GetBonuses> => {
+export const getBonuses = async (props: Props): Promise<GetBonuses> => {
+  const { chainId, account, affiliate, bonusStatus = BonusStatus.Available } = props
   const { api } = chainsData[chainId]
 
   const response = await fetch(`${api}/bonus/get-by-addresses`, {
@@ -47,6 +62,7 @@ export const getBonuses = async ({ chainId, account, affiliate }: Props): Promis
     body: JSON.stringify({
       bettorAddress: account,
       poolAddress: affiliate,
+      status: bonusStatus,
     }),
   })
 
@@ -66,11 +82,38 @@ export const getBonuses = async ({ chainId, account, affiliate }: Props): Promis
 
     // TODO: need to add environement to request params
     if (chain.id === chainId) {
+      const {
+        id,
+        freebetParam: {
+          isBetSponsored,
+          isFeeSponsored,
+          isSponsoredBetReturnable,
+          settings,
+        },
+      } = bonus
+
       acc.push({
-        id: bonus.id,
+        id,
         amount: formatUnits(BigInt(bonus.amount), betToken.decimals),
         type: bonus.bonusType,
-        params: bonus.freebetParam,
+        params: {
+          isBetSponsored,
+          isFeeSponsored,
+          isSponsoredBetReturnable,
+        },
+        settings: {
+          type: settings.bonusType,
+          feeSponsored: settings.feeSponsored,
+          betRestriction: {
+            type: settings.betRestriction.betType === 'All' ? undefined : settings.betRestriction.betType,
+            minOdds: settings.betRestriction.minOdds,
+            maxOdds: settings.betRestriction?.maxOdds,
+          },
+          eventRestriction: {
+            state: settings.eventRestriction.eventStatus === 'All' ? undefined : settings.eventRestriction.eventStatus,
+          },
+          periodOfValidityMs: settings.periodOfValidityMs,
+        },
         status: bonus.status,
         chainId: chain.id,
         expiresAt: +new Date(bonus.expiresAt),

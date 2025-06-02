@@ -49,14 +49,40 @@ export const getAvailableFreebets = async ({ chainId, account, affiliate, select
 
   const { bonuses }: GetFreebetsResponse = await response.json()
 
-  return bonuses.map(bonus => {
+  return bonuses.map<Freebet>(bonus => {
     const environment = `${bonus.network}${bonus.currency}` as Environment
+    const {
+      id,
+      freebetParam: {
+        isBetSponsored,
+        isFeeSponsored,
+        isSponsoredBetReturnable,
+        settings,
+      },
+    } = bonus
 
     return {
-      id: bonus.id,
+      id,
       amount: formatUnits(BigInt(bonus.amount), betToken.decimals),
       type: BonusType.FreeBet,
-      params: bonus.freebetParam,
+      params: {
+        isBetSponsored,
+        isFeeSponsored,
+        isSponsoredBetReturnable,
+      },
+      settings: {
+        type: settings.bonusType,
+        feeSponsored: settings.feeSponsored,
+        betRestriction: {
+          type: settings.betRestriction.betType === 'All' ? undefined : settings.betRestriction.betType,
+          minOdds: settings.betRestriction.minOdds,
+          maxOdds: settings.betRestriction?.maxOdds,
+        },
+        eventRestriction: {
+          state: settings.eventRestriction.eventStatus === 'All' ? undefined : settings.eventRestriction.eventStatus,
+        },
+        periodOfValidityMs: settings.periodOfValidityMs,
+      },
       status: bonus.status,
       chainId: chainsDataByEnv[environment].chain.id,
       expiresAt: +new Date(bonus.expiresAt),
