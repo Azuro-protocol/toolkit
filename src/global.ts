@@ -77,13 +77,11 @@ export enum FreebetType {
 }
 
 export enum BetRestrictionType {
-  All = 'All',
   Ordinar = 'Ordinar',
   Combo = 'Combo',
 }
 
 export enum EventRestrictionState {
-  All = 'All',
   Live = 'Live',
   Prematch = 'Prematch',
 }
