@@ -80,6 +80,7 @@ export const getAvailableFreebets = async ({ chainId, account, affiliate, select
         },
         eventRestriction: {
           state: settings.eventRestriction.eventStatus === 'All' ? undefined : settings.eventRestriction.eventStatus,
+          eventFilter: settings.eventRestriction.eventFilter,
         },
         periodOfValidityMs: settings.periodOfValidityMs,
       },

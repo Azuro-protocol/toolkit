@@ -22,6 +22,20 @@ export type RawBonus = {
       }
       eventRestriction: {
         eventStatus: EventRestrictionState | 'All'
+        eventFilter?: {
+          exclude: boolean
+          filter: [
+            {
+              sportId: string
+              leagues: string[]
+              markets: {
+                marketId: number
+                gamePeriodId: number
+                gameTypeId: number
+              }[]
+            }
+          ]
+        }
       }
       periodOfValidityMs: 86400000
     }
@@ -111,6 +125,7 @@ export const getBonuses = async (props: Props): Promise<GetBonuses> => {
           },
           eventRestriction: {
             state: settings.eventRestriction.eventStatus === 'All' ? undefined : settings.eventRestriction.eventStatus,
+            eventFilter: settings.eventRestriction.eventFilter,
           },
           periodOfValidityMs: settings.periodOfValidityMs,
         },

@@ -114,6 +114,20 @@ export type Freebet = {
     }
     eventRestriction: {
       state: EventRestrictionState | undefined
+      eventFilter?: {
+        exclude: boolean
+        filter: [
+          {
+            sportId: string
+            leagues: string[]
+            markets: {
+              marketId: number
+              gamePeriodId: number
+              gameTypeId: number
+            }[]
+          }
+        ]
+      }
     }
     periodOfValidityMs: number
   }
