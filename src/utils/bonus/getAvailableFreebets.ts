@@ -89,6 +89,7 @@ export const getAvailableFreebets = async ({ chainId, account, affiliate, select
       expiresAt: +new Date(bonus.expiresAt),
       usedAt: +new Date(bonus.usedAt),
       createdAt: +new Date(bonus.createdAt),
+      publicCustomData: bonus.publicCustomData,
     }
   })
 }

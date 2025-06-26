@@ -48,6 +48,7 @@ export type RawBonus = {
   expiresAt: string
   usedAt: string
   createdAt: string
+  publicCustomData: Record<string, string> | null
 }
 
 type GetBonusesResponse = {
@@ -134,6 +135,7 @@ export const getBonuses = async (props: Props): Promise<GetBonuses> => {
         expiresAt: +new Date(bonus.expiresAt),
         usedAt: +new Date(bonus.usedAt),
         createdAt: +new Date(bonus.createdAt),
+        publicCustomData: bonus.publicCustomData,
       })
     }
 

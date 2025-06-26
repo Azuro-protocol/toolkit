@@ -95,6 +95,7 @@ type BonusBase = {
   expiresAt: number
   usedAt: number
   createdAt: number
+  publicCustomData: Record<string, string> | null
 }
 
 export type Freebet = {
