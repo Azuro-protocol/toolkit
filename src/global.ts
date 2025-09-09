@@ -40,7 +40,8 @@ export enum BetState {
   Pending = 'Pending',
   Sent = 'Sent',
   Accepted = 'Accepted',
-  Rejected = 'Rejected'
+  Rejected = 'Rejected',
+  Canceled = 'Canceled'
 }
 
 export type CreateBetResponse = {
