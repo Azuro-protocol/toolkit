@@ -1,4 +1,4 @@
-import { base, baseSepolia, chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
+import { base, baseSepolia, bscTestnet, chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
 
 import { type ChainId } from '../config'
 
@@ -11,6 +11,7 @@ const endpointNameByChainId: Record<ChainId, string> = {
   [spicy.id]: 'chiliz-spicy-dev',
   [base.id]: 'base',
   [baseSepolia.id]: 'base-sepolia-dev',
+  [bscTestnet.id]: 'bsc-dev',
 }
 
 // if (isDevEnabled) {
@@ -22,7 +23,8 @@ const isDevChain = (chainId: ChainId) => {
   return (
     chainId === polygonAmoy.id ||
     chainId === spicy.id ||
-    chainId === baseSepolia.id
+    chainId === baseSepolia.id ||
+    chainId === bscTestnet.id
   )
 }
 
