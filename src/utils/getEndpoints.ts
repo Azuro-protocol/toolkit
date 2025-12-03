@@ -1,4 +1,4 @@
-import { base, baseSepolia, bscTestnet, chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
+import { base, baseSepolia, bsc, bscTestnet, chiliz, gnosis, polygon, polygonAmoy, spicy } from 'viem/chains'
 
 import { type ChainId } from '../config'
 
@@ -12,6 +12,7 @@ const endpointNameByChainId: Record<ChainId, string> = {
   [base.id]: 'base',
   [baseSepolia.id]: 'base-sepolia-dev',
   [bscTestnet.id]: 'bsc-dev',
+  [bsc.id]: 'bsc',
 }
 
 // if (isDevEnabled) {

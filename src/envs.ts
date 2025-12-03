@@ -1,4 +1,4 @@
-import { gnosis, polygon, polygonAmoy, chiliz, spicy, baseSepolia, base, bscTestnet } from 'viem/chains'
+import { gnosis, polygon, polygonAmoy, chiliz, spicy, baseSepolia, base, bscTestnet, bsc } from 'viem/chains'
 
 
 export enum Environment {
@@ -12,6 +12,7 @@ export enum Environment {
   BaseWETH = 'BaseWETH',
   BaseSepoliaWETH = 'BaseSepoliaWETH',
   BscDevUSDT = 'BscDevUSDT',
+  BscUSDT = 'BscUSDT',
 }
 
 export const environments = {
@@ -23,4 +24,5 @@ export const environments = {
   [base.id]: Environment.BaseWETH,
   [baseSepolia.id]: Environment.BaseSepoliaWETH,
   [bscTestnet.id]: Environment.BscDevUSDT,
+  [bsc.id]: Environment.BscUSDT,
 }

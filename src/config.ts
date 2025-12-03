@@ -1,4 +1,4 @@
-import { polygon, gnosis, polygonAmoy, chiliz, spicy, baseSepolia, base, bscTestnet } from 'viem/chains'
+import { polygon, gnosis, polygonAmoy, chiliz, spicy, baseSepolia, base, bscTestnet, bsc } from 'viem/chains'
 
 import { environments, Environment } from './envs'
 import { setupContracts } from './utils/setupContracts'
@@ -327,6 +327,32 @@ export const bscTestnetData: ChainData = {
   },
 }
 
+export const bscData: ChainData = {
+  chain: bsc,
+  graphql: {
+    bets: getBetsGraphqlEndpoint(bsc.id),
+    feed: getFeedGraphqlEndpoint(bsc.id),
+    legacyLive: getLegacyLiveGraphqlEndpoint(bsc.id),
+  },
+  socket: getSocketEndpoint(bsc.id),
+  api: getApiEndpoint(bsc.id),
+  environment: environments[bsc.id],
+  contracts: setupContracts({
+    lp: '0xa2db60D3DcecEc80d5D30c680a7b1e2018cD909f',
+    core: '0x14CB339E65f2AbF69941FeA56916Faee092f25ad',
+    relayer: '0xAe684d68526a8d6a1c6426848d787ef060346030',
+    azuroBet: '0x6Fb6a3A0D8fE1214AFFa18A7c3428078C7dd843d',
+    vault: '0xb19DA044aB046e71dfa9a8458cb6aC258bF5aA70',
+    paymaster: '0x3445f0C78Ce1141247c1BcB653FA28b65cD5FA89',
+    cashout: '0x81F72B93ABaf061535aaF5D831F05e0CC4084b32',
+  }),
+  betToken: {
+    address: '0x55d398326f99059ff775485246999027b3197955',
+    symbol: 'USDT',
+    decimals: 18,
+  },
+}
+
 export const chainsData = {
   [gnosis.id]: gnosisData,
   [polygon.id]: polygonData,
@@ -336,6 +362,7 @@ export const chainsData = {
   [base.id]: baseData,
   [baseSepolia.id]: baseSepoliaData,
   [bscTestnet.id]: bscTestnetData,
+  [bsc.id]: bscData,
 }
 
 // if (isDevEnabled) {
@@ -353,7 +380,8 @@ export const chainsDataByEnv: Record<Environment, ChainData> = {
   [Environment.ChilizSpicyWCHZ]: spicyData,
   [Environment.BaseWETH]: baseData,
   [Environment.BaseSepoliaWETH]: baseSepoliaData,
-  [Environment.BscDevUSDT]: baseSepoliaData,
+  [Environment.BscDevUSDT]: bscTestnetData,
+  [Environment.BscUSDT]: bscData,
 } as const
 
 export type ChainId = keyof typeof chainsData
