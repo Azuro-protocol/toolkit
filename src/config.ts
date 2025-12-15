@@ -8,6 +8,8 @@ import { type ChainData } from './global'
 
 export const ODDS_DECIMALS = 12
 
+export const ODDS_COMBO_FEE_MODIFIER = 0.99
+
 export const CLIENT_DATA_TYPES = [
   { name: 'attention', type: 'string' },
   { name: 'affiliate', type: 'address' },
