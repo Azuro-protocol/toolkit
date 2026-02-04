@@ -30,11 +30,11 @@ const isDevChain = (chainId: ChainId) => {
 }
 
 export const getFeedGraphqlEndpoint = (chainId: ChainId) => (
-  `https://thegraph-1.chainfeedon.com/subgraphs/name/azuro-protocol/azuro-data-feed-${endpointNameByChainId[chainId]}`
+  `https://thegraph-1.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-${endpointNameByChainId[chainId]}`
 )
 
 export const getBetsGraphqlEndpoint = (chainId: ChainId) => (
-  `https://thegraph.chainfeedon.com/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
+  `https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-api-${endpointNameByChainId[chainId]}-v3`
 )
 
 /**
@@ -42,36 +42,36 @@ export const getBetsGraphqlEndpoint = (chainId: ChainId) => (
  */
 export const getLegacyLiveGraphqlEndpoint = (chainId: ChainId) => {
   if (isDevChain(chainId)) {
-    return 'https://thegraph.chainfeedon.com/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
+    return 'https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-dev'
   }
 
   // if (chainId === polygonAmoy.id) {
-  //   return 'https://thegraph.chainfeedon.com/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
+  //   return 'https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed-preprod'
   // }
 
-  return 'https://thegraph.chainfeedon.com/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
+  return 'https://thegraph.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-api-live-data-feed'
 }
 
 export const getSocketEndpoint = (chainId: ChainId) => {
   if (isDevChain(chainId)) {
-    return 'wss://dev-streams.chainfeedon.com/v1/streams'
+    return 'wss://dev-streams.onchainfeed.org/v1/streams'
   }
 
   // if (chainId === polygonAmoy.id) {
   //   return 'wss://preprod-streams.azuro.org/v1/streams'
   // }
 
-  return 'wss://streams.chainfeedon.com/v1/streams'
+  return 'wss://streams.onchainfeed.org/v1/streams'
 }
 
 export const getApiEndpoint = (chainId: ChainId) => {
   if (isDevChain(chainId)) {
-    return 'https://dev-api.chainfeedon.com/api/v1/public'
+    return 'https://dev-api.onchainfeed.org/api/v1/public'
   }
 
   // if (chainId === polygonAmoy.id) {
   //   return 'https://preprod-api.azuro.org/api/v1/public'
   // }
 
-  return 'https://api.chainfeedon.com/api/v1/public'
+  return 'https://api.onchainfeed.org/api/v1/public'
 }
