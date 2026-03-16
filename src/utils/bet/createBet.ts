@@ -24,7 +24,7 @@ export type CreateBetResult = CreateBetResponse
  * Creates a single (ordinary) bet by submitting signed bet data to the Azuro API.
  * This function sends the bet order to the relayer which will then place the bet on-chain.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/createBet
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/createBet
  *
  * @example
  * import { createBet } from '@azuro-org/toolkit'

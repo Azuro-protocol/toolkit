@@ -42,7 +42,7 @@ export type GetConditionsByGameIdsResponseResult = GetConditionsByGameIdsRespons
  * Fetches detailed conditions data for a given list of game IDs.
  * Returns comprehensive condition information including outcomes, odds, and game relationships.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/feed/getConditionsByGameIds
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/feed/getConditionsByGameIds
  *
  * @example
  * import { getConditionsByGameIds } from '@azuro-org/toolkit'

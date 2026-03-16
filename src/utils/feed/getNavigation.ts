@@ -60,7 +60,7 @@ export type GetNavigationResult = NavigationSportData[]
  * Fetches navigation structure with sports, countries, and leagues hierarchy.
  * Returns active game counts at each level for building navigation menus.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/feed/getNavigation
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/feed/getNavigation
  *
  * @example
  * import { getNavigation } from '@azuro-org/toolkit'

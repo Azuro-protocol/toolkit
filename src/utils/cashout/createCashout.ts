@@ -29,7 +29,7 @@ export type CreateCashoutParams = {
  * Creates a cashout order for an existing bet by submitting the signed cashout calculation to the Azuro API.
  * This finalizes the cashout process after obtaining a calculation and signing the typed data.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/cashout/createCashout
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/cashout/createCashout
  *
  * @example
  * import { createCashout } from '@azuro-org/toolkit'

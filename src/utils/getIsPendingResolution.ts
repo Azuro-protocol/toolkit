@@ -11,7 +11,7 @@ export type GetIsPendingResolutionParams = {
  * Determines if a game is pending resolution after completion.
  * Returns true if the game is in Live state but has exceeded the expected resolution window (100 minutes after start).
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/getIsPendingResolution
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/getIsPendingResolution
  *
  * @example
  * import { getIsPendingResolution, GameState } from '@azuro-org/toolkit'

@@ -24,7 +24,7 @@ export type GetBetTypedDataParams = {
  * Generates EIP-712 typed data for signing a single (ordinary) bet.
  * This typed data is used with wallet signing methods to create a bet signature.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/getBetTypedData
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/getBetTypedData
  *
  * @example
  * import { getBetTypedData } from '@azuro-org/toolkit'

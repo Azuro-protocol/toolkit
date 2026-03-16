@@ -19,7 +19,7 @@ export type GetGamesByIdsResult = GetGamesByIdsResponse['games']
  * Fetches game data for a specific list of game IDs.
  * Returns detailed information for each requested game including participants, timing, and league data.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/feed/getGamesByIds
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/feed/getGamesByIds
  *
  * @example
  * import { getGamesByIds } from '@azuro-org/toolkit'

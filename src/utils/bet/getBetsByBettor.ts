@@ -29,7 +29,7 @@ export type GetBetsByBettorResult = (BetOrderData & { lpAddress: Address })[] | 
  * Retrieves all bet orders for a specific bettor address with optional filtering.
  * Supports pagination and filtering by state, result, affiliate, and redemption status.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/getBetsByBettor
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/getBetsByBettor
  *
  * @example
  * import { getBetsByBettor } from '@azuro-org/toolkit'

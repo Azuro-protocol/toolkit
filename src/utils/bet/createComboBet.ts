@@ -24,7 +24,7 @@ export type CreateComboBetResult = CreateBetResponse
  * Creates a combo (parlay) bet by submitting signed bet data to the Azuro API.
  * This function sends the combo bet order to the relayer which will then place the bet on-chain.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/createComboBet
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/createComboBet
  *
  * @example
  * import { createComboBet } from '@azuro-org/toolkit'

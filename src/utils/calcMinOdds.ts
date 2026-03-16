@@ -13,7 +13,7 @@ const adjustSubBetOdds = (value: number) => Math.ceil(+value / ODDS_COMBO_FEE_MO
  * Calculates the minimum acceptable odds considering slippage for single or combo bets.
  * For combo bets, applies fee modifiers and multiplies individual odds to calculate total odds.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/calcMinOdds
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/calcMinOdds
  *
  * @example
  * import { calcMindOdds } from '@azuro-org/toolkit'

@@ -26,7 +26,7 @@ export type GetBetCalculationResult = GetBetCalculationResponse['response']
  * User's account is required to provide the **correct** maximum bet amount.
  * It may be undefined if the user isn't logged in.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/getBetCalculation
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/getBetCalculation
  *
  * @example
  * import { getBetCalculation } from '@azuro-org/toolkit'

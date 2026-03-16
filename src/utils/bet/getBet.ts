@@ -15,7 +15,7 @@ export type GetBetResult = GetBetResponse | null
  * Retrieves bet order data by order ID from the Azuro API.
  * Returns null if the bet order is not found.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/getBet
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/getBet
  *
  * @example
  * import { getBet } from '@azuro-org/toolkit'

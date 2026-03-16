@@ -17,7 +17,7 @@ export type GetCashoutParams = {
  * Retrieves the status and details of a cashout order by its order ID.
  * Returns null if the cashout order is not found.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/cashout/getCashout
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/cashout/getCashout
  *
  * @example
  * import { getCashout } from '@azuro-org/toolkit'

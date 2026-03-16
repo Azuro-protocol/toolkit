@@ -38,7 +38,7 @@ type Props = {
  * Determines the current status of a bet based on order state, on-chain status, and game states.
  * Returns a unified bet status that combines API order state and blockchain data.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/getBetStatus
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/getBetStatus
  *
  * @example
  * import { getBetStatus, BetStatus } from '@azuro-org/toolkit'

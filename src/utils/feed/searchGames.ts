@@ -23,7 +23,7 @@ export type SearchGamesResult = PaginatedGamesResponse
  * Searches for games by text query across game titles, leagues, and countries.
  * The minimum query length is 3 characters. Returns paginated results.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/feed/searchGames
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/feed/searchGames
  *
  * @example
  * import { searchGames } from '@azuro-org/toolkit'

@@ -24,7 +24,7 @@ export type GetComboBetTypedDataParams = {
  * Generates EIP-712 typed data for signing a combo (parlay) bet.
  * This typed data is used with wallet signing methods to create a combo bet signature.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/getComboBetTypedData
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/getComboBetTypedData
  *
  * @example
  * import { getComboBetTypedData } from '@azuro-org/toolkit'

@@ -27,7 +27,7 @@ export type GetPrecalculatedCashoutsParams = {
  * Retrieves precalculated cashout availability and prices for specified conditions.
  * Returns margin information and outcome prices for each available condition.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/cashout/getPrecalculatedCashouts
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/cashout/getPrecalculatedCashouts
  *
  * @example
  * import { getPrecalculatedCashouts } from '@azuro-org/toolkit'

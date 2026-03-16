@@ -49,7 +49,7 @@ export type GetSportsResult = GetSportsResponse['sports']
  * Fetches a complete sports hierarchy including countries, leagues, and games.
  * Returns nested structure with all games organized by sport, country, and league.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/feed/getSports
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/feed/getSports
  *
  * @example
  * import { GameState, getSports } from '@azuro-org/toolkit'

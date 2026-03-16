@@ -24,7 +24,7 @@ export type GetBetFeeResult = BetFeeResponse
  * Retrieves the current relayer fee information for placing bets on a specific chain.
  * Returns gas price, bet token rate, and calculated relayer fee amount.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/getBetFee
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/getBetFee
  *
  * @example
  * import { getBetFee } from '@azuro-org/toolkit'

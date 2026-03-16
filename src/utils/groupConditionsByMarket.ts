@@ -38,7 +38,7 @@ export type GameMarkets = Market[]
  * Groups game conditions by their market types and sorts them according to sport-specific ordering.
  * It processes outcomes to include selection names, handles duplicate conditions, and organizes data for display.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/groupConditionsByMarket
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/groupConditionsByMarket
  *
  * @example
  * import { groupConditionsByMarket } from '@azuro-org/toolkit'

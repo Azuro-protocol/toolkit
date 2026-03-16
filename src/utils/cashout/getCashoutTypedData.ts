@@ -23,7 +23,7 @@ export type GetCashoutTypedDataParams = {
  * Generates EIP-712 typed data for signing a cashout order.
  * This typed data must be signed by the user before submitting the cashout.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/cashout/getCashoutTypedData
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/cashout/getCashoutTypedData
  *
  * @example
  * import { getCashoutTypedData } from '@azuro-org/toolkit'

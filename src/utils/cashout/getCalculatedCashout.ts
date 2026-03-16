@@ -42,7 +42,7 @@ export type GetCalculatedCashoutParams = {
  * Retrieves the calculated cashout information for a specific bet, including the cashout amount and odds.
  * Returns null if no cashout calculation is available for the bet.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/cashout/getCalculatedCashout
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/cashout/getCalculatedCashout
  *
  * @example
  * import { getCalculatedCashout } from '@azuro-org/toolkit'

@@ -70,7 +70,7 @@ export type GetBonusesParams = {
  * Fetches all bonuses for a bettor account filtered by status.
  * By default, retrieves only available bonuses. Returns null if no bonuses are found.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bonus/getBonuses
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bonus/getBonuses
  *
  * @example
  * import { getBonuses, BonusStatus } from '@azuro-org/toolkit'

@@ -28,7 +28,7 @@ export type GetConditionsStateResult = ConditionsStateResponse['conditions']
 /**
  * Fetches up-to-date condition states and outcome odds for a list of conditions.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/feed/getConditionsState
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/feed/getConditionsState
  *
  * @example
  * import { getConditionsState } from '@azuro-org/toolkit'

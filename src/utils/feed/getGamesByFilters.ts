@@ -30,7 +30,7 @@ export type GetGamesByFiltersResult = PaginatedGamesResponse
  * Fetches games by applying various filters such as sport, league, or game state.
  * Returns paginated results ideal for building sport/country/league listing pages.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/feed/getGamesByFilters
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/feed/getGamesByFilters
  *
  * @example
  * import { GameState, getGamesByFilters } from '@azuro-org/toolkit'

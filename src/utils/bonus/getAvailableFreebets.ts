@@ -25,7 +25,7 @@ export type GetAvailableFreebets = Freebet[] | null
  * Retrieves available freebets for a bettor that can be applied to specific bet selections.
  * Returns null if no freebets are available for the given selections.
  *
- * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bonus/getAvailableFreebets
+ * - Docs: https://gem.azuro.org/hub/apps/toolkit/bonus/getAvailableFreebets
  *
  * @example
  * import { getAvailableFreebets } from '@azuro-org/toolkit'
