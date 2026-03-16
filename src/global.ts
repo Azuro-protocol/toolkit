@@ -35,18 +35,70 @@ export type Selection = {
 
 export type WaveId = number | 'active'
 
-export enum BetState {
+/** a string in format `YYYY-MM-DDTHH:mm:ss.sssZ` */
+export type ISOTimestamp = string
+
+/**
+ * Bet order states in the backend.
+ *
+ * Flow:
+ * Created → Placed → Sent → (Accepted | Rejected) → Settled
+ * Cancellation may occur at any point in the flow after "Created".
+ *
+ * To show aggregated states to the end user, use `getBetStatus` helper
+ * */
+export enum BetOrderState {
+  /** First status when created */
   Created = 'Created',
-  Pending = 'Pending',
+  /** Bet is included in the calculation of potential loss/wins */
+  Placed = 'Placed',
+  /** The relayer has been taken into processing to send the bet to the contracts */
   Sent = 'Sent',
+  /** Bet successfully accepted in the contracts */
   Accepted = 'Accepted',
+  /** An error occurred during the contracts checks */
   Rejected = 'Rejected',
-  Canceled = 'Canceled'
+  /** The process of canceling the bet. The bet placed in the contracts still has the "GraphBetStatus.Accepted" status */
+  PendingCancel = 'PendingCancel',
+  /** Cancellation error. The bet placed in the contracts still has the "GraphBetStatus.Accepted" status */
+  CancelFailed = 'CancelFailed',
+  /** Bet is canceled */
+  Canceled = 'Canceled',
+  /** The bet is settled (won or lost) */
+  Settled = 'Settled',
+}
+
+export enum BetOrderResult {
+  Won = 'Won',
+  Lost = 'Lost',
+  Canceled = 'Canceled',
+}
+
+export enum GameState {
+  Finished = 'Finished',
+  Live = 'Live',
+  Prematch = 'Prematch',
+  Stopped = 'Stopped',
+  Canceled = 'Canceled',
+}
+
+export enum ConditionState {
+  Active = 'Active',
+  Canceled = 'Canceled',
+  Removed = 'Removed',
+  Resolved = 'Resolved',
+  Stopped = 'Stopped'
+}
+
+/** Defines the order direction, either ascending or descending */
+export enum OrderDirection {
+  Asc = 'asc',
+  Desc = 'desc'
 }
 
 export type CreateBetResponse = {
   id: string
-  state: BetState
+  state: BetOrderState
   errorMessage?: string
   error?: string
 }

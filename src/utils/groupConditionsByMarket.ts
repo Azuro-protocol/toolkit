@@ -3,9 +3,8 @@ import {
   getMarketDescription, getSelectionName,
 } from '@azuro-org/dictionaries'
 
-import { type ConditionsQuery } from '../docs/feed/conditions'
-import { ConditionState } from '../docs/feed/types'
-import type { Selection } from '../global'
+import type { ConditionDetailedData } from './feed/getConditionsByGameIds'
+import { ConditionState, type Selection } from '../global'
 
 
 export type MarketOutcome = {
@@ -35,7 +34,26 @@ export type Market = TMarket<Condition[]>
 
 export type GameMarkets = Market[]
 
-export const groupConditionsByMarket = (conditions: ConditionsQuery['conditions']): GameMarkets => {
+/**
+ * Groups game conditions by their market types and sorts them according to sport-specific ordering.
+ * It processes outcomes to include selection names, handles duplicate conditions, and organizes data for display.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/groupConditionsByMarket
+ *
+ * @example
+ * import { groupConditionsByMarket } from '@azuro-org/toolkit'
+ *
+ * const conditions = await getConditionsByGameIds({ gameIds: ['123'] })
+ * const markets = groupConditionsByMarket(conditions)
+ *
+ * markets.forEach(market => {
+ *   console.log(market.name) // e.g., "Match Winner", "Total Goals"
+ *   market.conditions.forEach(condition => {
+ *     console.log(condition.outcomes) // outcomes with odds and selection names
+ *   })
+ * })
+ * */
+export const groupConditionsByMarket = (conditions: ConditionDetailedData[]): GameMarkets => {
   const sportId = conditions[0]!.game.sport.sportId
   const markets: Record<string, TMarket<Record<string, Condition>>> = {}
 

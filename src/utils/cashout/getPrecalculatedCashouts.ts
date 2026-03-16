@@ -14,14 +14,42 @@ type GetPrecalculatedCashoutsResponse = {
   }[]
 }
 
-export type GetPrecalculatedCashouts = GetPrecalculatedCashoutsResponse | null
+export type GetPrecalculatedCashoutsResult = GetPrecalculatedCashoutsResponse | null
+/** @deprecated use GetPrecalculatedCashoutsResult instead */
+export type GetPrecalculatedCashouts = GetPrecalculatedCashoutsResult
 
-type Props = {
+export type GetPrecalculatedCashoutsParams = {
   chainId: ChainId
   conditionIds: string[]
 }
 
-export const getPrecalculatedCashouts = async (props: Props): Promise<GetPrecalculatedCashouts> => {
+/**
+ * Retrieves precalculated cashout availability and prices for specified conditions.
+ * Returns margin information and outcome prices for each available condition.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/cashout/getPrecalculatedCashouts
+ *
+ * @example
+ * import { getPrecalculatedCashouts } from '@azuro-org/toolkit'
+ *
+ * const chainId = 100
+ * const conditionIds = ['123', '456', '789']
+ *
+ * const cashouts = await getPrecalculatedCashouts({
+ *   chainId,
+ *   conditionIds,
+ * })
+ *
+ * if (cashouts) {
+ *   cashouts.availables.forEach(({ conditionId, available, outcomes }) => {
+ *     console.log(`Condition ${conditionId} available: ${available}`)
+ *     outcomes.forEach(({ outcomeId, price }) => {
+ *       console.log(`  Outcome ${outcomeId}: ${price}`)
+ *     })
+ *   })
+ * }
+ * */
+export const getPrecalculatedCashouts = async (props: GetPrecalculatedCashoutsParams): Promise<GetPrecalculatedCashoutsResult> => {
   const { chainId, conditionIds } = props
   const { api, contracts } = chainsData[chainId]
 

@@ -1,7 +1,0 @@
-query Game(
-  $id: ID!
-) {
-  game(id: $id, subgraphError: allow) {
-    ...GameInfo
-  }
-}

@@ -55,16 +55,37 @@ type GetBonusesResponse = {
   bonuses: RawBonus[]
 }
 
+export type GetBonusesResult = Bonus[] | null
+/** @deprecated use GetBonusesResult instead */
 export type GetBonuses = Bonus[] | null
 
-type Props = {
+export type GetBonusesParams = {
   chainId: ChainId
   account: Address
   affiliate: Address
   bonusStatus?: BonusStatus
 }
 
-export const getBonuses = async (props: Props): Promise<GetBonuses> => {
+/**
+ * Fetches all bonuses for a bettor account filtered by status.
+ * By default, retrieves only available bonuses. Returns null if no bonuses are found.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bonus/getBonuses
+ *
+ * @example
+ * import { getBonuses, BonusStatus } from '@azuro-org/toolkit'
+ *
+ * const account = userWallet?.address
+ * const affiliate = '0x123...'
+ *
+ * const bonuses = await getBonuses({
+ *   chainId: 100,
+ *   account,
+ *   affiliate,
+ *   bonusStatus: BonusStatus.Available
+ * })
+ * */
+export const getBonuses = async (props: GetBonusesParams): Promise<GetBonusesResult> => {
   const { chainId, account, affiliate, bonusStatus = BonusStatus.Available } = props
   const { api } = chainsData[chainId]
 

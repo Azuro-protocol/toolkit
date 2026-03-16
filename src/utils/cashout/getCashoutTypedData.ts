@@ -10,7 +10,7 @@ import {
 } from '../../config'
 
 
-type Props = {
+export type GetCashoutTypedDataParams = {
   chainId: ChainId
   account: Address
   attention: string
@@ -19,7 +19,35 @@ type Props = {
   expiredAt: number
 }
 
-export const getCashoutTypedData = (props: Props): SignTypedDataParameters<typeof CASHOUT_DATA_TYPES> => {
+/**
+ * Generates EIP-712 typed data for signing a cashout order.
+ * This typed data must be signed by the user before submitting the cashout.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/cashout/getCashoutTypedData
+ *
+ * @example
+ * import { getCashoutTypedData } from '@azuro-org/toolkit'
+ * import { signTypedData } from 'viem/accounts'
+ *
+ * const chainId = 100
+ * const account = '0x123...'
+ * const tokenId = '456'
+ * const cashoutOdds = '1.85'
+ * const expiredAt = Math.floor(Date.now() / 1000) + 3600
+ * const attention = 'By signing this transaction, I agree to cash out on Azuro'
+ *
+ * const typedData = getCashoutTypedData({
+ *   chainId,
+ *   account,
+ *   attention,
+ *   tokenId,
+ *   cashoutOdds,
+ *   expiredAt,
+ * })
+ *
+ * const signature = await signTypedData(typedData)
+ * */
+export const getCashoutTypedData = (props: GetCashoutTypedDataParams): SignTypedDataParameters<typeof CASHOUT_DATA_TYPES> => {
   const { account, chainId, attention, tokenId, cashoutOdds, expiredAt } = props
 
   const { contracts } = chainsData[chainId]

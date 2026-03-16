@@ -29,6 +29,7 @@ const isDevChain = (chainId: ChainId) => {
   )
 }
 
+/** @deprecated Use REST API instead */
 export const getFeedGraphqlEndpoint = (chainId: ChainId) => (
   `https://thegraph-1.onchainfeed.org/subgraphs/name/azuro-protocol/azuro-data-feed-${endpointNameByChainId[chainId]}`
 )

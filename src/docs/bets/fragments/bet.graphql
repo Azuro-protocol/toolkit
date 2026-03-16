@@ -13,6 +13,7 @@ fragment Bet on V3_Bet {
   resolvedAt: resolvedBlockTimestamp
   txHash: createdTxHash
   redeemedTxHash
+  redeemedAt: redeemedBlockTimestamp
   affiliate
   isRedeemed
   isRedeemable

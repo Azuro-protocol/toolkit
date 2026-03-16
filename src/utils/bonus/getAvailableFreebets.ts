@@ -10,16 +10,40 @@ export type GetFreebetsResponse = {
   bonuses: RawBonus[]
 }
 
-type Props = {
+export type GetAvailableFreebetsParams = {
   chainId: ChainId
   account: Address
   affiliate: Address
   selections: Selection[]
 }
 
+export type GetAvailableFreebetsResult = Freebet[] | null
+/** @deprecated use GetAvailableFreebetsResult instead */
 export type GetAvailableFreebets = Freebet[] | null
 
-export const getAvailableFreebets = async ({ chainId, account, affiliate, selections }: Props): Promise<GetAvailableFreebets> => {
+/**
+ * Retrieves available freebets for a bettor that can be applied to specific bet selections.
+ * Returns null if no freebets are available for the given selections.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bonus/getAvailableFreebets
+ *
+ * @example
+ * import { getAvailableFreebets } from '@azuro-org/toolkit'
+ *
+ * const account = userWallet?.address
+ * const affiliate = affiliateAddress
+ * const selections = [
+ *   { conditionId: '1', outcomeId: '1' },
+ * ]
+ *
+ * const freebets = await getAvailableFreebets({
+ *   chainId: 100,
+ *   account,
+ *   affiliate,
+ *   selections
+ * })
+ * */
+export const getAvailableFreebets = async ({ chainId, account, affiliate, selections }: GetAvailableFreebetsParams): Promise<GetAvailableFreebetsResult> => {
   const { api, environment, betToken } = chainsData[chainId]
 
   const response = await fetch(`${api}/bonus/freebet/get-available`, {
@@ -86,9 +110,9 @@ export const getAvailableFreebets = async ({ chainId, account, affiliate, select
       },
       status: bonus.status,
       chainId: chainsDataByEnv[environment].chain.id,
-      expiresAt: +new Date(bonus.expiresAt),
-      usedAt: +new Date(bonus.usedAt),
-      createdAt: +new Date(bonus.createdAt),
+      expiresAt: Date.parse(bonus.expiresAt),
+      usedAt: Date.parse(bonus.usedAt),
+      createdAt: Date.parse(bonus.createdAt),
       publicCustomData: bonus.publicCustomData,
     }
   })

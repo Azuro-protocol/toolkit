@@ -1,10 +1,10 @@
 import { type Address, type Hex } from 'viem'
 
-import { chainsData } from '../config'
-import { type CreateBetResponse, type BetClientData } from '../global'
+import { chainsData } from '../../config'
+import { type CreateBetResponse, type BetClientData } from '../../global'
 
 
-type Props = {
+export type CreateBetParams = {
   account: Address
   clientData: BetClientData
   bet: {
@@ -18,7 +18,31 @@ type Props = {
   bonusId?: string
 }
 
-export const createBet = async (props: Props) => {
+export type CreateBetResult = CreateBetResponse
+
+/**
+ * Creates a single (ordinary) bet by submitting signed bet data to the Azuro API.
+ * This function sends the bet order to the relayer which will then place the bet on-chain.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/createBet
+ *
+ * @example
+ * import { createBet } from '@azuro-org/toolkit'
+ *
+ * const account = '0x...'
+ * const clientData = { chainId: 137, core: '0x...', ... }
+ * const bet = {
+ *   conditionId: '1',
+ *   outcomeId: '1',
+ *   minOdds: '1500000000000',
+ *   amount: '1000000',
+ *   nonce: '1',
+ * }
+ * const signature = '0x...'
+ *
+ * const result = await createBet({ account, clientData, bet, signature })
+ * */
+export const createBet = async (props: CreateBetParams): Promise<CreateBetResult> => {
   const { account, clientData, bet, signature, bonusId } = props
 
   const { chainId } = clientData
@@ -50,10 +74,6 @@ export const createBet = async (props: Props) => {
     },
     body: JSON.stringify(signedBet),
   })
-
-  if (response.status === 404) {
-    return null
-  }
 
   const data: CreateBetResponse = await response.json()
 

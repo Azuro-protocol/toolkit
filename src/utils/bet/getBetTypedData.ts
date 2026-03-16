@@ -4,11 +4,11 @@ import {
   BET_DATA_TYPES,
   TYPED_DATA_DOMAIN_NAME,
   TYPED_DATA_DOMAIN_VERSION,
-} from '../config'
-import { type BetClientData } from '../global'
+} from '../../config'
+import { type BetClientData } from '../../global'
 
 
-type Props = {
+export type GetBetTypedDataParams = {
   account: Address
   clientData: BetClientData
   bet: {
@@ -20,7 +20,30 @@ type Props = {
   }
 }
 
-export const getBetTypedData = (props: Props): SignTypedDataParameters<typeof BET_DATA_TYPES> => {
+/**
+ * Generates EIP-712 typed data for signing a single (ordinary) bet.
+ * This typed data is used with wallet signing methods to create a bet signature.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/getBetTypedData
+ *
+ * @example
+ * import { getBetTypedData } from '@azuro-org/toolkit'
+ * import { signTypedData } from 'viem/actions'
+ *
+ * const account = '0x...'
+ * const clientData = { chainId: 137, core: '0x...', ... }
+ * const bet = {
+ *   conditionId: '1',
+ *   outcomeId: '1',
+ *   minOdds: '1500000000000',
+ *   amount: '1000000',
+ *   nonce: '1',
+ * }
+ *
+ * const typedData = getBetTypedData({ account, clientData, bet })
+ * const signature = await signTypedData(walletClient, typedData)
+ * */
+export const getBetTypedData = (props: GetBetTypedDataParams): SignTypedDataParameters<typeof BET_DATA_TYPES> => {
   const { account, clientData, bet } = props
   const { chainId, core } = clientData
 

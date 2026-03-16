@@ -1,10 +1,10 @@
 import { type Address, type Hex } from 'viem'
 
-import { chainsData } from '../config'
-import { type CreateBetResponse, type BetClientData } from '../global'
+import { chainsData } from '../../config'
+import { type CreateBetResponse, type BetClientData } from '../../global'
 
 
-type Props = {
+export type CreateComboBetParams = {
   account: Address
   amount: string | bigint
   minOdds: string | bigint
@@ -18,7 +18,36 @@ type Props = {
   bonusId?: string
 }
 
-export const createComboBet = async (props: Props) => {
+export type CreateComboBetResult = CreateBetResponse
+
+/**
+ * Creates a combo (parlay) bet by submitting signed bet data to the Azuro API.
+ * This function sends the combo bet order to the relayer which will then place the bet on-chain.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/bet/createComboBet
+ *
+ * @example
+ * import { createComboBet } from '@azuro-org/toolkit'
+ *
+ * const account = '0x...'
+ * const clientData = { chainId: 137, core: '0x...', ... }
+ * const bets = [
+ *   { conditionId: '1', outcomeId: '1' },
+ *   { conditionId: '2', outcomeId: '2' },
+ * ]
+ * const signature = '0x...'
+ *
+ * const result = await createComboBet({
+ *   account,
+ *   clientData,
+ *   bets,
+ *   amount: '1000000',
+ *   minOdds: '3000000000000',
+ *   nonce: '1',
+ *   signature,
+ * })
+ * */
+export const createComboBet = async (props: CreateComboBetParams): Promise<CreateComboBetResult> => {
   const { account, amount, minOdds, nonce, clientData, bets, signature, bonusId } = props
 
   const { chainId } = clientData
@@ -50,10 +79,6 @@ export const createComboBet = async (props: Props) => {
     },
     body: JSON.stringify(signedBet),
   })
-
-  if (response.status === 404) {
-    return null
-  }
 
   const data: CreateBetResponse = await response.json()
 

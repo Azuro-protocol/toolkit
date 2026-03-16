@@ -13,6 +13,7 @@ fragment LegacyPrematchBet on Bet {
   resolvedAt: resolvedBlockTimestamp
   txHash: createdTxHash
   redeemedTxHash
+  redeemedAt: redeemedBlockTimestamp
   affiliate
   isRedeemed
   isRedeemable

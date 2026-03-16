@@ -7,5 +7,9 @@ export const formatToFixed = (value: string | number, digitsCount: number): numb
 
   const [ int, digits ] = value.split('.')
 
-  return +`${int}.${digits!.substr(0, digitsCount)}`
+  if (!digitsCount || digitsCount < 0 || !digits?.length || digits.length < digitsCount) {
+    return +(int || 0)
+  }
+
+  return +`${int}.${digits!.slice(0, digitsCount)}`
 }

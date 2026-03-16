@@ -6,12 +6,33 @@ export type GetCashoutResponse = {
   txHash: string
 } & CreateCashoutResponse
 
-type Props = {
+export type GetCashoutResult = GetCashoutResponse | null
+
+export type GetCashoutParams = {
   chainId: ChainId
   orderId: string
 }
 
-export const getCashout = async ({ chainId, orderId }: Props) => {
+/**
+ * Retrieves the status and details of a cashout order by its order ID.
+ * Returns null if the cashout order is not found.
+ *
+ * - Docs: https://dev-gem.azuro.org/hub/apps/toolkit/utils/cashout/getCashout
+ *
+ * @example
+ * import { getCashout } from '@azuro-org/toolkit'
+ *
+ * const chainId = 100
+ * const orderId = 'abc123'
+ *
+ * const cashout = await getCashout({ chainId, orderId })
+ *
+ * if (cashout) {
+ *   console.log(`State: ${cashout.state}`)
+ *   console.log(`Transaction hash: ${cashout.txHash}`)
+ * }
+ * */
+export const getCashout = async ({ chainId, orderId }: GetCashoutParams): Promise<GetCashoutResult> => {
   const { api, contracts } = chainsData[chainId]
 
   if (!contracts.cashout?.address) {
