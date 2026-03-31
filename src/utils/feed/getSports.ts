@@ -1,9 +1,9 @@
 import { serializeApiParams } from '../../helpers/serializeApiParams'
 import { getApiEndpoint } from '../getEndpoints'
 import { environments } from '../../envs'
-import { type GameState, type OrderDirection } from '../../global'
+import { type GameState, OrderDirection } from '../../global'
 import type { ChainId } from '../../config'
-import { type GameData, type GameOrderBy, type SportHubSlug } from './types'
+import { type GameData, GameOrderBy, type SportHubSlug } from './types'
 
 
 export type GetSportsParams = {
@@ -57,12 +57,21 @@ export type GetSportsResult = GetSportsResponse['sports']
  * const sports = await getSports({
  *   chainId: 137,
  *   states: [GameState.Prematch, GameState.Live],
- *   page: 1,
- *   perPage: 50,
+ *   numberOfGames: 50,
  * })
  * */
 export const getSports = async (props: GetSportsParams): Promise<GetSportsResult> => {
-  const { chainId, gameState, sportIds, sportSlug, countrySlug, leagueSlug, numberOfGames, orderBy, orderDir } = props
+  const {
+    chainId,
+    gameState,
+    sportIds,
+    sportSlug,
+    countrySlug,
+    leagueSlug,
+    numberOfGames,
+    orderBy = GameOrderBy.StartsAt,
+    orderDir = OrderDirection.Asc,
+  } = props
 
   const api = getApiEndpoint(chainId)
   const environment = environments[chainId]

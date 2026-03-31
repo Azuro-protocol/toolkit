@@ -26,6 +26,7 @@ type Condition = {
   conditionId: string
   state: ConditionState
   margin: string
+  hidden?: boolean
   isExpressForbidden: boolean
   outcomes: MarketOutcome[]
 }
@@ -70,6 +71,7 @@ export const groupConditionsByMarket = (conditions: ConditionDetailedData[]): Ga
       isExpressForbidden,
       title: customMarketName,
       margin,
+      hidden,
       game: { gameId },
     } = condition
 
@@ -116,6 +118,7 @@ export const groupConditionsByMarket = (conditions: ConditionDetailedData[]): Ga
       conditionId,
       state,
       isExpressForbidden,
+      hidden,
       margin,
       outcomes: [],
     }

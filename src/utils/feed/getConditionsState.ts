@@ -1,4 +1,5 @@
 import { getApiEndpoint } from '../getEndpoints'
+import { environments } from '../../envs'
 import type { ConditionState } from '../../global'
 import type { ChainId } from '../../config'
 
@@ -48,6 +49,7 @@ export const getConditionsState = async (props: GetConditionsStateParams): Promi
   }
 
   const api = getApiEndpoint(props.chainId)
+  const environment = environments[props.chainId]
 
   const response = await fetch(`${api}/market-manager/condition-batch`, {
     method: 'POST',
@@ -57,6 +59,7 @@ export const getConditionsState = async (props: GetConditionsStateParams): Promi
     },
     body: JSON.stringify({
       conditionIds,
+      environment,
     }),
   })
 

@@ -17,6 +17,7 @@ export type ConditionDetailedData = {
   isExpressForbidden: boolean
   isPrematchEnabled: boolean
   isLiveEnabled: boolean
+  hidden?: boolean
   margin: string
   outcomes: {
     title: string | null
