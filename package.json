@@ -1,6 +1,6 @@
 {
   "name": "@azuro-org/toolkit",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "description": "This framework-agnostic package provides essential utilities for building applications on the Azuro Protocol.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

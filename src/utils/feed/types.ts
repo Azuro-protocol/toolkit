@@ -35,6 +35,7 @@ export type GameData = {
     id?: string
     slug: string
     name: string
+    isTopLeague: boolean
   }
   country: {
     id?: string

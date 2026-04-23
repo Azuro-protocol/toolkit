@@ -13,6 +13,8 @@ export type GetSportsParams = {
   sportSlug?: string
   countrySlug?: string
   leagueSlug?: string
+  /** Filter for leagues, if not set, returns all leagues */
+  topLeagueFilter?: 'All' | 'TopOnly' | 'NonTop'
   /** Number of games per league, default and minimum: 10 */
   numberOfGames?: number
   orderBy?: GameOrderBy
@@ -33,6 +35,7 @@ export type SportData = {
       slug: string
       name: string
       turnover: string
+      isTopLeague: boolean
       games: GameData[]
     }[]
   }[]
@@ -69,6 +72,7 @@ export const getSports = async (props: GetSportsParams): Promise<GetSportsResult
     countrySlug,
     leagueSlug,
     numberOfGames,
+    topLeagueFilter,
     orderBy = GameOrderBy.StartsAt,
     orderDir = OrderDirection.Asc,
   } = props
@@ -83,6 +87,7 @@ export const getSports = async (props: GetSportsParams): Promise<GetSportsResult
     sportSlug,
     countrySlug,
     leagueSlug,
+    topLeagueFilter,
     numberOfGames: numberOfGames && numberOfGames > 10 ? numberOfGames : 10,
     orderBy,
     orderDirection: orderDir,

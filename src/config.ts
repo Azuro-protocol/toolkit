@@ -71,6 +71,9 @@ export const CASHOUT_DATA_TYPES = {
 export const CASHOUT_TYPED_DATA_DOMAIN_NAME = 'Cash Out'
 export const CASHOUT_TYPED_DATA_DOMAIN_VERSION = '1.0.0'
 
+/**
+ * @deprecated Gnosis is discontinued
+ * */
 export const gnosisData: ChainData = {
   chain: gnosis,
   graphql: {
@@ -97,6 +100,9 @@ export const gnosisData: ChainData = {
   },
 }
 
+/**
+ * @deprecated Gnosis is discontinued
+ * */
 export const gnosisDevData: ChainData = {
   chain: gnosis,
   graphql: {
@@ -149,30 +155,6 @@ export const polygonData: ChainData = {
   },
 }
 
-// const polygonAmoyData: ChainData = {
-//   chain: polygonAmoy,
-//   graphql: {
-//     bets: getBetsGraphqlEndpoint(polygonAmoy.id),
-//     feed: getFeedGraphqlEndpoint(polygonAmoy.id),
-//     legacyLive: getLegacyLiveGraphqlEndpoint(polygonAmoy.id),
-//   },
-//   socket: getSocketEndpoint(polygonAmoy.id),
-//   api: getApiEndpoint(polygonAmoy.id),
-//   environment: environments[polygonAmoy.id],
-//   contracts: setupContracts({
-//     lp: '0x3528186476FD0eA0AdC9fCcc41de4CD138f99653',
-//     core: '0x2477B960080B3439b4684df3D9CE53B2ACe64315',
-//     relayer: '0x355B8493380fA5D57E4d3aFBF7C5f38b64AD5eA9',
-//     azuroBet: '0x5E59ee1b09Cb2Cf031e4Beaa8dB48D4B8b7e38AD',
-//     cashout: '0x080d71059891Fb4d722855df28bFB208335F1587',
-//   }),
-//   betToken: {
-//     address: '0xf028b2dd00e20a8d9db3964a5feb0633d2ee46cd',
-//     symbol: 'AZUSD',
-//     decimals: 6,
-//   },
-// }
-
 export const polygonAmoyData: ChainData = {
   chain: polygonAmoy,
   graphql: {
@@ -199,6 +181,9 @@ export const polygonAmoyData: ChainData = {
   },
 }
 
+/**
+ * @deprecated Chiliz is discontinued
+ * */
 export const chilizData: ChainData = {
   chain: chiliz,
   graphql: {
@@ -225,6 +210,9 @@ export const chilizData: ChainData = {
   },
 }
 
+/**
+ * @deprecated Chiliz is discontinued
+ * */
 export const spicyData: ChainData = {
   chain: spicy,
   graphql: {
@@ -303,6 +291,9 @@ export const baseData: ChainData = {
   },
 }
 
+/**
+ * @deprecated BSC is discontinued
+ * */
 export const bscTestnetData: ChainData = {
   chain: bscTestnet,
   graphql: {
@@ -329,6 +320,9 @@ export const bscTestnetData: ChainData = {
   },
 }
 
+/**
+ * @deprecated BSC is discontinued
+ * */
 export const bscData: ChainData = {
   chain: bsc,
   graphql: {
@@ -356,32 +350,26 @@ export const bscData: ChainData = {
 }
 
 export const chainsData = {
-  [gnosis.id]: gnosisData,
   [polygon.id]: polygonData,
   [polygonAmoy.id]: polygonAmoyData,
-  [chiliz.id]: chilizData,
-  [spicy.id]: spicyData,
   [base.id]: baseData,
   [baseSepolia.id]: baseSepoliaData,
+  [gnosis.id]: gnosisData,
+  [chiliz.id]: chilizData,
+  [spicy.id]: spicyData,
   [bscTestnet.id]: bscTestnetData,
   [bsc.id]: bscData,
 }
 
-// if (isDevEnabled) {
-//   chainsData[gnosis.id] = gnosisDevData
-//   chainsData[polygonAmoy.id] = polygonAmoyDevData
-// }
-
 export const chainsDataByEnv: Record<Environment, ChainData> = {
-  [Environment.GnosisXDAI]: gnosisData,
-  [Environment.GnosisDevXDAI]: gnosisDevData,
   [Environment.PolygonUSDT]: polygonData,
-  // [Environment.PolygonAmoyAZUSD]: polygonAmoyData,
   [Environment.PolygonAmoyUSDT]: polygonAmoyData,
-  [Environment.ChilizWCHZ]: chilizData,
-  [Environment.ChilizSpicyWCHZ]: spicyData,
   [Environment.BaseWETH]: baseData,
   [Environment.BaseSepoliaWETH]: baseSepoliaData,
+  [Environment.GnosisXDAI]: gnosisData,
+  [Environment.GnosisDevXDAI]: gnosisDevData,
+  [Environment.ChilizWCHZ]: chilizData,
+  [Environment.ChilizSpicyWCHZ]: spicyData,
   [Environment.BscDevUSDT]: bscTestnetData,
   [Environment.BscUSDT]: bscData,
 } as const

@@ -2,27 +2,32 @@ import { gnosis, polygon, polygonAmoy, chiliz, spicy, baseSepolia, base, bscTest
 
 
 export enum Environment {
-  GnosisDevXDAI = 'GnosisDevXDAI',
-  GnosisXDAI = 'GnosisXDAI',
   PolygonUSDT = 'PolygonUSDT',
-  // PolygonAmoyAZUSD = 'PolygonAmoyAZUSD',
   PolygonAmoyUSDT = 'PolygonAmoyUSDT',
-  ChilizWCHZ = 'ChilizWCHZ',
-  ChilizSpicyWCHZ = 'ChilizSpicyWCHZ',
   BaseWETH = 'BaseWETH',
   BaseSepoliaWETH = 'BaseSepoliaWETH',
-  BscDevUSDT = 'BscDevUSDT',
+  /** @deprecated Gnosis is discontinued */
+  GnosisDevXDAI = 'GnosisDevXDAI',
+  /** @deprecated Gnosis is discontinued */
+  GnosisXDAI = 'GnosisXDAI',
+  /** @deprecated BSC is discontinued */
+  ChilizWCHZ = 'ChilizWCHZ',
+  /** @deprecated BSC is discontinued*/
+  ChilizSpicyWCHZ = 'ChilizSpicyWCHZ',
+  /** @deprecated BSC is discontinued*/
   BscUSDT = 'BscUSDT',
+  /** @deprecated BSC is discontinued*/
+  BscDevUSDT = 'BscDevUSDT',
 }
 
 export const environments = {
-  [gnosis.id]: Environment.GnosisXDAI,
   [polygon.id]: Environment.PolygonUSDT,
   [polygonAmoy.id]: Environment.PolygonAmoyUSDT,
-  [chiliz.id]: Environment.ChilizWCHZ,
-  [spicy.id]: Environment.ChilizSpicyWCHZ,
   [base.id]: Environment.BaseWETH,
   [baseSepolia.id]: Environment.BaseSepoliaWETH,
+  [gnosis.id]: Environment.GnosisXDAI,
+  [chiliz.id]: Environment.ChilizWCHZ,
+  [spicy.id]: Environment.ChilizSpicyWCHZ,
   [bscTestnet.id]: Environment.BscDevUSDT,
   [bsc.id]: Environment.BscUSDT,
 }
