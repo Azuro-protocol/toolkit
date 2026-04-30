@@ -36,6 +36,7 @@ export type SportData = {
       name: string
       turnover: string
       isTopLeague: boolean
+      topWeight?: number
       games: GameData[]
     }[]
   }[]

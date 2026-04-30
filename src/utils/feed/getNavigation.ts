@@ -36,6 +36,7 @@ type NavigationSportDataResponse = {
       slug: string
       name: string
       isTopLeague: boolean
+      topWeight?: number
       turnover: string
       activeGamesCount: number
       activeLiveGamesCount: number
