@@ -25,7 +25,8 @@ export { getBetsByBettor, type GetBetsByBettorParams, type GetBetsByBettorResult
 export { type BetOrderData, type BetOrderConditionData, type BetMetaData } from './utils/bet/types'
 
 // feed
-export { getConditionsByGameIds, type GetConditionsByGameIdsParams, type GetConditionsByGameIdsResponseResult, type ConditionDetailedData } from './utils/feed/getConditionsByGameIds'
+export { getConditionsByGameIds, type GetConditionsByGameIdsParams, type GetConditionsByGameIdsResponseResult,
+  type ConditionDetailedData, type OutcomeData } from './utils/feed/getConditionsByGameIds'
 export { getConditionsState, type GetConditionsStateParams, type GetConditionsStateResult, type ConditionStateData } from './utils/feed/getConditionsState'
 export { getGamesByFilters, type GetGamesByFiltersParams, type GetGamesByFiltersResult } from './utils/feed/getGamesByFilters'
 export { getGamesByIds, type GetGamesByIdsParams, type GetGamesByIdsResult } from './utils/feed/getGamesByIds'

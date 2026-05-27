@@ -9,21 +9,26 @@ export type GetConditionsByGameIdsParams = {
   gameIds: string | string[]
 }
 
+export type OutcomeData = {
+  title: string
+  outcomeId: string
+  odds: string
+  sort: `${number}`
+  /** Modern ("5...") conditions only: numeric handicap/line value, e.g. "-2.5" / "+2.5" */
+  point?: string | null
+}
+
 export type ConditionDetailedData = {
   id: string
   conditionId: string
   state: ConditionState
-  title: string | null
+  title: string
   isExpressForbidden: boolean
   isPrematchEnabled: boolean
   isLiveEnabled: boolean
   hidden?: boolean
   margin: string
-  outcomes: {
-    title: string | null
-    outcomeId: string
-    odds: string
-  }[]
+  outcomes: OutcomeData[]
   game: {
     gameId: string
     sport: {
@@ -31,6 +36,10 @@ export type ConditionDetailedData = {
     }
   }
   wonOutcomeIds: string[]
+  sort: `${number}`
+  /** Modern ("5...") conditions only: used for market grouping */
+  marketId?: string | null
+  marketVarietyId?: string | null
 }
 
 export type GetConditionsByGameIdsResponse = {

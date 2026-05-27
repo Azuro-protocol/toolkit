@@ -11,9 +11,11 @@ export type GetConditionsStateParams = {
 
 export type ConditionStateData = {
   conditionId: string
+  title: string
   state: ConditionState
   outcomes: {
     id: string
+    title: string
     outcomeId: string
     odds: string
   }[]
