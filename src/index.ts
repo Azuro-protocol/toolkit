@@ -52,3 +52,14 @@ export { getCashout, type GetCashoutParams, type GetCashoutResult, type GetCasho
 // bonus
 export { getBonuses, type GetBonusesParams, type GetBonusesResult, type GetBonuses } from './utils/bonus/getBonuses'
 export { getAvailableFreebets, type GetAvailableFreebetsParams, type GetAvailableFreebetsResult, type GetAvailableFreebets } from './utils/bonus/getAvailableFreebets'
+
+// auth
+export { getSiweNonce, type GetSiweNonceParams, type GetSiweNonceResult } from './utils/auth/getSiweNonce'
+export { verifySiwe, type VerifySiweParams, type VerifySiweResult } from './utils/auth/verifySiwe'
+export { buildSiweMessage, type BuildSiweMessageParams } from './utils/auth/buildSiweMessage'
+
+// user
+export { getUserFavorites, type GetUserFavoritesParams, type GetUserFavoritesResult } from './utils/user/getUserFavorites'
+export { createUserFavorite, type CreateUserFavoriteParams, type CreateUserFavoriteResult } from './utils/user/createUserFavorite'
+export { deleteUserFavorite, type DeleteUserFavoriteParams, type DeleteUserFavoriteResult } from './utils/user/deleteUserFavorite'
+export type { Favorites, FavoriteCountry, FavoriteCountryRef, FavoriteLeague, FavoriteSport } from './utils/user/types'
