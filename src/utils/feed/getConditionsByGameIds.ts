@@ -83,6 +83,7 @@ export const getConditionsByGameIds = async (props: GetConditionsByGameIdsParams
     body: JSON.stringify({
       gameIds,
       environment,
+      extended: true,
     }),
   })
 
