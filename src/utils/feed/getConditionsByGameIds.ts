@@ -7,6 +7,8 @@ import type { ChainId } from '../../config'
 export type GetConditionsByGameIdsParams = {
   chainId: ChainId
   gameIds: string | string[]
+  /** To receive new conditions ("5...") that are not in the "dictionaries" package (managed via API) */
+  extended?: boolean
 }
 
 export type OutcomeData = {
@@ -83,7 +85,7 @@ export const getConditionsByGameIds = async (props: GetConditionsByGameIdsParams
     body: JSON.stringify({
       gameIds,
       environment,
-      extended: true,
+      extended: props.extended ?? false,
     }),
   })
 
