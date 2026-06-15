@@ -28,6 +28,8 @@ export { type BetOrderData, type BetOrderConditionData, type BetMetaData } from 
 export { getConditionsByGameIds, type GetConditionsByGameIdsParams, type GetConditionsByGameIdsResponseResult,
   type ConditionDetailedData, type OutcomeData } from './utils/feed/getConditionsByGameIds'
 export { getConditionsState, type GetConditionsStateParams, type GetConditionsStateResult, type ConditionStateData } from './utils/feed/getConditionsState'
+export { getPredefinedCombo, type GetPredefinedComboParams, type GetPredefinedComboResult,
+  type PredefinedComboData, type PredefinedComboConditionData } from './utils/feed/getPredefinedCombo'
 export { getGamesByFilters, type GetGamesByFiltersParams, type GetGamesByFiltersResult } from './utils/feed/getGamesByFilters'
 export { getGamesByIds, type GetGamesByIdsParams, type GetGamesByIdsResult } from './utils/feed/getGamesByIds'
 export { getNavigation, type GetNavigationParams, type GetNavigationResult, type NavigationSportData } from './utils/feed/getNavigation'
