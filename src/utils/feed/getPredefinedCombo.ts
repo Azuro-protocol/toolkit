@@ -92,8 +92,8 @@ export const getPredefinedCombo = async (props: GetPredefinedComboParams): Promi
       oddsList.push(+outcome.odds)
 
       const isV5 = item.conditionId[0] === '5'
-      const title = item.title ?? (isV5 ? 'Unknown' : getMarketName({ outcomeId: outcome.outcomeId }))
-      const outcomeTitle = outcome.title ?? (isV5 ? 'Unknown' : getSelectionName({ outcomeId: outcome.outcomeId }))
+      const title = item.title || (isV5 ? 'Unknown' : getMarketName({ outcomeId: outcome.outcomeId }))
+      const outcomeTitle = outcome.title || (isV5 ? 'Unknown' : getSelectionName({ outcomeId: outcome.outcomeId }))
 
       return {
         ...rest,
