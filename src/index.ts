@@ -8,7 +8,7 @@ export * from './docs'
 export { getProviderFromId } from './utils/getProviderFromId'
 export { calcMinOdds, type CalcMinOddsParams } from './utils/calcMinOdds'
 export { getIsPendingResolution, type GetIsPendingResolutionParams } from './utils/getIsPendingResolution'
-export { groupConditionsByMarket, type GameMarkets, type MarketOutcome, type Market } from './utils/groupConditionsByMarket'
+export { groupConditionsByMarket, type GameMarkets, type MarketOutcome, type MarketCondition, type Market } from './utils/groupConditionsByMarket'
 export { setupContracts, type Contracts } from './utils/setupContracts'
 export { getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getApiEndpoint, getSocketEndpoint } from './utils/getEndpoints'
 

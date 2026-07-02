@@ -4,18 +4,10 @@ import {
 } from '@azuro-org/dictionaries'
 
 import type { ConditionDetailedData } from '../feed/getConditionsByGameIds'
-import { ConditionState } from '../../global'
-import type { Market, MarketOutcome } from './types'
+import { ConditionState, type ConditionCategory } from '../../global'
+import type { Market, MarketOutcome, MarketCondition } from './types'
+import { parseSort } from './parseSort'
 
-
-type TCondition = {
-  conditionId: string
-  state: ConditionState
-  margin: string
-  hidden?: boolean
-  isExpressForbidden: boolean
-  outcomes: MarketOutcome[]
-}
 
 type DupEntry = { conditionId: string; state: ConditionState }
 
@@ -30,7 +22,7 @@ function pointSortValue(outcomeId: string): number {
 }
 
 export const groupLegacyConditions = (conditions: ConditionDetailedData[], sportId: string): Market[] => {
-  const markets: Record<string, { marketKey: string; name: string; description: string; type: 'legacy', conditions: Record<string, TCondition> }> = {}
+  const markets: Record<string, { marketKey: string; name: string; description: string; category: ConditionCategory, type: 'legacy', conditions: Record<string, MarketCondition> }> = {}
   const dupTracker: Record<string, DupEntry> = {}
 
   for (const condition of conditions) {
@@ -44,6 +36,8 @@ export const groupLegacyConditions = (conditions: ConditionDetailedData[], sport
       margin,
       hidden,
       game: { gameId },
+      category,
+      sort,
     } = condition
 
     if (rawOutcomes.length === 0) {
@@ -82,11 +76,14 @@ export const groupLegacyConditions = (conditions: ConditionDetailedData[], sport
         description: getMarketDescription({ outcomeId: firstOutcomeId }),
         conditions: {},
         type: 'legacy',
+        category,
       }
     }
 
     markets[marketKey]!.conditions[conditionId] = {
       conditionId,
+      sort: parseSort(sort),
+      category,
       state,
       isExpressForbidden,
       hidden,
@@ -121,6 +118,8 @@ export const groupLegacyConditions = (conditions: ConditionDetailedData[], sport
         gameId,
         isExpressForbidden,
         odds: +odds,
+        hidden: rawOutcome.hidden,
+        state: rawOutcome.state,
       }
 
       if (Array.isArray(wonOutcomeIds)) {

@@ -1,6 +1,6 @@
 import { getApiEndpoint } from '../getEndpoints'
 import { environments } from '../../envs'
-import type { ConditionState } from '../../global'
+import type { ConditionState, OutcomeState, ConditionCategory } from '../../global'
 import type { ChainId } from '../../config'
 
 
@@ -13,11 +13,15 @@ export type ConditionStateData = {
   conditionId: string
   title: string
   state: ConditionState
+  sort: `${number}`
+  category: ConditionCategory
   outcomes: {
     id: string
     title: string
     outcomeId: string
     odds: string
+    hidden: boolean
+    state: OutcomeState
   }[]
 }
 

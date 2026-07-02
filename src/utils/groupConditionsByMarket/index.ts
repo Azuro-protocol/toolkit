@@ -7,6 +7,7 @@ import type { GameMarkets } from './types'
 export type {
   GameMarkets,
   MarketOutcome,
+  MarketCondition,
   Market,
 } from './types'
 
@@ -32,7 +33,7 @@ export type {
  * })
  * */
 export const groupConditionsByMarket = (conditions: ConditionDetailedData[]): GameMarkets => {
-  if (conditions.length === 0) {
+  if (!conditions?.length) {
     return []
   }
 
@@ -57,5 +58,7 @@ export const groupConditionsByMarket = (conditions: ConditionDetailedData[]): Ga
     ? groupConditionsV5(conditionsV5)
     : []
 
-  return [ ...legacyMarkets, ...markets ]
+  return [ ...legacyMarkets, ...markets ].sort((a, b) => {
+    return (a.conditions?.[0]?.sort || 0) - (b.conditions?.[0]?.sort || 0)
+  })
 }

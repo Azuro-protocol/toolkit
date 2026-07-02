@@ -1,15 +1,8 @@
-import type { ConditionState } from '../../global'
+import type { ConditionCategory } from '../../global'
 import type { ConditionDetailedData } from '../feed/getConditionsByGameIds'
-import type { Market, MarketOutcome } from './types'
+import type { Market, MarketOutcome, MarketCondition } from './types'
+import { parseSort } from './parseSort'
 
-
-function parseSort(value: string | number | null | undefined): number {
-  if (value == null) {
-    return 0
-  }
-
-  return parseFloat(String(value)) || 0
-}
 
 function marketGroupKey(condition: ConditionDetailedData): string {
   const { marketId, marketVarietyId } = condition
@@ -21,20 +14,12 @@ function marketGroupKey(condition: ConditionDetailedData): string {
   return condition.conditionId
 }
 
-type TCondition = {
-  conditionId: string
-  state: ConditionState
-  margin: string
-  hidden?: boolean
-  isExpressForbidden: boolean
-  outcomes: MarketOutcome[]
-}
-
 export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[] => {
   const groupOrder: string[] = []
   const groups: Record<string, {
     name: string
-    conditions: Record<string, TCondition>
+    conditions: Record<string, MarketCondition>
+    category: ConditionCategory
     conditionSorts: Record<string, number>
   }> = {}
 
@@ -49,6 +34,8 @@ export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[]
       margin,
       hidden,
       game: { gameId },
+      category,
+      sort,
     } = condition
 
     const gKey = marketGroupKey(condition)
@@ -56,7 +43,7 @@ export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[]
 
     if (!groups[gKey]) {
       groupOrder.push(gKey)
-      groups[gKey] = { name: marketName, conditions: {}, conditionSorts: {} }
+      groups[gKey] = { name: marketName, conditions: {}, conditionSorts: {}, category }
     }
 
     const sortedOutcomes = [ ...rawOutcomes ].sort(
@@ -75,6 +62,8 @@ export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[]
         odds: Number(outcomeData.odds),
         gameId,
         isExpressForbidden,
+        hidden: outcomeData.hidden,
+        state: outcomeData.state,
       }
 
       if (Array.isArray(wonOutcomeIds)) {
@@ -86,9 +75,11 @@ export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[]
 
     groups[gKey]!.conditions[conditionId] = {
       conditionId,
+      sort: parseSort(sort),
       state,
       hidden,
       margin,
+      category,
       isExpressForbidden,
       outcomes: processedOutcomes,
     }
@@ -109,6 +100,7 @@ export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[]
       marketKey: gKey,
       name: group.name,
       description: '',
+      category: group.category,
       conditions: sortedConditions,
       type: 'v5',
     }

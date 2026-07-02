@@ -1,6 +1,6 @@
 import { getApiEndpoint } from '../getEndpoints'
 import { environments } from '../../envs'
-import type { ConditionState } from '../../global'
+import type { ConditionState, OutcomeState, ConditionCategory } from '../../global'
 import type { ChainId } from '../../config'
 
 
@@ -18,6 +18,8 @@ export type OutcomeData = {
   sort: `${number}`
   /** Modern ("5...") conditions only: numeric handicap/line value, e.g. "-2.5" / "+2.5" */
   point?: string | null
+  hidden: boolean
+  state: OutcomeState
 }
 
 export type ConditionDetailedData = {
@@ -31,6 +33,7 @@ export type ConditionDetailedData = {
   hidden?: boolean
   margin: string
   outcomes: OutcomeData[]
+  category: ConditionCategory
   game: {
     gameId: string
     sport: {

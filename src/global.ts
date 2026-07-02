@@ -90,6 +90,32 @@ export enum ConditionState {
   Stopped = 'Stopped'
 }
 
+export type ConditionCategory =
+  | 'correct_score'
+  | 'handicap'
+  | 'handicap_3_way'
+  | 'odd_even'
+  | 'participant_and_total'
+  | 'participant_and_yes_no'
+  | 'participant_slash_participant'
+  | 'players'
+  | 'result'
+  | 'result_or_neither'
+  | 'total'
+  | 'total_3_way'
+  | 'winner'
+  | 'yes_no'
+  | string
+  | null
+
+export enum OutcomeState {
+  Active = 'Active',
+  Canceled = 'Canceled',
+  Stopped = 'Stopped',
+  Won = 'Won',
+  Lost = 'Lost',
+}
+
 /** Defines the order direction, either ascending or descending */
 export enum OrderDirection {
   Asc = 'asc',

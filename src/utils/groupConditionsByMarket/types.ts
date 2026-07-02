@@ -1,4 +1,4 @@
-import type { ConditionState, Selection } from '../../global'
+import type { ConditionCategory, ConditionState, OutcomeState, Selection } from '../../global'
 
 
 export type MarketOutcome = {
@@ -7,11 +7,15 @@ export type MarketOutcome = {
   gameId: string
   isExpressForbidden: boolean
   isWon?: boolean
+  hidden: boolean
+  state: OutcomeState
 } & Selection
 
-type Condition = {
+export type MarketCondition = {
   conditionId: string
   state: ConditionState
+  category: ConditionCategory
+  sort: number
   margin: string
   hidden?: boolean
   isExpressForbidden: boolean
@@ -22,7 +26,8 @@ export type Market = {
   marketKey: string
   name: string
   description: string
-  conditions: Condition[]
+  conditions: MarketCondition[]
+  category: ConditionCategory
   type?: 'legacy' | 'v5'
 }
 
