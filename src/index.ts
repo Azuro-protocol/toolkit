@@ -4,6 +4,9 @@ export * from './global'
 export * from './abis'
 export * from './docs'
 
+// helpers
+export { gqlRequest } from './helpers/gqlRequest'
+
 // utils
 export { getProviderFromId } from './utils/getProviderFromId'
 export { calcMinOdds, type CalcMinOddsParams } from './utils/calcMinOdds'
@@ -23,6 +26,12 @@ export { getBet, type GetBetParams, type GetBetResponse, type GetBetResult } fro
 export { getBetCalculation, type GetBetCalculationParams, type GetBetCalculationResult } from './utils/bet/getBetCalculation'
 export { getBetsByBettor, type GetBetsByBettorParams, type GetBetsByBettorResult } from './utils/bet/getBetsByBettor'
 export { type BetOrderData, type BetOrderConditionData, type BetMetaData } from './utils/bet/types'
+export { normalizeBetsFilter, toGraphBetsWhere, toSettledBetsWhere, toBetStatusWhere,
+  getBetsDateRange, betsDateRangePresets, type BetsFilter, type NormalizedBetsFilter,
+  type BetsDateRangePreset } from './utils/bet/betsFilter'
+export { calcBetsReport, type BetsReportEntry, type BetsReportRow, type BetsReportResult,
+  type BetsReportToken } from './utils/bet/calcBetsReport'
+export { getBetsReport, type GetBetsReportParams, type GetBetsReportResult } from './utils/bet/getBetsReport'
 
 // feed
 export { getConditionsByGameIds, type GetConditionsByGameIdsParams, type GetConditionsByGameIdsResponseResult,

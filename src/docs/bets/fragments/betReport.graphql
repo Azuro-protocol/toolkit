@@ -1,0 +1,19 @@
+fragment BetReport on V3_Bet {
+  id
+  createdBlockTimestamp
+  status
+  result
+  isCashedOut
+  isFreebet
+  rawAmount
+  rawPayout
+  cashout {
+    rawPayout
+  }
+  core {
+    liquidityPool {
+      token
+      tokenDecimals
+    }
+  }
+}

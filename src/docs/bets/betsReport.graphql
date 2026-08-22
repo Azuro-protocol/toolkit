@@ -1,0 +1,16 @@
+query BetsReport(
+  $first: Int,
+  $skip: Int,
+  $where: V3_Bet_filter!,
+) {
+  v3Bets(
+    first: $first,
+    skip: $skip,
+    where: $where,
+    orderBy: createdBlockTimestamp,
+    orderDirection: desc,
+    subgraphError: allow
+  ) {
+    ...BetReport
+  }
+}

@@ -122,6 +122,21 @@ export enum OrderDirection {
   Desc = 'desc'
 }
 
+/** How a bet is composed. Maps to the subgraph's `GraphBetType` (Ordinar | Express). */
+export enum BetKind {
+  Single = 'single',
+  Combo = 'combo',
+}
+
+/** Lifecycle presets for filtering a bettor's bets. */
+export enum BetStatusFilter {
+  Unredeemed = 'unredeemed',
+  Pending = 'pending',
+  Accepted = 'accepted',
+  Settled = 'settled',
+  CashedOut = 'cashedOut',
+}
+
 export type CreateBetResponse = {
   id: string
   state: BetOrderState

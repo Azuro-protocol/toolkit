@@ -1,14 +1,15 @@
 fragment Bet on V3_Bet {
   id
+  nonce
   tokenId: betId
   actor
   amount
   status
   potentialPayout
-  payout # don't account canceled sub-bets after resolve of express
+  payout # settled amount; already voids canceled sub-bets of an express
   result
   odds
-  settledOdds # don't account canceled sub-bets after resolve of express
+  settledOdds # a copy of `odds`: NOT reduced when a sub-bet of an express is canceled, never derive a payout from it
   createdAt: createdBlockTimestamp
   resolvedAt: resolvedBlockTimestamp
   txHash: createdTxHash
