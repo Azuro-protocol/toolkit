@@ -32,6 +32,7 @@ fragment Bet on V3_Bet {
     outcome {
       outcomeId
       title
+      result
       condition {
         conditionId
         title
