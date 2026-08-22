@@ -1,6 +1,6 @@
 import type { Address, Hex } from 'viem'
 
-import type { BetConditionStatus, BetResult, GraphBetStatus, SelectionResult } from '../../docs'
+import type { BetConditionStatus, BetResult, GraphBetStatus, OutcomeResult, SelectionResult } from '../../docs'
 import type { ConditionStatus } from '../../docs/bets/types'
 import type { Environment } from '../../envs'
 import type { BetOrderResult, BetOrderState, GameState, ISOTimestamp } from '../../global'
@@ -43,7 +43,7 @@ export type BetMetaData = {
         gameId: string
         status: ConditionStatus
         outcomes: {
-          result: SelectionResult | null
+          result: OutcomeResult | null
           outcomeId: string
           sortOrder: number
         }[]

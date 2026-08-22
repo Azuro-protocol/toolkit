@@ -112,16 +112,16 @@ const isEveryLegCanceled = ({ selections }: BetsReportEntry): boolean => (
 /**
  * `isCashedOut` must be tested before `result` and `status`: a cashed-out bet keeps a notional
  * `payout` of its own, which later resolves to Won or Canceled as if it had never been cashed out.
- * Observed live: a bet cashed out for 114.84 on a 116 stake also carries a `payout` of 240.12.
- * Reading that `payout` would credit more than double what the bettor actually received.
+ * Reading that `payout` would credit the bet with a settlement it never reached rather than the
+ * amount the bettor actually took.
  *
  * A cashed-out bet stays a real trade even when it is voided afterwards - the bettor took a price
  * and the money moved - so only a bet voided while it was still running counts as `canceled`.
  *
- * Bet-level `Canceled` is the signal on every voided bet sampled in production, including the ones
- * voided leg by leg. A bet whose legs were nonetheless all voided is just as void, whatever its own
- * status says, and must not be left to settle at breakeven: that would put a stake that was never at
- * risk back into turnover, which is the very thing keeping voids out of it is for.
+ * Bet-level `Canceled` is the signal on a voided bet, the ones voided leg by leg included. A bet
+ * whose legs were nonetheless all voided is just as void, whatever its own status says, and must not
+ * be left to settle at breakeven: that would put a stake that was never at risk back into turnover,
+ * which is the very thing keeping voids out of it is for.
  * */
 const classifyEntry = (entry: BetsReportEntry): BetsReportEntryClass => {
   if (entry.isCashedOut) {
@@ -153,16 +153,13 @@ const ODDS_FACTOR = 10n ** BigInt(ODDS_DECIMALS)
  * per leg, which is not how a combo is priced, and it is not reduced when a leg is voided either.
  *
  * The one shape where `payout` is wrong is a **combo with at least one voided leg that has not been
- * redeemed yet**: until redemption the indexer keeps the full pre-void payout, so it credits the
- * voided leg's odds as if that leg had won. Measured against production, that overstates returns by
- * 17% to 33%, which is far too large to carry into a ROI.
+ * redeemed yet**: until redemption it still credits the voided leg's odds as if that leg had won,
+ * which is far too much to carry into a ROI.
  *
  * Those are rebuilt from the surviving legs with `calcMinOdds`, which is how a combo is actually
  * priced: the 1% fee is applied by the feed to every outcome, so for a combo it is removed per leg
- * and re-applied once to the product instead of compounding. Measured against the 14 redeemed
- * production combos with a voided leg, that lands within 0.08%-1.14% of the on-chain payout (a
- * slight understatement: the protocol refunds a little of the margin it keeps on a void), against
- * up to 9.81% for the plain product of the surviving legs.
+ * and re-applied once to the product instead of compounding. A plain product of the surviving odds
+ * is not equivalent - it understates the payout, by more the more legs the bet has.
  *
  * Redemption replaces `payout` with the amount actually paid on chain, so a redeemed bet always
  * reads that value: the truth wins over any reconstruction.
@@ -246,8 +243,8 @@ const accumulate = (
   }
 
   // a void returns the stake and nothing else, so it is reported rather than aggregated. The stake
-  // is the figure to report: `payout` equals it on every voided bet, but only the stake is still
-  // right if an indexer ever records something else there
+  // is the figure to report: `payout` equals it on a voided bet, and the stake stays right even if
+  // that ever stops holding
   if (entryClass === 'canceled') {
     target.canceledCount += 1
     target.refunded += amount

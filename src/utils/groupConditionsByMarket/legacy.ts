@@ -30,7 +30,6 @@ export const groupLegacyConditions = (conditions: ConditionDetailedData[], sport
       conditionId,
       outcomes: rawOutcomes,
       state,
-      wonOutcomeIds,
       isExpressForbidden,
       title: customMarketName,
       margin,
@@ -120,10 +119,6 @@ export const groupLegacyConditions = (conditions: ConditionDetailedData[], sport
         odds: +odds,
         hidden: rawOutcome.hidden,
         state: rawOutcome.state,
-      }
-
-      if (Array.isArray(wonOutcomeIds)) {
-        outcome.isWon = wonOutcomeIds.includes(outcomeId)
       }
 
       markets[marketKey]!.conditions[conditionId]!.outcomes.push(outcome)

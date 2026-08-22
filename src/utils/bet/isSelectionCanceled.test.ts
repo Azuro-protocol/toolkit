@@ -5,7 +5,6 @@ import { isSelectionCanceled } from './isSelectionCanceled'
 
 describe('isSelectionCanceled', () => {
   it('reads a per-outcome void, whose condition stays resolved', () => {
-    // 13 of the 75 voided legs sampled in production carry exactly this shape
     expect(isSelectionCanceled({
       selectionResult: null,
       outcomeResult: 'Canceled',
@@ -14,7 +13,6 @@ describe('isSelectionCanceled', () => {
   })
 
   it('reads a whole-condition cancel, which predates per-outcome results', () => {
-    // the other 62 of them
     expect(isSelectionCanceled({
       selectionResult: null,
       outcomeResult: null,

@@ -6,10 +6,10 @@ fragment Bet on V3_Bet {
   amount
   status
   potentialPayout
-  payout # settled amount; already voids canceled sub-bets of an express
+  payout # settled amount; voids the canceled sub-bets of an express only once the bet is redeemed
   result
   odds
-  settledOdds # a copy of `odds`: NOT reduced when a sub-bet of an express is canceled, never derive a payout from it
+  settledOdds # raw product of the leg odds with the feed fee compounded once per leg: NOT re-margined for an express and NOT reduced when a sub-bet is canceled, so it understates every combo - never derive a payout from it
   createdAt: createdBlockTimestamp
   resolvedAt: resolvedBlockTimestamp
   txHash: createdTxHash

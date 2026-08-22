@@ -28,7 +28,6 @@ export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[]
       conditionId,
       outcomes: rawOutcomes,
       state,
-      wonOutcomeIds,
       isExpressForbidden,
       title,
       margin,
@@ -55,7 +54,7 @@ export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[]
     const processedOutcomes: MarketOutcome[] = sortedOutcomes.map(outcomeData => {
       const selectionName = outcomeData.title && outcomeData.title !== 'null' ? outcomeData.title : outcomeData.outcomeId
 
-      const outcome: MarketOutcome = {
+      return {
         outcomeId: outcomeData.outcomeId,
         conditionId,
         selectionName,
@@ -65,12 +64,6 @@ export const groupConditionsV5 = (conditions: ConditionDetailedData[]): Market[]
         hidden: outcomeData.hidden,
         state: outcomeData.state,
       }
-
-      if (Array.isArray(wonOutcomeIds)) {
-        outcome.isWon = wonOutcomeIds.includes(outcomeData.outcomeId)
-      }
-
-      return outcome
     })
 
     groups[gKey]!.conditions[conditionId] = {

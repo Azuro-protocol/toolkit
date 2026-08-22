@@ -291,8 +291,8 @@ describe('calcBetsReport', () => {
   })
 
   it('rebuilds the returns of an unredeemed winning combo whose leg was voided', () => {
-    // production bet ...374285: a 1.68 leg won, a 1.33 leg was voided, and while it stays
-    // unredeemed the subgraph keeps crediting the voided leg - it records a payout of 0.436889
+    // a 1.68 leg won and a 1.33 leg was voided: while the bet stays unredeemed its recorded payout
+    // of 0.436889 still credits the voided leg
     const { single } = calcBetsReport([
       createEntry({
         result: BetResult.Won,
@@ -331,8 +331,8 @@ describe('calcBetsReport', () => {
   })
 
   it('reads the recorded payout of a redeemed combo, because redemption records what was paid', () => {
-    // production bet ...378221: a 1.6 leg won, a 1.26 leg was voided, and the redeemed payout of
-    // 255.7992 is what the bettor actually received - slightly above any reconstruction
+    // a 1.6 leg won and a 1.26 leg was voided: the redeemed payout of 255.7992 is what was actually
+    // paid out, and it sits slightly above any reconstruction
     const { single } = calcBetsReport([
       createEntry({
         result: BetResult.Won,

@@ -12,7 +12,7 @@ fragment BetReport on V3_Bet {
     rawPayout
   }
   # the legs carry the only signals that say which of them were voided, and the odds needed to
-  # rebuild a combo's payout when the indexer has not voided it yet - see calcBetsReport
+  # rebuild a combo's payout while its recorded payout still credits a voided leg - see calcBetsReport
   selections {
     odds
     result

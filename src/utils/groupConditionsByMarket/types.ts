@@ -6,7 +6,6 @@ export type MarketOutcome = {
   odds: number
   gameId: string
   isExpressForbidden: boolean
-  isWon?: boolean
   hidden: boolean
   state: OutcomeState
 } & Selection

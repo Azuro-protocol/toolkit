@@ -16,6 +16,7 @@ export {
   Bet_OrderBy as Legacy_Bet_OrderBy,
   GameStatus as LegacyGameStatus,
   SelectionResult,
+  OutcomeResult,
   BetStatus as GraphBetStatus,
   BetType as GraphBetType,
   V3_Bet_OrderBy as Bet_OrderBy,

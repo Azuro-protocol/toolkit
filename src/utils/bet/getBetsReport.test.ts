@@ -132,7 +132,7 @@ describe('getBetsReport', () => {
 
     bet.selections = [
       { odds: '1.68', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
-      // the shape of a voided leg in production: only the outcome says so
+      // a voided leg where only the outcome says so
       { odds: '1.33', result: null, outcome: { result: 'Canceled', condition: { status: 'Resolved' } } },
     ]
 

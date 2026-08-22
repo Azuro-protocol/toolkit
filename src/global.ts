@@ -84,10 +84,7 @@ export enum GameState {
 
 export enum ConditionState {
   Active = 'Active',
-  Canceled = 'Canceled',
-  Removed = 'Removed',
-  Resolved = 'Resolved',
-  Stopped = 'Stopped'
+  Stopped = 'Stopped',
 }
 
 export type ConditionCategory =
