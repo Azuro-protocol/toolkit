@@ -5,10 +5,23 @@ fragment BetReport on V3_Bet {
   result
   isCashedOut
   isFreebet
+  isRedeemed
   rawAmount
   rawPayout
   cashout {
     rawPayout
+  }
+  # the legs carry the only signals that say which of them were voided, and the odds needed to
+  # rebuild a combo's payout when the indexer has not voided it yet - see calcBetsReport
+  selections {
+    odds
+    result
+    outcome {
+      result
+      condition {
+        status
+      }
+    }
   }
   core {
     liquidityPool {

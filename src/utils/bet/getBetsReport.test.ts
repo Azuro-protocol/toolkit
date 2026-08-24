@@ -16,9 +16,15 @@ type FakeBet = {
   result: BetResult | null
   isCashedOut: boolean
   isFreebet: boolean
+  isRedeemed: boolean
   rawAmount: string
   rawPayout: string | null
   cashout: { rawPayout: string } | null
+  selections: Array<{
+    odds: string
+    result: string | null
+    outcome: { result: string | null, condition: { status: string } }
+  }>
   core: { liquidityPool: { token: string, tokenDecimals: number } }
 }
 
@@ -29,9 +35,17 @@ const createBet = (id: string, createdBlockTimestamp: string, amount: string, pa
   result: BetResult.Won,
   isCashedOut: false,
   isFreebet: false,
+  isRedeemed: false,
   rawAmount: amount,
   rawPayout: payout,
   cashout: null,
+  selections: [
+    {
+      odds: '1.5',
+      result: 'Won',
+      outcome: { result: 'Won', condition: { status: 'Resolved' } },
+    },
+  ],
   core: {
     liquidityPool: {
       token: TOKEN.address,
@@ -109,6 +123,40 @@ describe('getBetsReport', () => {
       expect(Object.keys(where).some((key) => key.endsWith('createdBlockTimestamp_lt'))).toBe(false)
       expect(where.and?.[1] && 'createdBlockTimestamp_lt' in where.and[1]).toBeFalsy()
     })
+  })
+
+  // the two tests below look alike on purpose: each one proves that a different field of the
+  // fragment is actually requested and mapped, which a unit test on `isSelectionCanceled` cannot
+  it('reads a per-outcome void, where the leg is canceled but its condition stays resolved', async () => {
+    const bet = createBet('a', '300', '195529', '436889')
+
+    bet.selections = [
+      { odds: '1.68', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+      // the shape of a voided leg in production: only the outcome says so
+      { odds: '1.33', result: null, outcome: { result: 'Canceled', condition: { status: 'Resolved' } } },
+    ]
+
+    stubSubgraph([ bet ])
+
+    const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
+
+    // the recorded payout of 0.436889 still credits the voided leg, the surviving 1.68 does not
+    expect(report.single!.returns).toBe('0.328488')
+  })
+
+  it('reads a whole-condition cancel, which predates per-outcome results', async () => {
+    const bet = createBet('a', '300', '195529', '436889')
+
+    bet.selections = [
+      { odds: '1.68', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+      { odds: '1.33', result: null, outcome: { result: null, condition: { status: 'Canceled' } } },
+    ]
+
+    stubSubgraph([ bet ])
+
+    const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
+
+    expect(report.single!.returns).toBe('0.328488')
   })
 
   it('walks past a group of bets sharing a timestamp that is larger than one page', async () => {

@@ -1,6 +1,7 @@
 import { type Address } from 'viem'
 
 import { calcBetsReport, type BetsReportEntry, type BetsReportResult } from './calcBetsReport'
+import { isSelectionCanceled } from './isSelectionCanceled'
 import { normalizeBetsFilter, toGraphBetsWhere, type BetsFilter } from './betsFilter'
 import { gqlRequest } from '../../helpers/gqlRequest'
 import {
@@ -37,7 +38,9 @@ const toReportEntry = (
   betTokenAddress: string,
   betTokenSymbol: string
 ): BetsReportEntry => {
-  const { id, status, result, isCashedOut, isFreebet, rawAmount, rawPayout, cashout, core } = bet
+  const {
+    id, status, result, isCashedOut, isFreebet, isRedeemed, rawAmount, rawPayout, cashout, selections, core,
+  } = bet
 
   const address = core.liquidityPool.token.toLowerCase() as Address
 
@@ -47,9 +50,20 @@ const toReportEntry = (
     result: result ?? null,
     isCashedOut,
     isFreebet,
+    isRedeemed,
     rawAmount,
     rawPayout: rawPayout ?? null,
     rawCashoutPayout: cashout?.rawPayout ?? null,
+    // which of the three void signals applies is a subgraph concern, so it is resolved here and the
+    // reducer only ever sees a boolean
+    selections: selections.map((selection) => ({
+      odds: selection.odds,
+      isCanceled: isSelectionCanceled({
+        selectionResult: selection.result,
+        outcomeResult: selection.outcome.result,
+        conditionStatus: selection.outcome.condition.status,
+      }),
+    })),
     token: {
       address,
       decimals: core.liquidityPool.tokenDecimals,
