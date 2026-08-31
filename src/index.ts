@@ -10,6 +10,7 @@ export { gqlRequest } from './helpers/gqlRequest'
 // utils
 export { getProviderFromId } from './utils/getProviderFromId'
 export { calcMinOdds, type CalcMinOddsParams } from './utils/calcMinOdds'
+export { calcComboOdds, type CalcComboOddsParams } from './utils/calcComboOdds'
 export { getIsPendingResolution, type GetIsPendingResolutionParams } from './utils/getIsPendingResolution'
 export { isOutcomeSettled } from './utils/isOutcomeSettled'
 export { groupConditionsByMarket, type GameMarkets, type MarketOutcome, type MarketCondition, type Market } from './utils/groupConditionsByMarket'

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { getBetsReport } from './getBetsReport'
 import { BetStatus as GraphBetStatus, BetResult, type V3_Bet_Filter } from '../../docs/bets/types'
-import { chainsData } from '../../config'
+import { chainsData, MARGIN_APPLIED_AT } from '../../config'
 
 
 const CHAIN_ID = 137
@@ -157,6 +157,40 @@ describe('getBetsReport', () => {
     const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
 
     expect(report.single!.returns).toBe('0.328488')
+  })
+
+  // the two tests below prove that `createdBlockTimestamp` reaches the reducer, which the pair above
+  // cannot: a lone surviving leg prices the same either side of the fee, so they would still pass if
+  // the field were dropped or mapped from the wrong one
+  it('prices a combo placed after the fee by taking it off each leg and applying it once', async () => {
+    const bet = createBet('a', String(MARGIN_APPLIED_AT), '10000000', '34600000')
+
+    bet.selections = [
+      { odds: '2', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+      { odds: '1.75', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+    ]
+
+    stubSubgraph([ bet ])
+
+    const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
+
+    // ceil(2 / 0.99) * ceil(1.75 / 0.99) * 0.99 = 3.55, where the recorded 34.6 is the plain product
+    expect(report.single!.returns).toBe('35.5')
+  })
+
+  it('leaves the same combo alone when it was placed before the fee', async () => {
+    const bet = createBet('a', String(MARGIN_APPLIED_AT - 1), '10000000', '35000000')
+
+    bet.selections = [
+      { odds: '2', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+      { odds: '1.75', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+    ]
+
+    stubSubgraph([ bet ])
+
+    const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
+
+    expect(report.single!.returns).toBe('35')
   })
 
   it('walks past a group of bets sharing a timestamp that is larger than one page', async () => {

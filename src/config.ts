@@ -10,6 +10,16 @@ export const ODDS_DECIMALS = 12
 
 export const ODDS_COMBO_FEE_MODIFIER = 0.99
 
+/**
+ * Unix seconds, the moment the feed started applying its fee to every outcome's odds.
+ *
+ * A bet placed before it carries raw odds on its legs, so a combo of them is priced as the plain
+ * product; a bet placed after it carries the fee on every leg, so a combo has it removed per leg and
+ * re-applied once to the product - see `calcComboOdds`. The switch was global and happened at one
+ * moment on every chain, which is why one constant covers all of them.
+ * */
+export const MARGIN_APPLIED_AT = 1766404000
+
 export const CLIENT_DATA_TYPES = [
   { name: 'attention', type: 'string' },
   { name: 'affiliate', type: 'address' },

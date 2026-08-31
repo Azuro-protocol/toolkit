@@ -1,8 +1,8 @@
 import { formatUnits, parseUnits, type Address } from 'viem'
 
 import { BetResult, BetStatus as GraphBetStatus } from '../../docs/bets/types'
-import { calcMinOdds } from '../calcMinOdds'
-import { ODDS_DECIMALS } from '../../config'
+import { calcComboOdds } from '../calcComboOdds'
+import { MARGIN_APPLIED_AT, ODDS_DECIMALS } from '../../config'
 
 
 export type BetsReportToken = {
@@ -16,7 +16,10 @@ export type BetsReportToken = {
  * three void signals applies is a data-source concern - see `isSelectionCanceled`.
  * */
 export type BetsReportSelection = {
-  /** decimal string, as recorded by the protocol: the feed fee is already applied to it */
+  /**
+   * decimal string, as recorded by the protocol. Whether the feed fee is already applied to it
+   * depends on when the bet was placed - see `calcComboOdds`.
+   * */
   odds: string
   isCanceled: boolean
 }
@@ -33,6 +36,8 @@ export type BetsReportEntry = {
   isFreebet: boolean
   /** once redeemed, `rawPayout` holds the amount actually paid out on chain */
   isRedeemed: boolean
+  /** unix seconds - a combo is priced by the rules in force when it was placed, see `calcComboOdds` */
+  createdAt: number
   /** integer string, token base units */
   rawAmount: string
   /** raw value as recorded by the protocol, never masked by redemption */
@@ -152,14 +157,18 @@ const ODDS_FACTOR = 10n ** BigInt(ODDS_DECIMALS)
  * `settledOdds`: that field is the raw product of the leg odds with the feed fee compounded once
  * per leg, which is not how a combo is priced, and it is not reduced when a leg is voided either.
  *
- * The one shape where `payout` is wrong is a **combo with at least one voided leg that has not been
- * redeemed yet**: until redemption it still credits the voided leg's odds as if that leg had won,
- * which is far too much to carry into a ROI.
+ * A **combo that has not been redeemed yet** is the shape where `payout` cannot be trusted, for two
+ * independent reasons:
  *
- * Those are rebuilt from the surviving legs with `calcMinOdds`, which is how a combo is actually
- * priced: the 1% fee is applied by the feed to every outcome, so for a combo it is removed per leg
- * and re-applied once to the product instead of compounding. A plain product of the surviving odds
- * is not equivalent - it understates the payout, by more the more legs the bet has.
+ * - the indexer prices a combo by multiplying the leg odds as it recorded them. Once the feed applies
+ *   its fee to every outcome, that compounds the fee one extra time per leg, because the protocol
+ *   removes it per leg and applies it once to the product instead;
+ * - a voided leg is never taken out of the figure, so it keeps crediting that leg as if it had won.
+ *
+ * So an unredeemed combo is rebuilt from its surviving legs, at the odds the rules in force when it
+ * was placed give them - `calcComboOdds` is the one place that decides which those are. A combo whose
+ * legs predate the fee needs no rebuilding at all while every leg still stands: the recorded payout is
+ * already the plain product of them, and reading it avoids inventing rounding of our own.
  *
  * Redemption replaces `payout` with the amount actually paid on chain, so a redeemed bet always
  * reads that value: the truth wins over any reconstruction.
@@ -168,9 +177,8 @@ const getWonReturns = (entry: BetsReportEntry): bigint => {
   const rawPayout = BigInt(entry.rawPayout ?? '0')
 
   const isCombo = entry.selections.length > 1
-  const hasCanceledSelection = entry.selections.some(({ isCanceled }) => isCanceled)
 
-  if (!isCombo || !hasCanceledSelection || entry.isRedeemed) {
+  if (!isCombo || entry.isRedeemed) {
     return rawPayout
   }
 
@@ -179,13 +187,19 @@ const getWonReturns = (entry: BetsReportEntry): bigint => {
     .map(({ odds }) => Number(odds))
 
   // `classifyEntry` sends a bet with no surviving leg to `canceled`, so this is the floor under that
-  // rather than a case of its own: an empty list must never be priced, because `calcMinOdds` would
-  // then return the bare combo fee and hand back 99% of the stake
+  // rather than a case of its own
   if (!survivedOdds.length) {
     return BigInt(entry.rawAmount)
   }
 
-  const totalOdds = parseUnits(calcMinOdds({ odds: survivedOdds, slippage: 0 }), ODDS_DECIMALS)
+  const hasCanceledSelection = survivedOdds.length !== entry.selections.length
+
+  if (entry.createdAt < MARGIN_APPLIED_AT && !hasCanceledSelection) {
+    return rawPayout
+  }
+
+  const comboOdds = calcComboOdds({ odds: survivedOdds, createdAt: entry.createdAt })
+  const totalOdds = parseUnits(comboOdds, ODDS_DECIMALS)
 
   return BigInt(entry.rawAmount) * totalOdds / ODDS_FACTOR
 }

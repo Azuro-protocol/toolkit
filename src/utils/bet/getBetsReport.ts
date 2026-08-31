@@ -40,6 +40,7 @@ const toReportEntry = (
 ): BetsReportEntry => {
   const {
     id, status, result, isCashedOut, isFreebet, isRedeemed, rawAmount, rawPayout, cashout, selections, core,
+    createdBlockTimestamp,
   } = bet
 
   const address = core.liquidityPool.token.toLowerCase() as Address
@@ -51,6 +52,7 @@ const toReportEntry = (
     isCashedOut,
     isFreebet,
     isRedeemed,
+    createdAt: Number(createdBlockTimestamp),
     rawAmount,
     rawPayout: rawPayout ?? null,
     rawCashoutPayout: cashout?.rawPayout ?? null,

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { calcBetsReport, type BetsReportEntry, type BetsReportToken } from './calcBetsReport'
 import { BetResult, BetStatus as GraphBetStatus } from '../../docs/bets/types'
+import { MARGIN_APPLIED_AT } from '../../config'
 
 
 const USDT: BetsReportToken = {
@@ -30,6 +31,7 @@ const createEntry = (props: Partial<BetsReportEntry> = {}): BetsReportEntry => (
   isCashedOut: false,
   isFreebet: false,
   isRedeemed: false,
+  createdAt: MARGIN_APPLIED_AT,
   rawAmount: raw('100'),
   rawPayout: raw('126.86058'),
   rawCashoutPayout: null,
@@ -349,7 +351,7 @@ describe('calcBetsReport', () => {
     expect(single!.returns).toBe('255.7992')
   })
 
-  it('leaves a combo without voided legs alone', () => {
+  it('re-prices a not-redeemed combo without voided legs', () => {
     const { single } = calcBetsReport([
       createEntry({
         result: BetResult.Won,
@@ -363,7 +365,48 @@ describe('calcBetsReport', () => {
       }),
     ])
 
-    expect(single!.returns).toBe('34.6')
+    // the recorded 34.6 compounds the fee once per leg; the protocol removes it per leg instead
+    expect(single!.returns).toBe('35.5')
+  })
+
+  it('leaves a combo placed before the fee alone: its recorded payout is already the plain product', () => {
+    const { single } = calcBetsReport([
+      createEntry({
+        result: BetResult.Won,
+        isRedeemed: false,
+        createdAt: MARGIN_APPLIED_AT - 1,
+        rawAmount: raw('10'),
+        rawPayout: raw('35'),
+        selections: [
+          { odds: '2', isCanceled: false },
+          { odds: '1.75', isCanceled: false },
+        ],
+      }),
+    ])
+
+    // the same legs placed after the fee price at 35.5, and re-pricing these would invent a fee the
+    // bettor never paid
+    expect(single!.returns).toBe('35')
+  })
+
+  it('rebuilds a combo placed before the fee as the plain product of its surviving legs', () => {
+    const { single } = calcBetsReport([
+      createEntry({
+        result: BetResult.Won,
+        isRedeemed: false,
+        createdAt: MARGIN_APPLIED_AT - 1,
+        rawAmount: raw('100'),
+        rawPayout: raw('999'),
+        selections: [
+          { odds: '2', isCanceled: false },
+          { odds: '1.5', isCanceled: false },
+          { odds: '4.4', isCanceled: true },
+        ],
+      }),
+    ])
+
+    // 2 * 1.5, with no fee to remove and none to re-apply
+    expect(single!.returns).toBe('300')
   })
 
   it('treats a combo whose every leg was voided as a void, whatever the bet says about itself', () => {
