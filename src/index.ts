@@ -66,6 +66,8 @@ export { getCashout, type GetCashoutParams, type GetCashoutResult, type GetCasho
 // bonus
 export { getBonuses, type GetBonusesParams, type GetBonusesResult, type GetBonuses } from './utils/bonus/getBonuses'
 export { getAvailableFreebets, type GetAvailableFreebetsParams, type GetAvailableFreebetsResult, type GetAvailableFreebets } from './utils/bonus/getAvailableFreebets'
+export { activatePromoCode, type ActivatePromoCodeParams, type ActivatePromoCodeResult } from './utils/bonus/activatePromoCode'
+export { PromoCodeError, isPromoCodeError, type PromoCodeErrorCode } from './utils/bonus/promoCodeError'
 
 // auth
 export { getSiweNonce, type GetSiweNonceParams, type GetSiweNonceResult } from './utils/auth/getSiweNonce'
