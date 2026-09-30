@@ -55,7 +55,8 @@ const createPromoCodeError = async (response: Response): Promise<PromoCodeError>
   const { status, statusText } = response
   const body = await readErrorBody(response)
   const code = body?.code
-  const message = getServerMessage(body?.message) || (statusText ? `Status ${status}: ${statusText}` : `Status ${status}`)
+  const message = getServerMessage(body?.message)
+    || (statusText ? `Status ${status}: ${statusText}` : `Status ${status}`)
 
   if (status === 409 && isActivationErrorCode(code)) {
     return new PromoCodeError(code, message, { status })
@@ -66,9 +67,13 @@ const createPromoCodeError = async (response: Response): Promise<PromoCodeError>
 
 /**
  * Activates a promo code for a bettor and returns the freebet it grants.
- * `chainId` picks the API environment (production or development) to call, while the returned freebet's `chainId`
- * is the chain the freebet was issued on, which can differ from it.
- * Throws a `PromoCodeError` whose `code` names the reason when the activation is rejected.
+ * `chainId` picks the API environment (production or development) to call, while the returned freebet's
+ * `chainId` is the chain the freebet was issued on, which can differ from it.
+ *
+ * Once the API has responded, every failure is a `PromoCodeError` carrying the HTTP status: its `code` names
+ * the reason when the activation is rejected, and is `unknown` for any other error status or for a success
+ * response that can't be read. A network failure, where no response arrives, rejects with the error `fetch`
+ * threw.
  *
  * - Docs: https://gem.azuro.org/hub/apps/toolkit/bonus/activatePromoCode
  *
@@ -111,7 +116,17 @@ export const activatePromoCode = async (props: ActivatePromoCodeParams): Promise
     throw await createPromoCodeError(response)
   }
 
-  const rawBonus: RawBonus = await response.json()
+  // a body that isn't JSON, an amount that isn't an integer, or a network and currency pair the toolkit
+  // doesn't know all make the response unreadable
+  try {
+    const rawBonus: RawBonus = await response.json()
 
-  return formatBonus(rawBonus)
+    return formatBonus(rawBonus)
+  }
+  catch (error) {
+    throw new PromoCodeError('unknown', `Status ${response.status}: the response could not be read`, {
+      status: response.status,
+      cause: error,
+    })
+  }
 }

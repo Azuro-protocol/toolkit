@@ -26,7 +26,8 @@ export const promoCodeActivationErrorCodes = [
  * - `bonus.promo_code_busy` — the activation is being processed by another request; safe to retry.
  * - `bonus.activate_promo_code_error` — the activation failed.
  * - `unknown` — anything else: input rejected by validation, a server error, an unrecognized reason
- *   or a response that can't be read. The error carries the HTTP status and the server's message when available.
+ *   or a response that can't be read. The error carries the HTTP status and the server's message
+ *   when available.
  * */
 export type PromoCodeErrorCode = typeof promoCodeActivationErrorCodes[number] | 'unknown'
 

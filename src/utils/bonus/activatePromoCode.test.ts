@@ -229,13 +229,17 @@ describe('activatePromoCode', () => {
     expect(error).toMatchObject({ code: 'unknown', status: 400, message: 'first problem, second problem' })
   })
 
-  it('turns a server error with an HTML body into unknown without putting the body in the message', async () => {
+  it('turns an HTML server error into unknown without putting the body in the message', async () => {
     stubFetch(500, 'Internal Server Error', '<html><body>Bad Gateway</body></html>')
 
     const error = await catchError(activatePromoCode(PARAMS))
 
     expect(isPromoCodeError(error)).toBe(true)
-    expect(error).toMatchObject({ code: 'unknown', status: 500, message: 'Status 500: Internal Server Error' })
+    expect(error).toMatchObject({
+      code: 'unknown',
+      status: 500,
+      message: 'Status 500: Internal Server Error',
+    })
     expect((error as PromoCodeError).message).not.toContain('<')
   })
 
@@ -245,6 +249,49 @@ describe('activatePromoCode', () => {
     const error = await catchError(activatePromoCode(PARAMS))
 
     expect(error).toMatchObject({ code: 'unknown', status: 502, message: 'Status 502' })
+  })
+
+  it('turns a success response whose body is not JSON into unknown', async () => {
+    stubFetch(200, 'OK', '<html><body>OK</body></html>')
+
+    const error = await catchError(activatePromoCode(PARAMS))
+
+    expect(error).toBeInstanceOf(PromoCodeError)
+    expect(isPromoCodeError(error)).toBe(true)
+    expect(error).toMatchObject({
+      code: 'unknown',
+      status: 200,
+      message: 'Status 200: the response could not be read',
+    })
+    expect((error as PromoCodeError).cause).toBeInstanceOf(SyntaxError)
+  })
+
+  it('turns a success response with a fractional amount into unknown', async () => {
+    stubFetch(200, 'OK', JSON.stringify({ ...polygonBonus, amount: '0.5' }))
+
+    const error = await catchError(activatePromoCode(PARAMS))
+
+    expect(isPromoCodeError(error)).toBe(true)
+    expect(error).toMatchObject({
+      code: 'unknown',
+      status: 200,
+      message: 'Status 200: the response could not be read',
+    })
+    expect((error as PromoCodeError).cause).toBeInstanceOf(SyntaxError)
+  })
+
+  it('turns a success response for a network and currency it does not know into unknown', async () => {
+    stubFetch(200, 'OK', JSON.stringify({ ...polygonBonus, network: 'Unknown', currency: 'XYZ' }))
+
+    const error = await catchError(activatePromoCode(PARAMS))
+
+    expect(isPromoCodeError(error)).toBe(true)
+    expect(error).toMatchObject({
+      code: 'unknown',
+      status: 200,
+      message: 'Status 200: the response could not be read',
+    })
+    expect((error as PromoCodeError).cause).toBeInstanceOf(TypeError)
   })
 
   it('lets a rejected fetch through unchanged', async () => {
