@@ -1,55 +1,12 @@
-import { formatUnits, type Address } from 'viem'
+import { type Address } from 'viem'
 
-import { chainsData, chainsDataByEnv, type ChainId } from '../../config'
-import { BonusStatus, type BonusType, type Bonus, type FreebetType, type BetRestrictionType, type EventRestrictionState } from '../../global'
-import { type Environment } from '../../envs'
+import { chainsData, type ChainId } from '../../config'
+import { BonusStatus, type Bonus } from '../../global'
+import { formatBonus, getBonusChainData } from './formatBonus'
+import { type RawBonus } from './types'
 
 
-export type RawBonus = {
-  id: string
-  bonusType: BonusType
-  freebetParam: {
-    isBetSponsored: true
-    isFeeSponsored: true
-    isSponsoredBetReturnable: true
-    settings: {
-      bonusType: FreebetType
-      feeSponsored: boolean
-      betRestriction: {
-        betType: BetRestrictionType | 'All'
-        minOdds: string
-        maxOdds?: string
-      }
-      eventRestriction: {
-        eventStatus: EventRestrictionState | 'All'
-        eventFilter?: {
-          exclude: boolean
-          filter: [
-            {
-              sportId: string
-              leagues: string[]
-              markets: {
-                marketId: number
-                gamePeriodId: number
-                gameTypeId: number
-              }[]
-            }
-          ]
-        }
-      }
-      periodOfValidityMs: 86400000
-    }
-  }
-  address: string
-  amount: string
-  status: BonusStatus
-  network: string
-  currency: string
-  expiresAt: string
-  usedAt: string
-  createdAt: string
-  publicCustomData: Record<string, string> | null
-}
+export type { RawBonus } from './types'
 
 type GetBonusesResponse = {
   bonuses: RawBonus[]
@@ -113,51 +70,11 @@ export const getBonuses = async (props: GetBonusesParams): Promise<GetBonusesRes
   const { bonuses }: GetBonusesResponse = await response.json()
 
   return bonuses.reduce<Bonus[]>((acc, bonus) => {
-    const environment = `${bonus.network}${bonus.currency}` as Environment
-    const { chain, betToken } = chainsDataByEnv[environment]
+    const { chain } = getBonusChainData(bonus)
 
     // TODO: need to add environement to request params
     if (chain.id === chainId) {
-      const {
-        id,
-        freebetParam: {
-          isBetSponsored,
-          isFeeSponsored,
-          isSponsoredBetReturnable,
-          settings,
-        },
-      } = bonus
-
-      acc.push({
-        id,
-        amount: formatUnits(BigInt(bonus.amount), betToken.decimals),
-        type: bonus.bonusType,
-        params: {
-          isBetSponsored,
-          isFeeSponsored,
-          isSponsoredBetReturnable,
-        },
-        settings: {
-          type: settings.bonusType,
-          feeSponsored: settings.feeSponsored,
-          betRestriction: {
-            type: settings.betRestriction.betType === 'All' ? undefined : settings.betRestriction.betType,
-            minOdds: settings.betRestriction.minOdds,
-            maxOdds: settings.betRestriction?.maxOdds,
-          },
-          eventRestriction: {
-            state: settings.eventRestriction.eventStatus === 'All' ? undefined : settings.eventRestriction.eventStatus,
-            eventFilter: settings.eventRestriction.eventFilter,
-          },
-          periodOfValidityMs: settings.periodOfValidityMs,
-        },
-        status: bonus.status,
-        chainId: chain.id,
-        expiresAt: +new Date(bonus.expiresAt),
-        usedAt: +new Date(bonus.usedAt),
-        createdAt: +new Date(bonus.createdAt),
-        publicCustomData: bonus.publicCustomData,
-      })
+      acc.push(formatBonus(bonus))
     }
 
     return acc
