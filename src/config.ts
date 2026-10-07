@@ -15,10 +15,28 @@ export const ODDS_COMBO_FEE_MODIFIER = 0.99
  *
  * A bet placed before it carries raw odds on its legs, so a combo of them is priced as the plain
  * product; a bet placed after it carries the fee on every leg, so a combo has it removed per leg and
- * re-applied once to the product - see `calcComboOdds`. The switch was global and happened at one
- * moment on every chain, which is why one constant covers all of them.
+ * re-applied once to the product - see `calcComboOdds`. Until `SINGLE_MARGIN_REMOVED_AT` a single-leg
+ * bet was priced the same way, as a combo of one. The switch was global and happened at one moment on
+ * every chain, which is why one constant covers all of them.
+ *
+ * @deprecated It exists to re-price a bet's legs on the client, as the deprecated `calcComboOdds` does.
+ * The bets subgraph records every bet's total odds, potential payout and payout already priced by the
+ * protocol's rule: read a bet's `odds` / `settledOdds` and `potentialPayout` / `payout` (or
+ * `rawPotentialPayout` / `rawPayout`) instead.
  * */
 export const MARGIN_APPLIED_AT = 1766404000
+
+/**
+ * Unix seconds, the moment a single-leg bet stopped carrying the combo pricing rule.
+ *
+ * From `MARGIN_APPLIED_AT` the protocol priced a single-leg bet as a combo of one: the fee was removed
+ * from its odds, rounded up onto the two-decimal grid the protocol prices on, and taken off once
+ * again, which could move the odds the bettor was quoted. From this moment the contracts no longer
+ * do that, so a single-leg bet placed at or after it pays its quoted odds, while a bet with two or more
+ * legs keeps the combo rule. The switch is decided by the bet's own creation time and happened at one
+ * moment on every chain, which is why one constant covers all of them.
+ * */
+export const SINGLE_MARGIN_REMOVED_AT = 1788510000
 
 export const CLIENT_DATA_TYPES = [
   { name: 'attention', type: 'string' },

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { calcComboOdds } from './calcComboOdds'
-import { MARGIN_APPLIED_AT } from '../config'
+import { MARGIN_APPLIED_AT, SINGLE_MARGIN_REMOVED_AT } from '../config'
 
 
 describe('calcComboOdds', () => {
@@ -31,5 +31,19 @@ describe('calcComboOdds', () => {
     // `calcMinOdds` of an empty list is the bare combo fee, which would hand back 99% of the stake
     expect(+calcComboOdds({ odds: [], createdAt: MARGIN_APPLIED_AT })).toBe(1)
     expect(+calcComboOdds({ odds: [], createdAt: MARGIN_APPLIED_AT - 1 })).toBe(1)
+  })
+
+  it('prices a single leg as a combo of one until single-leg bets stopped carrying the fee', () => {
+    // ceil(1.6789 / 0.99) * 0.99 = 1.70 * 0.99 = 1.683, cut to the two-decimal grid
+    expect(+calcComboOdds({ odds: [ 1.6789 ], createdAt: SINGLE_MARGIN_REMOVED_AT - 1 })).toBe(1.68)
+  })
+
+  it('leaves a single leg at its quoted odds once single-leg bets stopped carrying the fee', () => {
+    expect(+calcComboOdds({ odds: [ 1.6789 ], createdAt: SINGLE_MARGIN_REMOVED_AT })).toBe(1.6789)
+  })
+
+  it('keeps the fee rule for two legs once single-leg bets stopped carrying it', () => {
+    // ceil(2 / 0.99) * ceil(1.5 / 0.99) * 0.99 = 3.05, as before
+    expect(+calcComboOdds({ odds: [ 2, 1.5 ], createdAt: SINGLE_MARGIN_REMOVED_AT })).toBe(3.05)
   })
 })
