@@ -1,7 +1,6 @@
 import { type Address } from 'viem'
 
 import { calcBetsReport, type BetsReportEntry, type BetsReportResult } from './calcBetsReport'
-import { isSelectionCanceled } from './isSelectionCanceled'
 import { normalizeBetsFilter, toGraphBetsWhere, type BetsFilter } from './betsFilter'
 import { gqlRequest } from '../../helpers/gqlRequest'
 import {
@@ -9,7 +8,7 @@ import {
   type BetsReportQuery,
   type BetsReportQueryVariables,
 } from '../../docs/bets/betsReport'
-import { type V3_Bet_Filter as Bet_Filter } from '../../docs/bets/types'
+import { SelectionResult, type V3_Bet_Filter as Bet_Filter } from '../../docs/bets/types'
 import { chainsData, type ChainId } from '../../config'
 
 
@@ -39,8 +38,8 @@ const toReportEntry = (
   betTokenSymbol: string
 ): BetsReportEntry => {
   const {
-    id, status, result, isCashedOut, isFreebet, isRedeemed, rawAmount, rawPayout, cashout, selections, core,
-    createdBlockTimestamp,
+    id, status, result, isCashedOut, isFreebet, isFreebetAmountReturnable, isRedeemed, rawAmount, rawPayout, cashout,
+    selections, core,
   } = bet
 
   const address = core.liquidityPool.token.toLowerCase() as Address
@@ -51,20 +50,16 @@ const toReportEntry = (
     result: result ?? null,
     isCashedOut,
     isFreebet,
+    isFreebetAmountReturnable: isFreebetAmountReturnable ?? null,
     isRedeemed,
-    createdAt: Number(createdBlockTimestamp),
     rawAmount,
     rawPayout: rawPayout ?? null,
     rawCashoutPayout: cashout?.rawPayout ?? null,
-    // which of the three void signals applies is a subgraph concern, so it is resolved here and the
-    // reducer only ever sees a boolean
+    // how a void is recorded is a subgraph concern, so it is resolved here and the reducer only ever
+    // sees a boolean. A leg is voided exactly when its own result says so: the outcome's result cannot
+    // decide it, because a leg rejected from a combo keeps the result its outcome settled at
     selections: selections.map((selection) => ({
-      odds: selection.odds,
-      isCanceled: isSelectionCanceled({
-        selectionResult: selection.result,
-        outcomeResult: selection.outcome.result,
-        conditionStatus: selection.outcome.condition.status,
-      }),
+      isCanceled: selection.result === SelectionResult.Canceled,
     })),
     token: {
       address,

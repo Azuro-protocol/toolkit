@@ -55,5 +55,6 @@ query GameBets($gameId: String!, $actor: String) {
     freebet {
       id
     }
+    isFreebetAmountReturnable
   }
 }

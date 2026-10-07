@@ -33,6 +33,7 @@ export { normalizeBetsFilter, toGraphBetsWhere, toSettledBetsWhere, toBetStatusW
   type BetsDateRangePreset } from './utils/bet/betsFilter'
 export { calcBetsReport, type BetsReportEntry, type BetsReportRow, type BetsReportResult,
   type BetsReportSelection, type BetsReportToken } from './utils/bet/calcBetsReport'
+export { calcFreebetBettorShare, type CalcFreebetBettorShareParams } from './utils/bet/calcFreebetBettorShare'
 export { isSelectionCanceled, type IsSelectionCanceledParams } from './utils/bet/isSelectionCanceled'
 export { getBetsReport, type GetBetsReportParams, type GetBetsReportResult } from './utils/bet/getBetsReport'
 

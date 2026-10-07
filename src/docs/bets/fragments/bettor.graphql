@@ -1,5 +1,6 @@
 fragment Bettor on Bettor {
   id
+  affiliate
   rawToPayout
   rawInBets
   rawTotalPayout
@@ -7,4 +8,14 @@ fragment Bettor on Bettor {
   betsCount
   wonBetsCount
   lostBetsCount
+  canceledBetsCount
+  cashedOutBetsCount
+  freebetBetsCount
+  freebetWonBetsCount
+  freebetLostBetsCount
+  freebetCanceledBetsCount
+  rawFreebetTurnover
+  rawFreebetInBets
+  rawFreebetToPayout
+  rawFreebetTotalPayout
 }

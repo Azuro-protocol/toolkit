@@ -4,12 +4,20 @@ fragment Bet on V3_Bet {
   tokenId: betId
   actor
   amount
+  rawAmount
   status
   potentialPayout
-  payout # settled amount; voids the canceled sub-bets of an express only once the bet is redeemed
+  rawPotentialPayout
+  # the pool's payout: the stake times settledOdds for a won bet, 0 for a lost one, the stake for a canceled
+  # one; once redeemed, the amount actually paid; a cash-out leaves it unchanged. A freebet's goes to the
+  # freebet contract, which pays the bettor only a share of it - see calcFreebetBettorShare
+  payout
+  rawPayout
   result
   odds
-  settledOdds # raw product of the leg odds with the feed fee compounded once per leg: NOT re-margined for an express and NOT reduced when a sub-bet is canceled, so it understates every combo - never derive a payout from it
+  # the odds the bet settled at: the placed odds when lost, the surviving legs combined when won (a voided
+  # leg is left out), exactly 1 when canceled
+  settledOdds
   createdAt: createdBlockTimestamp
   resolvedAt: resolvedBlockTimestamp
   txHash: createdTxHash
@@ -23,6 +31,7 @@ fragment Bet on V3_Bet {
     address
     liquidityPool {
       address
+      tokenDecimals
     }
   }
   selections {

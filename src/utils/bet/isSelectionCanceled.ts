@@ -13,14 +13,15 @@ export type IsSelectionCanceledParams = {
 /**
  * Tells whether a single leg of a bet was voided.
  *
- * Resolution is per-outcome: one leg can be voided while its condition stays `Resolved`, so the
- * outcome's own `result` is the authoritative signal and the condition's status is only a fallback
- * for whole-condition cancels, which predate per-outcome results. `selection.result` is the
- * subgraph's newest per-selection signal and is only populated for data indexed after that fix, so
- * it cannot replace either of the other two checks.
+ * @deprecated a leg is voided exactly when its own selection result is `Canceled`: read
+ * `selection.result === SelectionResult.Canceled` instead. The subgraph records that result on every
+ * voided leg, whether its whole condition was canceled, its outcome alone was, the whole bet was
+ * rejected or the leg alone was rejected from a combo. The outcome's result, which this function also
+ * consults, is not a per-leg signal: a leg rejected from a combo keeps the Won or Lost its outcome
+ * settled at.
  *
- * The params are widened to `string` on purpose: the generated `SelectionResult` enum has no
- * `Canceled` member even though the subgraph already returns that value.
+ * The params are widened to `string` so that any of the generated enums, or a plain string from
+ * another source, can be passed in.
  *
  * @example
  * import { isSelectionCanceled } from '@azuro-org/toolkit'
