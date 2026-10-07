@@ -40,7 +40,10 @@ export type BetsReportEntry = {
    * on a bet funded by the bettor.
    * */
   isFreebetAmountReturnable?: boolean | null
-  /** once redeemed, `rawPayout` holds the amount actually paid out on chain */
+  /**
+   * @deprecated ignored: `rawPayout` already holds the amount actually paid once the bet is redeemed,
+   * so the report reads it whether the bet is redeemed or not
+   * */
   isRedeemed: boolean
   /**
    * @deprecated ignored: the report reads the payout recorded for the bet, which is already priced
