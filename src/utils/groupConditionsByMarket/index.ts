@@ -15,7 +15,7 @@ export type {
 /**
  * Groups game conditions by their market types and sorts them according to sport-specific ordering.
  * It processes outcomes to include selection names, handles duplicate conditions, and organizes data for display.
- * Extended conditions (see `isExtendedConditionId`) take the feed-titled (API-supplied titles) path;
+ * Extended conditions (see `isExtendedConditionId`) take the extended (API-supplied titles) path;
  * all others use the legacy (dictionary-resolved names) path.
  *
  * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/groupConditionsByMarket
