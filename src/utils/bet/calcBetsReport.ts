@@ -1,8 +1,7 @@
-import { formatUnits, parseUnits, type Address } from 'viem'
+import { formatUnits, type Address } from 'viem'
 
+import { calcFreebetBettorShare } from './calcFreebetBettorShare'
 import { BetResult, BetStatus as GraphBetStatus } from '../../docs/bets/types'
-import { calcComboOdds } from '../calcComboOdds'
-import { MARGIN_APPLIED_AT, ODDS_DECIMALS } from '../../config'
 
 
 export type BetsReportToken = {
@@ -12,15 +11,16 @@ export type BetsReportToken = {
 }
 
 /**
- * One leg of a bet. `isCanceled` is already resolved by the caller, because which of the subgraph's
- * three void signals applies is a data-source concern - see `isSelectionCanceled`.
+ * One leg of a bet. `isCanceled` is resolved by the caller from the leg's own result, because how a
+ * void is recorded is a data-source concern: a v3 leg is voided exactly when its selection result is
+ * `Canceled`.
  * */
 export type BetsReportSelection = {
   /**
-   * decimal string, as recorded by the protocol. Whether the feed fee is already applied to it
-   * depends on when the bet was placed - see `calcComboOdds`.
+   * @deprecated ignored: the report reads the payout recorded for the bet and never prices it from
+   * the odds of its legs
    * */
-  odds: string
+  odds?: string
   isCanceled: boolean
 }
 
@@ -34,13 +34,29 @@ export type BetsReportEntry = {
   result: BetResult | null
   isCashedOut: boolean
   isFreebet: boolean
-  /** once redeemed, `rawPayout` holds the amount actually paid out on chain */
+  /**
+   * Whether a freebet's stake goes back to the freebet fund when it wins, which decides the bettor's
+   * share of its payout - see `calcFreebetBettorShare`. Null or absent counts as returnable. Ignored
+   * on a bet funded by the bettor.
+   * */
+  isFreebetAmountReturnable?: boolean | null
+  /**
+   * @deprecated ignored: `rawPayout` already holds the amount actually paid once the bet is redeemed,
+   * so the report reads it whether the bet is redeemed or not
+   * */
   isRedeemed: boolean
-  /** unix seconds - a combo is priced by the rules in force when it was placed, see `calcComboOdds` */
-  createdAt: number
+  /**
+   * @deprecated ignored: the report reads the payout recorded for the bet, which is already priced
+   * by the rules in force when the bet was placed
+   * */
+  createdAt?: number
   /** integer string, token base units */
   rawAmount: string
-  /** raw value as recorded by the protocol, never masked by redemption */
+  /**
+   * integer string, token base units: the payout recorded for the bet, priced over its surviving legs
+   * and, once the bet is redeemed, the amount actually paid. A freebet's goes to the freebet contract,
+   * which passes the bettor only a share of it.
+   * */
   rawPayout: string | null
   rawCashoutPayout: string | null
   /** every leg of the bet - a single is a bet with exactly one of them */
@@ -53,6 +69,7 @@ type BetsReportMoney = {
   /** decimal strings, so the whole result stays JSON-safe */
   turnover: string
   returns: string
+  /** `returns` less `turnover` on the own-funds row, `returns` itself on the freebet line */
   profit: string
   /** sum of the stakes of bets that have not settled yet */
   atStake: string
@@ -74,8 +91,10 @@ export type BetsReportRow = BetsReportMoney & {
   /** percent; null when turnover is 0, never NaN or Infinity */
   roi: number | null
   /**
-   * Freebet-funded bets, excluded from every figure above: the bettor staked none of their own
-   * money, so `returns` is their gross gain while `profit` compares it to the notional stake.
+   * Freebet-funded bets, excluded from every figure above. A freebet's payout goes to the freebet
+   * contract, which passes the bettor only a share of it (see `calcFreebetBettorShare`), so this line
+   * reports the freebets' stakes as `turnover`, the bettor's shares as `returns`, and a `profit` equal
+   * to `returns`: the bettor staked none of their own money, so whatever they received is their gain.
    * */
   freebet: BetsReportMoney & {
     count: number
@@ -148,62 +167,15 @@ const classifyEntry = (entry: BetsReportEntry): BetsReportEntryClass => {
   return 'pending'
 }
 
-const ODDS_FACTOR = 10n ** BigInt(ODDS_DECIMALS)
-
 /**
- * What a won bet returned.
+ * What a bet returned to the bettor.
  *
- * The recorded `payout` is used wherever it is trustworthy, and it must never be reconstructed from
- * `settledOdds`: that field is the raw product of the leg odds with the feed fee compounded once
- * per leg, which is not how a combo is priced, and it is not reduced when a leg is voided either.
- *
- * A **combo that has not been redeemed yet** is the shape where `payout` cannot be trusted, for two
- * independent reasons:
- *
- * - the indexer prices a combo by multiplying the leg odds as it recorded them. Once the feed applies
- *   its fee to every outcome, that compounds the fee one extra time per leg, because the protocol
- *   removes it per leg and applies it once to the product instead;
- * - a voided leg is never taken out of the figure, so it keeps crediting that leg as if it had won.
- *
- * So an unredeemed combo is rebuilt from its surviving legs, at the odds the rules in force when it
- * was placed give them - `calcComboOdds` is the one place that decides which those are. A combo whose
- * legs predate the fee needs no rebuilding at all while every leg still stands: the recorded payout is
- * already the plain product of them, and reading it avoids inventing rounding of our own.
- *
- * Redemption replaces `payout` with the amount actually paid on chain, so a redeemed bet always
- * reads that value: the truth wins over any reconstruction.
+ * A won or lost bet reads the payout recorded for it, and that payout is never rebuilt here: it is
+ * already priced over the legs that survived, with a voided leg left out, and once the bet is redeemed
+ * it is the amount actually paid. A freebet's payout goes to the freebet contract rather than to the
+ * bettor, so a freebet returns only the bettor's share of it - nothing when it lost. A cashed-out bet
+ * returns what the cash-out paid.
  * */
-const getWonReturns = (entry: BetsReportEntry): bigint => {
-  const rawPayout = BigInt(entry.rawPayout ?? '0')
-
-  const isCombo = entry.selections.length > 1
-
-  if (!isCombo || entry.isRedeemed) {
-    return rawPayout
-  }
-
-  const survivedOdds = entry.selections
-    .filter(({ isCanceled }) => !isCanceled)
-    .map(({ odds }) => Number(odds))
-
-  // `classifyEntry` sends a bet with no surviving leg to `canceled`, so this is the floor under that
-  // rather than a case of its own
-  if (!survivedOdds.length) {
-    return BigInt(entry.rawAmount)
-  }
-
-  const hasCanceledSelection = survivedOdds.length !== entry.selections.length
-
-  if (entry.createdAt < MARGIN_APPLIED_AT && !hasCanceledSelection) {
-    return rawPayout
-  }
-
-  const comboOdds = calcComboOdds({ odds: survivedOdds, createdAt: entry.createdAt })
-  const totalOdds = parseUnits(comboOdds, ODDS_DECIMALS)
-
-  return BigInt(entry.rawAmount) * totalOdds / ODDS_FACTOR
-}
-
 const getEntryReturns = (entry: BetsReportEntry, entryClass: BetsReportEntryClass): bigint => {
   if (entryClass === 'pending' || entryClass === 'canceled') {
     return 0n
@@ -213,11 +185,17 @@ const getEntryReturns = (entry: BetsReportEntry, entryClass: BetsReportEntryClas
     return BigInt(entry.rawCashoutPayout ?? '0')
   }
 
-  if (entryClass === 'won') {
-    return getWonReturns(entry)
+  const payout = BigInt(entry.rawPayout ?? '0')
+
+  if (entry.isFreebet) {
+    return calcFreebetBettorShare({
+      payout,
+      amount: BigInt(entry.rawAmount),
+      isAmountReturnable: entry.isFreebetAmountReturnable,
+    })
   }
 
-  return BigInt(entry.rawPayout ?? '0')
+  return payout
 }
 
 const createAccumulator = (): BetsReportAccumulator => ({
@@ -288,13 +266,13 @@ const toSortableTurnover = ({ turnover, token }: BetsReportBucket): bigint => {
   return turnover / 10n ** BigInt(-exponent)
 }
 
-const toMoney = (accumulator: BetsReportAccumulator, decimals: number): BetsReportMoney => {
+const toMoney = (accumulator: BetsReportAccumulator, decimals: number, profit: bigint): BetsReportMoney => {
   const { turnover, returns, atStake, refunded } = accumulator
 
   return {
     turnover: formatUnits(turnover, decimals),
     returns: formatUnits(returns, decimals),
-    profit: formatUnits(returns - turnover, decimals),
+    profit: formatUnits(profit, decimals),
     atStake: formatUnits(atStake, decimals),
     refunded: formatUnits(refunded, decimals),
   }
@@ -309,12 +287,13 @@ const toRow = (bucket: BetsReportBucket): BetsReportRow => {
     settledCount: bucket.settledCount,
     pendingCount: bucket.pendingCount,
     canceledCount: bucket.canceledCount,
-    ...toMoney(bucket, token.decimals),
+    ...toMoney(bucket, token.decimals, returns - turnover),
     roi: turnover > 0n ? Number((returns - turnover) * 10000n / turnover) / 100 : null,
     freebet: {
       count: freebet.betsCount,
       canceledCount: freebet.canceledCount,
-      ...toMoney(freebet, token.decimals),
+      // the bettor staked nothing of their own on a freebet, so all it returned them is profit
+      ...toMoney(freebet, token.decimals, freebet.returns),
     },
   }
 }
@@ -326,10 +305,12 @@ const toRow = (bucket: BetsReportBucket): BetsReportRow => {
  * is formatted to decimal strings only at the boundary, so nothing here can reach a query cache as
  * a bigint (`JSON.stringify` throws on those).
  *
+ * A settled bet returns the payout recorded for it, and a cashed-out one what the cash-out paid.
  * Pending bets are excluded from ROI and surfaced as `atStake`. Voided bets are excluded from it
  * too and surfaced as `refunded`: the stake came straight back, so counting it as turnover would
  * pull every ROI toward zero by exactly how unlucky a bettor was with cancellations. Freebet-funded
- * bets are excluded from every main figure and reported on their own line.
+ * bets are excluded from every main figure and reported on their own line, valued at the share of
+ * their payout the bettor receives - see `calcFreebetBettorShare`.
  *
  * - Docs: https://gem.azuro.org/hub/apps/toolkit/bet/getBetsReport
  *

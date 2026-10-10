@@ -1,6 +1,7 @@
 import type { ConditionDetailedData } from '../feed/getConditionsByGameIds'
 import { groupLegacyConditions } from './legacy'
 import { groupConditionsV5 } from './v5'
+import { isExtendedConditionId } from '../isExtendedConditionId'
 import type { GameMarkets } from './types'
 
 
@@ -14,7 +15,7 @@ export type {
 /**
  * Groups game conditions by their market types and sorts them according to sport-specific ordering.
  * It processes outcomes to include selection names, handles duplicate conditions, and organizes data for display.
- * Conditions whose conditionId begins with '5' use the modern (API-supplied titles) path;
+ * Extended conditions (see `isExtendedConditionId`) take the extended (API-supplied titles) path;
  * all others use the legacy (dictionary-resolved names) path.
  *
  * - Docs: https://gem.azuro.org/hub/apps/toolkit/utils/groupConditionsByMarket
@@ -39,23 +40,23 @@ export const groupConditionsByMarket = (conditions: ConditionDetailedData[]): Ga
 
   const sportId = conditions[0]!.game.sport.sportId
 
-  const { legacyConditions, conditionsV5 } = conditions.reduce<{ legacyConditions: ConditionDetailedData[], conditionsV5: ConditionDetailedData[] }>((acc, condition) => {
-    if (condition.conditionId[0] === '5') {
-      acc.conditionsV5.push(condition)
+  const { legacyConditions, extendedConditions } = conditions.reduce<{ legacyConditions: ConditionDetailedData[], extendedConditions: ConditionDetailedData[] }>((acc, condition) => {
+    if (isExtendedConditionId(condition.conditionId)) {
+      acc.extendedConditions.push(condition)
     }
     else {
       acc.legacyConditions.push(condition)
     }
 
     return acc
-  }, { legacyConditions: [], conditionsV5: [] })
+  }, { legacyConditions: [], extendedConditions: [] })
 
   const legacyMarkets = legacyConditions.length > 0
     ? groupLegacyConditions(legacyConditions, sportId)
     : []
 
-  const markets = conditionsV5.length > 0
-    ? groupConditionsV5(conditionsV5)
+  const markets = extendedConditions.length > 0
+    ? groupConditionsV5(extendedConditions)
     : []
 
   return [ ...legacyMarkets, ...markets ].sort((a, b) => {

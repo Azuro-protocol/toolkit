@@ -31,11 +31,10 @@ const createEntry = (props: Partial<BetsReportEntry> = {}): BetsReportEntry => (
   isCashedOut: false,
   isFreebet: false,
   isRedeemed: false,
-  createdAt: MARGIN_APPLIED_AT,
   rawAmount: raw('100'),
   rawPayout: raw('126.86058'),
   rawCashoutPayout: null,
-  selections: [ { odds: '1.27', isCanceled: false } ],
+  selections: [ { isCanceled: false } ],
   token: USDT,
   ...props,
 })
@@ -194,10 +193,11 @@ describe('calcBetsReport', () => {
     expect(single!.roi).toBe(50)
     expect(single!.atStake).toBe('0')
 
+    // a freebet with no returnable flag is valued as returnable: the bettor receives 49.599 less the 30 stake
     expect(single!.freebet.count).toBe(2)
     expect(single!.freebet.turnover).toBe('30')
-    expect(single!.freebet.returns).toBe('49.599')
-    expect(single!.freebet.profit).toBe('19.599')
+    expect(single!.freebet.returns).toBe('19.599')
+    expect(single!.freebet.profit).toBe(single!.freebet.returns)
     expect(single!.freebet.atStake).toBe('10')
   })
 
@@ -221,10 +221,85 @@ describe('calcBetsReport', () => {
     expect(single!.freebet.count).toBe(2)
     expect(single!.freebet.canceledCount).toBe(1)
     expect(single!.freebet.turnover).toBe('30')
-    expect(single!.freebet.returns).toBe('49.599')
-    expect(single!.freebet.profit).toBe('19.599')
+    expect(single!.freebet.returns).toBe('19.599')
+    expect(single!.freebet.profit).toBe(single!.freebet.returns)
     expect(single!.freebet.refunded).toBe('25')
     expect(single!.canceledCount).toBe(0)
+  })
+
+  it('values a returnable freebet at its payout less the stake and reports that as its profit', () => {
+    const { single } = calcBetsReport([
+      createEntry({
+        isFreebet: true,
+        isFreebetAmountReturnable: true,
+        result: BetResult.Won,
+        rawAmount: raw('1'),
+        rawPayout: raw('1.5'),
+      }),
+    ])
+
+    expect(single!.freebet.turnover).toBe('1')
+    expect(single!.freebet.returns).toBe('0.5')
+    expect(single!.freebet.profit).toBe(single!.freebet.returns)
+  })
+
+  it('values a non-returnable freebet at its whole payout', () => {
+    const { single } = calcBetsReport([
+      createEntry({
+        isFreebet: true,
+        isFreebetAmountReturnable: false,
+        result: BetResult.Won,
+        rawAmount: raw('1'),
+        rawPayout: raw('1.5'),
+      }),
+    ])
+
+    expect(single!.freebet.turnover).toBe('1')
+    expect(single!.freebet.returns).toBe('1.5')
+    expect(single!.freebet.profit).toBe(single!.freebet.returns)
+  })
+
+  it('values a freebet with no returnable flag as returnable', () => {
+    const { single } = calcBetsReport([
+      createEntry({
+        isFreebet: true,
+        isFreebetAmountReturnable: null,
+        result: BetResult.Won,
+        rawAmount: raw('1'),
+        rawPayout: raw('1.5'),
+      }),
+      createEntry({
+        isFreebet: true,
+        result: BetResult.Won,
+        rawAmount: raw('1'),
+        rawPayout: raw('1.5'),
+      }),
+    ])
+
+    expect(single!.freebet.turnover).toBe('2')
+    expect(single!.freebet.returns).toBe('1')
+    expect(single!.freebet.profit).toBe(single!.freebet.returns)
+  })
+
+  it('counts a canceled freebet as refunded and adds nothing to the freebet returns', () => {
+    // the payout of a canceled freebet is exactly its stake, all of which goes back to the freebet fund
+    const { single } = calcBetsReport([
+      createEntry({
+        isFreebet: true,
+        isFreebetAmountReturnable: false,
+        status: GraphBetStatus.Canceled,
+        result: null,
+        rawAmount: raw('1'),
+        rawPayout: raw('1'),
+      }),
+    ])
+
+    expect(single!.freebet.canceledCount).toBe(1)
+    expect(single!.freebet.refunded).toBe('1')
+    expect(single!.freebet.turnover).toBe('0')
+    expect(single!.freebet.returns).toBe('0')
+    expect(single!.freebet.profit).toBe(single!.freebet.returns)
+    expect(single!.refunded).toBe('0')
   })
 
   it('returns roi null instead of NaN or Infinity when turnover is zero', () => {
@@ -292,121 +367,38 @@ describe('calcBetsReport', () => {
     expect(single!.roi).toBe(26.86)
   })
 
-  it('rebuilds the returns of an unredeemed winning combo whose leg was voided', () => {
-    // a 1.68 leg won and a 1.33 leg was voided: while the bet stays unredeemed its recorded payout
-    // of 0.436889 still credits the voided leg
-    const { single } = calcBetsReport([
-      createEntry({
-        result: BetResult.Won,
-        isRedeemed: false,
-        rawAmount: raw('0.195529'),
-        rawPayout: raw('0.436889'),
-        selections: [
-          { odds: '1.68', isCanceled: false },
-          { odds: '1.33', isCanceled: true },
-        ],
-      }),
-    ])
+  it('reads the recorded payout of a won bet whatever its creation time and its legs', () => {
+    // the recorded payout is already priced by the rules in force when the bet was placed and leaves a
+    // voided leg out, so two bets recorded at the same payout return exactly that, either side of a
+    // change in how combos are priced
+    const selections = [
+      { odds: '2', isCanceled: false },
+      { odds: '1.5', isCanceled: false },
+      { odds: '4', isCanceled: true },
+    ]
 
-    // 0.195529 at the re-margined odds of the surviving leg alone, which for one leg is 1.68
-    expect(single!.returns).toBe('0.328488')
-    expect(single!.turnover).toBe('0.195529')
-  })
-
-  it('re-margins a rebuilt combo instead of multiplying the leg odds as they are', () => {
-    const { single } = calcBetsReport([
-      createEntry({
-        result: BetResult.Won,
-        isRedeemed: false,
-        rawAmount: raw('100'),
-        rawPayout: raw('999'),
-        selections: [
-          { odds: '2', isCanceled: false },
-          { odds: '1.5', isCanceled: false },
-          { odds: '4.4', isCanceled: true },
-        ],
-      }),
-    ])
-
-    // ceil(2 / 0.99) * ceil(1.5 / 0.99) * 0.99 = 3.05, where the plain product would be 3
-    expect(single!.returns).toBe('305')
-  })
-
-  it('reads the recorded payout of a redeemed combo, because redemption records what was paid', () => {
-    // a 1.6 leg won and a 1.26 leg was voided: the redeemed payout of 255.7992 is what was actually
-    // paid out, and it sits slightly above any reconstruction
-    const { single } = calcBetsReport([
-      createEntry({
-        result: BetResult.Won,
-        isRedeemed: true,
-        rawAmount: raw('159'),
-        rawPayout: raw('255.7992'),
-        selections: [
-          { odds: '1.6', isCanceled: false },
-          { odds: '1.26', isCanceled: true },
-        ],
-      }),
-    ])
-
-    expect(single!.returns).toBe('255.7992')
-  })
-
-  it('re-prices a not-redeemed combo without voided legs', () => {
-    const { single } = calcBetsReport([
-      createEntry({
-        result: BetResult.Won,
-        isRedeemed: false,
-        rawAmount: raw('10'),
-        rawPayout: raw('34.6'),
-        selections: [
-          { odds: '2', isCanceled: false },
-          { odds: '1.75', isCanceled: false },
-        ],
-      }),
-    ])
-
-    // the recorded 34.6 compounds the fee once per leg; the protocol removes it per leg instead
-    expect(single!.returns).toBe('35.5')
-  })
-
-  it('leaves a combo placed before the fee alone: its recorded payout is already the plain product', () => {
     const { single } = calcBetsReport([
       createEntry({
         result: BetResult.Won,
         isRedeemed: false,
         createdAt: MARGIN_APPLIED_AT - 1,
         rawAmount: raw('10'),
-        rawPayout: raw('35'),
-        selections: [
-          { odds: '2', isCanceled: false },
-          { odds: '1.75', isCanceled: false },
-        ],
+        rawPayout: raw('30'),
+        selections,
       }),
-    ])
-
-    // the same legs placed after the fee price at 35.5, and re-pricing these would invent a fee the
-    // bettor never paid
-    expect(single!.returns).toBe('35')
-  })
-
-  it('rebuilds a combo placed before the fee as the plain product of its surviving legs', () => {
-    const { single } = calcBetsReport([
       createEntry({
         result: BetResult.Won,
         isRedeemed: false,
-        createdAt: MARGIN_APPLIED_AT - 1,
-        rawAmount: raw('100'),
-        rawPayout: raw('999'),
-        selections: [
-          { odds: '2', isCanceled: false },
-          { odds: '1.5', isCanceled: false },
-          { odds: '4.4', isCanceled: true },
-        ],
+        createdAt: MARGIN_APPLIED_AT,
+        rawAmount: raw('10'),
+        rawPayout: raw('30'),
+        selections,
       }),
     ])
 
-    // 2 * 1.5, with no fee to remove and none to re-apply
-    expect(single!.returns).toBe('300')
+    expect(single!.settledCount).toBe(2)
+    expect(single!.turnover).toBe('20')
+    expect(single!.returns).toBe('60')
   })
 
   it('treats a combo whose every leg was voided as a void, whatever the bet says about itself', () => {
@@ -468,7 +460,7 @@ describe('calcBetsReport', () => {
     expect(single!.settledCount).toBe(1)
   })
 
-  it('rebuilds nothing for a cashed out combo, which is paid at the price the bettor took', () => {
+  it('pays a cashed out combo with a voided leg at the price the bettor took', () => {
     const { single } = calcBetsReport([
       createEntry({
         isCashedOut: true,

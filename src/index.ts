@@ -13,6 +13,7 @@ export { calcMinOdds, type CalcMinOddsParams } from './utils/calcMinOdds'
 export { calcComboOdds, type CalcComboOddsParams } from './utils/calcComboOdds'
 export { getIsPendingResolution, type GetIsPendingResolutionParams } from './utils/getIsPendingResolution'
 export { isOutcomeSettled } from './utils/isOutcomeSettled'
+export { isExtendedConditionId } from './utils/isExtendedConditionId'
 export { groupConditionsByMarket, type GameMarkets, type MarketOutcome, type MarketCondition, type Market } from './utils/groupConditionsByMarket'
 export { setupContracts, type Contracts } from './utils/setupContracts'
 export { getFeedGraphqlEndpoint, getBetsGraphqlEndpoint, getApiEndpoint, getSocketEndpoint } from './utils/getEndpoints'
@@ -33,6 +34,7 @@ export { normalizeBetsFilter, toGraphBetsWhere, toSettledBetsWhere, toBetStatusW
   type BetsDateRangePreset } from './utils/bet/betsFilter'
 export { calcBetsReport, type BetsReportEntry, type BetsReportRow, type BetsReportResult,
   type BetsReportSelection, type BetsReportToken } from './utils/bet/calcBetsReport'
+export { calcFreebetBettorShare, type CalcFreebetBettorShareParams } from './utils/bet/calcFreebetBettorShare'
 export { isSelectionCanceled, type IsSelectionCanceledParams } from './utils/bet/isSelectionCanceled'
 export { getBetsReport, type GetBetsReportParams, type GetBetsReportResult } from './utils/bet/getBetsReport'
 

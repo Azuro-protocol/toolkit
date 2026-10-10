@@ -16,6 +16,7 @@ type FakeBet = {
   result: BetResult | null
   isCashedOut: boolean
   isFreebet: boolean
+  isFreebetAmountReturnable: boolean | null
   isRedeemed: boolean
   rawAmount: string
   rawPayout: string | null
@@ -35,6 +36,7 @@ const createBet = (id: string, createdBlockTimestamp: string, amount: string, pa
   result: BetResult.Won,
   isCashedOut: false,
   isFreebet: false,
+  isFreebetAmountReturnable: null,
   isRedeemed: false,
   rawAmount: amount,
   rawPayout: payout,
@@ -125,72 +127,65 @@ describe('getBetsReport', () => {
     })
   })
 
-  // the two tests below look alike on purpose: each one proves that a different field of the
-  // fragment is actually requested and mapped, which a unit test on `isSelectionCanceled` cannot
-  it('reads a per-outcome void, where the leg is canceled but its condition stays resolved', async () => {
-    const bet = createBet('a', '300', '195529', '436889')
+  it('voids a leg by its own selection result, not by the result of its outcome', async () => {
+    // a leg rejected from a bet keeps the result its outcome settled at, so only the leg's own result
+    // can say it was voided
+    const voided = createBet('a', '300', '10000000', '10000000')
 
-    bet.selections = [
-      { odds: '1.68', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
-      // a voided leg where only the outcome says so
-      { odds: '1.33', result: null, outcome: { result: 'Canceled', condition: { status: 'Resolved' } } },
+    voided.selections = [
+      { odds: '1.5', result: 'Canceled', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
     ]
 
-    stubSubgraph([ bet ])
+    const standing = createBet('b', '200', '10000000', '15000000')
+
+    standing.selections = [
+      { odds: '1.5', result: 'Won', outcome: { result: 'Canceled', condition: { status: 'Resolved' } } },
+    ]
+
+    stubSubgraph([ voided, standing ])
 
     const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
 
-    // the recorded payout of 0.436889 still credits the voided leg, the surviving 1.68 does not
-    expect(report.single!.returns).toBe('0.328488')
+    expect(report.single!.canceledCount).toBe(1)
+    expect(report.single!.refunded).toBe('10')
+    expect(report.single!.settledCount).toBe(1)
+    expect(report.single!.turnover).toBe('10')
+    expect(report.single!.returns).toBe('15')
   })
 
-  it('reads a whole-condition cancel, which predates per-outcome results', async () => {
-    const bet = createBet('a', '300', '195529', '436889')
-
-    bet.selections = [
-      { odds: '1.68', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
-      { odds: '1.33', result: null, outcome: { result: null, condition: { status: 'Canceled' } } },
-    ]
-
-    stubSubgraph([ bet ])
-
-    const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
-
-    expect(report.single!.returns).toBe('0.328488')
-  })
-
-  // the two tests below prove that `createdBlockTimestamp` reaches the reducer, which the pair above
-  // cannot: a lone surviving leg prices the same either side of the fee, so they would still pass if
-  // the field were dropped or mapped from the wrong one
-  it('prices a combo placed after the fee by taking it off each leg and applying it once', async () => {
-    const bet = createBet('a', String(MARGIN_APPLIED_AT), '10000000', '34600000')
+  it('returns the recorded payout of a won combo with a voided leg', async () => {
+    const bet = createBet('a', String(MARGIN_APPLIED_AT), '10000000', '30000000')
 
     bet.selections = [
       { odds: '2', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
-      { odds: '1.75', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+      { odds: '1.5', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+      { odds: '4', result: 'Canceled', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
     ]
 
     stubSubgraph([ bet ])
 
     const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
 
-    // ceil(2 / 0.99) * ceil(1.75 / 0.99) * 0.99 = 3.55, where the recorded 34.6 is the plain product
-    expect(report.single!.returns).toBe('35.5')
+    // the recorded payout already leaves the voided leg out, and is never re-priced from the legs' odds
+    expect(report.single!.settledCount).toBe(1)
+    expect(report.single!.returns).toBe('30')
   })
 
-  it('leaves the same combo alone when it was placed before the fee', async () => {
-    const bet = createBet('a', String(MARGIN_APPLIED_AT - 1), '10000000', '35000000')
-
-    bet.selections = [
-      { odds: '2', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
-      { odds: '1.75', result: 'Won', outcome: { result: 'Won', condition: { status: 'Resolved' } } },
+  it('passes the returnable flag of a freebet through to the report', async () => {
+    const bets = [
+      { ...createBet('a', '300', '1000000', '1500000'), isFreebet: true, isFreebetAmountReturnable: true },
+      { ...createBet('b', '200', '1000000', '1500000'), isFreebet: true, isFreebetAmountReturnable: false },
     ]
 
-    stubSubgraph([ bet ])
+    stubSubgraph(bets)
 
     const report = await getBetsReport({ chainId: CHAIN_ID, filter: { bettor: BETTOR } })
 
-    expect(report.single!.returns).toBe('35')
+    // the returnable freebet pays the bettor 0.5 of its 1.5 payout, the non-returnable one all of it
+    expect(report.single!.freebet.count).toBe(2)
+    expect(report.single!.freebet.turnover).toBe('2')
+    expect(report.single!.freebet.returns).toBe('2')
+    expect(report.single!.freebet.profit).toBe('2')
   })
 
   it('walks past a group of bets sharing a timestamp that is larger than one page', async () => {
