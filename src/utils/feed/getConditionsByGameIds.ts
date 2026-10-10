@@ -7,7 +7,7 @@ import type { ChainId } from '../../config'
 export type GetConditionsByGameIdsParams = {
   chainId: ChainId
   gameIds: string | string[]
-  /** To receive new conditions ("5...") that are not in the "dictionaries" package (managed via API) */
+  /** To also receive extended conditions (see `isExtendedConditionId`) that are not in the "dictionaries" package (managed via API) */
   extended?: boolean
 }
 
@@ -16,7 +16,7 @@ export type OutcomeData = {
   outcomeId: string
   odds: string
   sort: `${number}`
-  /** Modern ("5...") conditions only: numeric handicap/line value, e.g. "-2.5" / "+2.5" */
+  /** Extended conditions only: numeric handicap/line value, e.g. "-2.5" / "+2.5" */
   point?: string | null
   hidden: boolean
   state: OutcomeState
@@ -42,7 +42,7 @@ export type ConditionDetailedData = {
   }
   wonOutcomeIds: string[]
   sort: `${number}`
-  /** Modern ("5...") conditions only: used for market grouping */
+  /** Extended conditions only: used for market grouping */
   marketId?: string | null
   marketVarietyId?: string | null
 }
